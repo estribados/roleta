@@ -3,6 +3,8 @@ import { MenuAlt2Icon, XIcon } from '@heroicons/react/outline';
 import Image from 'next/image';
 import { Fragment, useState } from 'react';
 
+import ButtonGoldOutLined from '../Buttons/ButtonGold';
+
 const navigation = [
   { name: 'EMPRESAS', href: '/companies', icon:MenuAlt2Icon , current: true },
   { name: 'TEMPLATE', href: '/templates', icon:MenuAlt2Icon , current: false },
@@ -86,8 +88,7 @@ const Layout:React.FC<Props> = ({children}) =>{
                   <div className="mt-5 flex-1 h-0 overflow-y-auto">
                     <nav className="px-4 space-y-1">
                       <Image className='' src={'/images/logo.png' } width={150} height={40} alt="logo do sistema"/>
-
-                     {/* Itens do menu responsivo */}
+                      {/* Itens do menu responsivo */}
                     </nav>
                   </div>
                 </Dialog.Panel>
@@ -101,37 +102,30 @@ const Layout:React.FC<Props> = ({children}) =>{
 
         {/* Static sidebar for desktop */}
 
-        <div className=" flex flex-col ">
-          <div className=" sticky top-0 z-10 flex-shrink-0 flex p-8 bg-blue700 shadow bg-black100">
+        <div className=" flex flex-col">
+          <div className="px-5 h-24  sticky top-0 z-10 flex-shrink-0 flex bg-blue700 shadow bg-black100">
             <button
               type="button"
-              className="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
+              className=" border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500 md:hidden"
               onClick={() => setSidebarOpen(true)}
             >
-              <MenuAlt2Icon className="h-6 w-6" aria-hidden="true" />
-
+              <MenuAlt2Icon className="h-6 w-10" aria-hidden="true" />
             </button>
 
-            <div className='max-w-5xl mx-auto flex w-full justify-between'>
-            <Image className='invisible md:visible' src={'/images/logo.png' } width={150} height={40} alt="logo do sistema"/>
-
-
-
-
-
-              botao entrar
+            <div className=' items-center  md:max-w-5xl mx-auto flex w-full justify-between'>
+              <Image className='invisible md:visible' src={'/images/logo.png'}  width={150} height={40} alt="logo do sistema"/>
+              <ButtonGoldOutLined title='Entrar'/>
             </div>
           </div>
 
           <main className="flex-1">
             <div className="">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 ">
-                <div className="py-4">
-                  <div className="max-w-5xl mx-auto    bg-white10 shadow-3xl-personalized rounded-3xl">
+              <div className="max-w-7xl mx-auto   ">
+                <div className="">
+                  <div className=" max-w-5xl mx-auto h-full  bg-white10 shadow-3xl-personalized rounded-3xl">
                     {children}
                   </div>
                 </div>
-                {/* /End replace */}
               </div>
             </div>
           </main>

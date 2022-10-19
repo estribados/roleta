@@ -13,7 +13,8 @@ module.exports = {
       },
       colors:{
       purple200:"#EFDBFE",
-      black100:"#131212"
+      black100:"#131212",
+      gold100:"#E5BD31"
       },
 
     },
