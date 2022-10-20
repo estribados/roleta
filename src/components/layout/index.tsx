@@ -113,7 +113,7 @@ const Layout:React.FC<Props> = ({children}) =>{
             </button>
 
             <div className=' items-center  md:max-w-5xl mx-auto flex w-full justify-between'>
-              <Image className='invisible md:visible' src={'/images/logo.png'}  width={150} height={40} alt="logo do sistema"/>
+              <Image className='invisible md:visible' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
               <ButtonGoldOutLined title='Entrar'/>
             </div>
           </div>
