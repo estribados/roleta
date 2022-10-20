@@ -54,13 +54,14 @@ const Roullete:React.FC<RoulleteProps> = ({data, setStopRoullet}) =>{
           }}
         />
         <Spin active ={mustSpin} onClick={handleSpinClick}> 
-        <p>
-          Girar
-        </p>
+          <p>
+            Girar
+          </p>
         </Spin>
+
         <Arrow>
-        <Image  src="/images/seta-estrib.png" width={'80px'} height="80px" alt='seta'/>
-      </Arrow>
+          <Image  src="/images/seta-estrib.png" width={'80px'} height="80px" alt='seta'/>
+        </Arrow>
       </RoulleteContainer>
     </Container>
   )

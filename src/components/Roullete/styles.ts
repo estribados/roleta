@@ -4,12 +4,17 @@ export const Container = styled.div`
 width: 100%;
 height: 100%;
 position: relative;
+
 `
 export const RoulleteContainer = styled.div`
 
-  position: fixed;
+  position: relative;
   transform: rotate(-130deg);
-  right: 10%;
+  right: 20%;
+
+  @media(max-width:768px){
+    transform: initial;
+  }
 
 
 &::after{
@@ -25,6 +30,12 @@ export const RoulleteContainer = styled.div`
   display: inline-block;
   filter: drop-shadow(0px 0px 10px #D1B814);
 
+  @media(max-width:768px){
+    top: -6px;
+    right: -42px;
+    width: 105%;
+    height: 104%;
+  }
 }
 
 `
@@ -55,9 +66,15 @@ animation-direction: alternate;
 -webkit-animation-name: pulse;
 animation-name: pulse;
 
-p{
-  transform: rotate(130deg);
+@media(max-width:768px){
+  width:80px;
+  height:80px;
+  top: 36%;
+  left: 48%;
+}
 
+p{
+  transform: rotate(0deg);
 }
 
 @keyframes pulse {
@@ -77,8 +94,14 @@ export const Arrow = styled.div`
   transform: rotate(130deg);
   z-index: 999;
   position: absolute;
-  right: 30px;
+  right: 20px;
   top: 30px;
   filter: drop-shadow(5px 5px 10px #E5BD31);
+
+  @media(max-width:768px){
+    right: 0;
+    top: 0;
+  }
+
   `
 

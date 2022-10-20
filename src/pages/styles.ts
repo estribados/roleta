@@ -6,9 +6,33 @@ display: grid;
 width: 100%;
 grid-template-columns: 1fr 1fr;
 
+@media(max-width:768px){
+}
+
+
+.invisibleButton{
+  @media(max-width:768px){
+    display: none;
+  }
+
+}
+
+.visibleButton{
+    margin-top: 60px;
+    display: none;
+
+    @media(max-width:768px){
+      display: block;
+    }
+  }
+
+@media(max-width:768px){
+  grid-template-columns: 1fr;
+}
+
 
 align-items:center;
-padding: 64px 0;
+padding: 64px 10px;
 
 section{
   display: flex;
@@ -19,6 +43,11 @@ section{
     font-weight: 800;
     font-size: 30px;
     line-height: 40px;
+
+    @media(max-width:768px){
+      text-align: center;
+      font-size:24px;
+    }
   }
 }
 
@@ -57,10 +86,26 @@ height: 100%;
     justify-content: space-between;
     flex-direction: column;
 
+    .img{
+
+      @media(max-width:768px){
+        height: 100px !important;
+      }
+    }
+
     p{
       font-size: 20px;
+
+      @media(max-width:768px){
+        font-size:16px;
+      }
       span{
         font-weight: bold;
+
+        @media(max-width:768px){
+          font-size:20px;
+
+      }
       }
     }
 
