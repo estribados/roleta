@@ -28,6 +28,9 @@ export default function Home() {
   return (
     <Layout>
       <Container className='overflow-hidden md:p-0 p-4'>
+      <div className='fixed w-full md:-right-60 right-60  z-5 '>
+            <Lottie width={'700px'} height={"100vh"} options={defaultOptions} isStopped={stopRoullete}isPaused={false}/>
+          </div>
         <section className='md:mt-0 mb-14'>
           <h1>
             Sabia que aquela moeda <br/> esquecida no fundo da gaveta <br/> pode tirar você do sufoco?
@@ -54,8 +57,8 @@ export default function Home() {
         </section>
         
         <aside>
-          <div className=' right-20 z-5 '>
-            <Lottie options={defaultOptions} isStopped={stopRoullete}isPaused={false}/>
+          <div className='w-full right-20 z-50 '>
+
           </div>
           <DynamicComponentWithNoSSR setStopRoullet={setStopRoullet}  data={staticData}/>
           
@@ -63,8 +66,6 @@ export default function Home() {
         <div className='visibleButton'>
           <ButtonAnimated/>
         </div>
-
-        
       </Container>
     </Layout>
   );

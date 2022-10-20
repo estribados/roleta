@@ -96,7 +96,7 @@ p{
 `
 
 export const Arrow = styled.div`
-  transform: rotate(130deg);
+  transform: rotate(139deg);
   z-index: 999;
   position: absolute;
   right: 20px;
@@ -104,8 +104,11 @@ export const Arrow = styled.div`
   filter: drop-shadow(5px 5px 10px #E5BD31);
 
   @media(max-width:768px){
-    right: 0;
-    top: 0;
+    right: -20px;
+    top: 25px;
+
+    width: 55px;
+    height: 55px;
   }
 
   `

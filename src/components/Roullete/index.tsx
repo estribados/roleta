@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { Wheel } from 'react-custom-roulette';
+
 import { currencyFormat } from '../../utils/currencyNumber';
 import { Arrow, Container, RoulleteContainer, Spin } from './styles';
 
@@ -22,6 +23,8 @@ const Roullete:React.FC<RoulleteProps> = ({data, setStopRoullet}) =>{
 
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
+
+  console.log(prizeNumber)
 
 
   useEffect(() =>{
