@@ -24,9 +24,6 @@ const Roullete:React.FC<RoulleteProps> = ({data, setStopRoullet}) =>{
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState(0);
 
-  console.log(prizeNumber)
-
-
   useEffect(() =>{
     if(setStopRoullet){
       setStopRoullet(mustSpin)
