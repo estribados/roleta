@@ -1,14 +1,13 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
-
-import { ButtonAnimated } from '../components/Buttons/ButtonAnimated';
-import Layout from '../components/layout';
-import { staticData } from '../utils/staticRoullete';
-import { Container, ContainerImage } from './styles';
-
 import { useState } from 'react';
 import Lottie from 'react-lottie';
+
 import * as animationData from '../../public/lotties/congratulations.json';
+import { ButtonAnimated } from '../components/Buttons/ButtonAnimated';
+import Layout from '../components/layout';
+import { Container, ContainerImage } from '../styles/home';
+import { staticData } from '../utils/staticRoullete';
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('../components/Roullete'),
