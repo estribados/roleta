@@ -74,7 +74,12 @@ animation-name: pulse;
 }
 
 p{
+  transform: rotate(130deg);
+
+  @media(max-width:768px){
   transform: rotate(0deg);
+
+}
 }
 
 @keyframes pulse {
