@@ -14,6 +14,7 @@ export const Container = styled.button`
   border: 1px solid #000000;
   box-shadow: 0px 4px 4px rgba(229, 189, 49, 0.25);
   border-radius: 8px;
+  cursor: pointer !important;
   
 
 `

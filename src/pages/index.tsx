@@ -28,8 +28,8 @@ export default function Home() {
   return (
     <Layout>
       <Container className='overflow-hidden md:p-0 p-4'>
-      <div className='fixed w-full md:-right-60 right-60  z-5 '>
-            <Lottie width={'700px'} height={"100vh"} options={defaultOptions} isStopped={stopRoullete}isPaused={false}/>
+          <div className={` fixed md:w-full md:right-60 -right-10  z-5 ` }>
+            <Lottie width={'400px'} height={"100vh"} options={defaultOptions} isStopped={stopRoullete}isPaused={false}/>
           </div>
         <section className='md:mt-0 mb-14'>
           <h1>

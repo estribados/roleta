@@ -6,7 +6,7 @@ const ButtonAnimated:React.FC = () =>{
   return(
     <Container>
 
-      <a href="#" title="Leia mais">COMPRAR CREDITOS</a>
+      COMPRAR CREDITOS
       
     </Container>
   )

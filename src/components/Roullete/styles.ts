@@ -58,7 +58,7 @@ border-radius: 50%;
 position: absolute;
 top: 40%;
 left: 40%;
-z-index: 50;
+z-index: 30;
 cursor: ${props => props.active ? 'not-allowed' : 'pointer'};
 background: ${props => props.active ? 'rgba(189, 188, 187)' : 'linear-gradient(90deg, #E5BD31 41.3%, #E8A700 61.27%)'};
 animation: pulse 0.7s  ${props => props.active ? 'both' : 'infinite'};
