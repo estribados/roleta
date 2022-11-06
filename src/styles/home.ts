@@ -11,24 +11,18 @@ position:absolute;
 width:100vw;
 left:0;
 height:100vh;
-
-
-@media(max-width:768px){
-}
-
-
-
-
-
 align-items:center;
-
-
 
 aside{
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
+}
+
+@media(max-width:720px){
+  background-position:  10%;
+
 }
 
 
