@@ -1,55 +1,28 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-min-height: calc(100vh - 108px);
-display: grid;
-width: 100%;
-grid-template-columns: 1fr 1fr;
+
+
+background-image: url('images/bgGeral.jpg');
+background-repeat:'no-repeat';
+background-size:cover;
+background-position:  70%;
+position:absolute;
+width:100vw;
+left:0;
+height:100vh;
+
 
 @media(max-width:768px){
 }
 
 
-.invisibleButton{
-  @media(max-width:768px){
-    display: none;
-  }
 
-}
-
-.visibleButton{
-    margin-top: 60px;
-    display: none;
-
-    @media(max-width:768px){
-      display: block;
-    }
-  }
-
-@media(max-width:768px){
-  grid-template-columns: 1fr;
-}
 
 
 align-items:center;
-padding: 64px 10px;
 
-section{
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 
-  h1{
-    font-weight: 800;
-    font-size: 30px;
-    line-height: 40px;
-
-    @media(max-width:768px){
-      text-align: center;
-      font-size:24px;
-    }
-  }
-}
 
 aside{
   height: 100%;
@@ -58,10 +31,68 @@ aside{
   justify-content: flex-end;
 }
 
-@media(max-width:768px){
-  min-height: calc(100vh - 60px);
-}
 
+`
+
+export const Content = styled.main`
+  max-width: 1024px;
+  margin:  50px auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+
+  height: calc(100vh - 253px);
+  position: relative;
+
+
+  @media(max-width:720px){
+    grid-template-columns:  1fr;
+    padding: 0 20px;
+    height: calc(100vh - 139px);
+
+    .containerRoullete{
+      position: absolute;
+      top: 20%;
+      left: 17%;
+    }
+
+  }
+
+  section{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+
+
+
+  h1{
+    font-weight: 600;
+    font-size: 46px;
+    line-height: 66px;
+    text-align: center;
+    background: -webkit-linear-gradient(#FAFF00, #E8A700);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    a{
+      font-size: 66px;
+    font-weight: 800;
+
+    }
+
+    @media(max-width:720px){
+      text-align: center;
+      font-size:34px;
+    line-height: 44px;
+
+
+      a{
+        font-size: 44px;
+      }
+    }
+  }
+}
 `
 
 export const ContainerImage = styled.div`

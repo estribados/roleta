@@ -1,3 +1,4 @@
+import { useWin } from 'hooks/useWin';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import { Wheel } from 'react-custom-roulette';
@@ -20,21 +21,29 @@ setStopRoullet?(value:boolean):void
 }
 
 const Roullete:React.FC<RoulleteProps> = ({data, setStopRoullet}) =>{
+  const {isWin,activeWin} = useWin()
 
   const [mustSpin, setMustSpin] = useState(false);
-  const [prizeNumber, setPrizeNumber] = useState(0);
-
-  useEffect(() =>{
-    if(setStopRoullet){
-      setStopRoullet(mustSpin)
-    }
-  },[mustSpin, setStopRoullet])
+  const [prizeNumber, setPrizeNumber] = useState<number>();
 
   const handleSpinClick = () => {
     const newPrizeNumber = Math.floor(Math.random() * data.length)
     setPrizeNumber(newPrizeNumber)
     setMustSpin(true)
   }
+
+  useEffect(() =>{
+    if(prizeNumber){
+      const timer = setTimeout(() => {
+        activeWin(true)
+      }, 11000);
+
+      const timer2 = setTimeout(() => {
+        activeWin(false)
+      }, 14000);
+    }
+  },[activeWin, prizeNumber])
+
   const formatCurrencyData = currencyFormat(data)
 
   return(
@@ -42,12 +51,11 @@ const Roullete:React.FC<RoulleteProps> = ({data, setStopRoullet}) =>{
       <RoulleteContainer>
         <Wheel
           mustStartSpinning={mustSpin}
-          prizeNumber={prizeNumber}
+          prizeNumber={prizeNumber || 0}
           spinDuration={1}
           outerBorderColor='linear-gradient(0deg, rgba(229,189,49,1) 7%, rgba(242,222,56,1) 30%, rgba(254,255,63,1) 86%)'
           outerBorderWidth={0}
-          fontSize={20}
-          
+          fontSize={14}
           data={formatCurrencyData}
           onStopSpinning={() => {
             setMustSpin(false)

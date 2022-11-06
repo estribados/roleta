@@ -18,8 +18,10 @@ export const RoulleteContainer = styled.div`
 
 
 &::after{
-  background-image: url('images/bgRoletatextura.jpg');
   background-size: contain;
+  background: rgb(255,221,0);
+  background: radial-gradient(circle, rgba(255,221,0,1) 65%, rgba(209,184,20,0.8522759445575105) 70%);
+  background-size: cover;
   content: '';
   border-radius: 50%;
   width: 105%;
@@ -99,8 +101,8 @@ export const Arrow = styled.div`
   transform: rotate(139deg);
   z-index: 999;
   position: absolute;
-  right: 20px;
-  top: 30px;
+  right: 25px;
+  top: 27px;
   filter: drop-shadow(5px 5px 10px #E5BD31);
 
   @media(max-width:768px){
