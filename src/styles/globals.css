@@ -30,7 +30,6 @@ button{
 
 
 @media(max-width:768px){
-  :root{font-size: 62.5%;}
 
   .bhdLno{
     margin: 0 auto;

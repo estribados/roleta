@@ -19,12 +19,15 @@ export const Container = styled.button<ButtonProps>`
   cursor: pointer !important;
 
   font-weight: 800;
-  font-size: 24px;
   
   letter-spacing : 3px;
 
 
   transition: all 200ms;
+
+  svg{
+    margin-right: 0;
+  }
 
   ${ props => props.animation && 
     css`

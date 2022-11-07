@@ -46,7 +46,7 @@ const SignIn:React.FC = () =>{
         <Content>
           <AnimationContainer>
             <Form className='w-full' ref={formRef} onSubmit={handleSubmit}>
-              <div className='flex justify-between items-center'>
+              <div className='flex justify-between md:text-lg text-sm items-center'>
                 <h3>CADASTRO DE USUÁRIO</h3>
                   <BackButton path='Login'/>
               </div>

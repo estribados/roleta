@@ -33,7 +33,7 @@ export const Content = styled.div`
 const appearFromLeft = keyframes `
   from{
     opacity: 0;
-    transform: translateX(50px)
+    transform: translateX(-50px)
   }
   top{
     opacity: 1;
@@ -48,6 +48,7 @@ export const AnimationContainer = styled.div`
   justify-content: center;
   animation:${appearFromLeft} 1s;
   width: 100%;
+  overflow: hidden;
 
   max-width: 600px;
 

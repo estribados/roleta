@@ -46,11 +46,11 @@ const SignIn:React.FC = () =>{
 
         <Content>
           <AnimationContainer>
-            <div className="socialButtons w-full">
+            <div className="socialButtons text- w-full">
               <h5 className='mb-3'>Bem vindo(a)</h5>
                 <div className='gap-5 w-full flex'>
-                  <ButtonAnimated  style={{letterSpacing:'0',fontSize:'16px'}} ><><Google size={28} /> Entrar com o Google</></ButtonAnimated>
-                  <ButtonAnimated style={{letterSpacing:'0',fontSize:'16px'}}><><Facebook size={30}/>Entrar com o Facebook</></ButtonAnimated>
+                  <ButtonAnimated textSize='text-xs'  style={{letterSpacing:'0'}} ><><Google size={28} /> Entrar com o Google</></ButtonAnimated>
+                  <ButtonAnimated textSize='text-xs' style={{letterSpacing:'0'}}><><Facebook size={30}/>Entrar com o Facebook</></ButtonAnimated>
                 </div>
             </div>
 

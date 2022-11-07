@@ -14,6 +14,8 @@ export const Content = styled.div`
   justify-content: center;
   width: 100%;
   max-width: 700px;
+  overflow: hidden;
+
 
 
   .socialButtons{
@@ -33,11 +35,15 @@ export const Content = styled.div`
 const appearFromLeft = keyframes `
   from{
     opacity: 0;
-    transform: translateX(50px)
+    transform: translateX(50px);
+  overflow: hidden;
+
   }
   top{
     opacity: 1;
-    transform: translateX(0)
+    transform: translateX(0);
+  overflow: hidden;
+
   }
 `
 
@@ -48,6 +54,8 @@ export const AnimationContainer = styled.div`
   justify-content: center;
   animation:${appearFromLeft} 1s;
   width: 100%;
+  overflow: hidden;
+
 
   max-width: 600px;
 
