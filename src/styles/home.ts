@@ -49,7 +49,6 @@ export const Content = styled.main`
       top: 20%;
       left: 17%;
     }
-
   }
 
   section{

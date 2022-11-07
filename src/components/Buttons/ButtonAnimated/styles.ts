@@ -1,8 +1,11 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
-export const Container = styled.button`
+interface ButtonProps{
+  animation?:boolean
+}
 
-  width: 100%;
+export const Container = styled.button<ButtonProps>`
+
 
   display: flex;
   align-items: center;
@@ -14,20 +17,27 @@ export const Container = styled.button`
   box-shadow: 0px 4px 4px rgba(229, 189, 49, 0.5);
   border-radius: 8px;
   cursor: pointer !important;
-  animation: pulse-button 0.4s   infinite;
-  animation-direction: alternate;
-  -webkit-animation-name: pulse-button;
-  animation-name: pulse-button;
+
   font-weight: 800;
   font-size: 24px;
   
   letter-spacing : 3px;
 
-  &:hover{
-  animation: pulse-button 0.4s   none;
 
+  transition: all 200ms;
+
+  ${ props => props.animation && 
+    css`
+      animation: pulse-button 0.4s   infinite;
+      animation-direction: alternate;
+      -webkit-animation-name: pulse-button;
+      animation-name: pulse-button;
+    `
+  }
+
+  &:hover{
+    animation: pulse-button 0.4s   pause;
     filter: drop-shadow(0px 0px 10px rgba(229, 189, 49, 5));
-    
     border: solid rgba(229, 189, 49) 5px;
   }
 

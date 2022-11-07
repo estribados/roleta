@@ -1,11 +1,10 @@
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
+import { useRef } from 'react';
 
 import { ButtonAnimated } from 'components/Buttons';
 import Header from 'components/Header';
 import { Container, Content } from 'styles/home';
 import { staticData } from 'utils/staticRoullete';
-
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('../components/Roullete'),
@@ -13,7 +12,7 @@ const DynamicComponentWithNoSSR = dynamic(
 )
 
 export default function Home() {
-  const [stopRoullete,setStopRoullet] = useState(false)
+  const audioRef = useRef(null)
 
   return (
       <Container>
@@ -24,14 +23,13 @@ export default function Home() {
               <DynamicComponentWithNoSSR data={staticData}/>
             </div>
           </div>
-
           <section className=''>
             <h1>Começe a ganhar <br/>
               <a href="">
                 AGORA !
               </a> 
             </h1>
-            <ButtonAnimated />
+            <ButtonAnimated  animation >COMPRAR CREDITOS</ButtonAnimated>
           </section>
         </Content>
       </Container>

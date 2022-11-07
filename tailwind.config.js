@@ -10,7 +10,7 @@ module.exports = {
       },
       boxShadow: {
         'soft-shadow': '0px 10px 15px -3 rgba(0, 0, 0, 0.25);',
-        'header':'0 4px 15px -3px yellow'
+        'header':'0 4px 15px -3px gold'
       },
     
       colors:{

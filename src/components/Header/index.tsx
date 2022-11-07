@@ -1,5 +1,6 @@
 import { MenuAlt2Icon } from '@heroicons/react/outline';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import ButtonGoldOutLined from '../Buttons/ButtonGold';
 
@@ -24,10 +25,19 @@ type Props = {
 const Header:React.FC<Props> = ({}) =>{
   return (
     <>
-      <div className="px-5 h-24   sticky  z-10 flex-shrink-0 flex shadow-header  bg-[rgba(0,0,0,0.5)]  ">
+      <div className="px-5 h-20   sticky  z-10 flex-shrink-0 flex shadow-header  bg-[rgba(0,0,0,0.5)]  ">
         <div className=' items-center max-w-5xl  mx-auto flex w-full justify-between'>
-          <Image className='' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
-          <ButtonGoldOutLined title='Entrar'/>
+        <Link legacyBehavior href="/">
+
+          <Image className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
+          </Link>
+
+          <Link legacyBehavior href="Login">
+            <a>
+              <ButtonGoldOutLined  title='Entrar'/>
+            </a>
+          </Link>
+     
         </div>
       </div>
     </>

@@ -1,5 +1,6 @@
 import React from 'react';
 import Lottie from 'react-lottie';
+
 import * as animationData from '../../../public/lotties/congratulations.json';
 
 interface WinProps{
@@ -9,9 +10,9 @@ interface WinProps{
 import { Container } from './styles';
 const Win:React.FC<WinProps> = ({isWin}) =>{
 
+
   return(
     <Container {...(!isWin && {style:{display:'none'}})}>
-
       {isWin &&
 
       <Lottie 
