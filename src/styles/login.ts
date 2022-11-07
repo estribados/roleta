@@ -21,7 +21,7 @@ export const Content = styled.div`
       display: flex;
 
       svg{
-        margin-right: 20px;
+        margin-right: 8px;
       }
     }
   }
