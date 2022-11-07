@@ -40,7 +40,7 @@ export const Container = styled.div<ContainerProps>`
     background: #fff !important;
     display: flex;
     color: #c3c3c3;
-
+    width:100%;
     border:none !important;
     outline:none
 
