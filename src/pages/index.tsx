@@ -29,7 +29,7 @@ export default function Home() {
                 AGORA !
               </a> 
             </h1>
-            <div className='mb-12 md:mb-0'>
+            <div className='mb-14 md:mb-0'>
     
             <ButtonAnimated  animation >COMPRAR CREDITOS</ButtonAnimated>
             </div>
