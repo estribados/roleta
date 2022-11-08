@@ -21,7 +21,7 @@ aside{
 }
 
 @media(max-width:720px){
-  background-position:  10%;
+  background-position:  30%;
 
 }
 
