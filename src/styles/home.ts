@@ -3,7 +3,7 @@ import styled from 'styled-components'
 export const Container = styled.div`
 
 
-background-image: url('images/bgGeral.jpg');
+background-image: url('images/caverna-home.webp');
 background-repeat:no-repeat;
 background-size:cover;
 background-position:  70%;

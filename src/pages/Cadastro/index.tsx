@@ -7,12 +7,8 @@ import * as Yup from 'yup';
 import { BackButton, ButtonAnimated } from 'components/Buttons';
 import { Input } from 'components/Form';
 import Header from 'components/Header';
-import { AnimationContainer, Background, Container, ContainerBg, Content } from 'styles/signUp';
+import { AnimationContainer, Container, ContainerBg, Content } from 'styles/signUp';
 import getValidationErrors from 'utils/getValidationErros';
-
-
-
-
 
 const SignIn:React.FC = () =>{
 
@@ -40,31 +36,38 @@ const SignIn:React.FC = () =>{
     <ContainerBg>
       <Header/>
       <Container>
-
-        <Content>
-          <AnimationContainer>
+        <Content className='mx-5'>
+          <AnimationContainer className=' glass px-5 py-2 rounded-lg'>
             <Form className='w-full' ref={formRef} onSubmit={handleSubmit}>
               <div className='flex justify-between md:text-lg text-sm items-center'>
-                <h3>CADASTRO DE USUÁRIO</h3>
+                <h3 className='text-gold100 font-bold'>CADASTRO DE USUÁRIO</h3>
                   <BackButton path='Login'/>
               </div>
               <label htmlFor="email">
-                Nome
+                <p className='text-gray-300 font-bold'>
+                  Nome
+                </p>
                 <Input id='email' name="email" icon={FiUser} type="text"  placeholder="Digite seu nome" />
               </label>
 
               <label htmlFor="email">
-                Telefone
+                <p className='text-gray-300 font-bold'>
+                  Telefone
+                </p>
                 <Input id='email' name="email" icon={FiPhone}  placeholder="Digite seu numero" />
               </label>
 
               <label htmlFor="email">
+              <p className='text-gray-500 font-bold'>
                 Email
+              </p>
                 <Input id='email' name="email" icon={FiMail} type="email"  placeholder="Digite um email valido" />
               </label>
 
               <label htmlFor="password">
+              <p className='text-gray-500 font-bold'>
                 Senha
+              </p>
                 <Input id='password' name="password" icon={FiLock} placeholder="A senha deve conter até 6 digitos" type="password" />
               </label>
 
@@ -74,11 +77,7 @@ const SignIn:React.FC = () =>{
             </Form>
           </AnimationContainer>
         </Content>
-        <Background>
-
-        </Background>
-
-    </Container>
+      </Container>
     </ContainerBg>
   )
 }

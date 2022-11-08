@@ -1,5 +1,7 @@
 import { FormHandles } from '@unform/core';
 import { Form } from "@unform/web";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import React, { useCallback, useRef } from 'react';
 import { FiLock, FiMail } from 'react-icons/fi';
 import * as Yup from 'yup';
@@ -8,11 +10,8 @@ import { ButtonAnimated } from 'components/Buttons';
 import { Input } from 'components/Form';
 import Header from 'components/Header';
 import { Facebook, Google } from 'components/Icons';
-import Link from 'next/link';
-import { useRouter } from 'next/router';
 import { AnimationContainer, Container, ContainerBg, Content } from 'styles/login';
 import getValidationErrors from 'utils/getValidationErros';
-
 
 const SignIn:React.FC = () =>{
   const router = useRouter()
@@ -36,21 +35,15 @@ const SignIn:React.FC = () =>{
     }
   },[])
 
-  const navigation = () =>{
-    alert('oi')
-  }
-
-
   return(
     <ContainerBg>
       <Header/>
       <Container>
-
-        <Content>
-          <AnimationContainer>
+        <Content className='mx-5'>
+          <AnimationContainer className='mx-5 glass px-5 py-2 rounded-lg'>
             <div className="socialButtons text- w-full">
-              <h5 className='mb-3'>Bem-Vindo(a)</h5>
-                <div className='gap-5 w-full flex'>
+              <h5 className='mb-3 mt-3 l'>Bem-Vindo(a)</h5>
+                <div className='gap-5 w-full flex flex-col md:flex-row'>
                   <ButtonAnimated textSize='text-xs'  style={{letterSpacing:'0'}} ><><Google size={28} /> Entrar com o Google</></ButtonAnimated>
                   <ButtonAnimated textSize='text-xs' style={{letterSpacing:'0'}}><><Facebook size={30}/>Entrar com o Facebook</></ButtonAnimated>
                 </div>
@@ -60,12 +53,16 @@ const SignIn:React.FC = () =>{
 
             <Form className='w-full' ref={formRef} onSubmit={handleSubmit}>
               <label htmlFor="email">
+              <p className='text-gray-300 font-bold'>
                 Email
+              </p>
                 <Input id='email' name="email" icon={FiMail}  placeholder="E-mail" />
               </label>
 
               <label htmlFor="password">
+              <p className='text-gray-500 font-bold'>
                 Senha
+              </p>
                 <Input id='password' name="password" icon={FiLock} placeholder="Senha" type="password" />
               </label>
 
@@ -84,7 +81,6 @@ const SignIn:React.FC = () =>{
             </Form>
           </AnimationContainer>
         </Content>
-
     </Container>
     </ContainerBg>
   )

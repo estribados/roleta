@@ -4,7 +4,8 @@ import styled, { keyframes } from 'styled-components'
 export const Container = styled.div`
   height: calc(100vh - 90px);
   display: flex;
-  align-items:stretch;
+  align-items: center;
+  justify-content: center;
 `
 
 export const Content = styled.div`
@@ -50,8 +51,7 @@ export const AnimationContainer = styled.div`
   width: 100%;
   overflow: hidden;
 
-  max-width: 600px;
-
+  max-width: 500px;
 
   @media(max-width:720px){
     padding:0 20px ;
@@ -141,7 +141,7 @@ export const Background = styled.div`
 `
 
 export const ContainerBg = styled.div`
-  background-image: url('images/bgLoginSingUp.png');
+  background-image: url('images/caverna-tesouro.webp');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 50% 70%;
