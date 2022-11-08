@@ -140,3 +140,11 @@ export const Background = styled.div`
 
 `
 
+export const ContainerBg = styled.div`
+  background-image: url('images/bgLoginSingUp.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 70%;
+
+`
+

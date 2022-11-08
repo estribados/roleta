@@ -55,6 +55,7 @@ export const AnimationContainer = styled.div`
   animation:${appearFromLeft} 1s;
   width: 100%;
   overflow: hidden;
+  margin: 20px 0;
 
 
   max-width: 600px;
@@ -146,4 +147,13 @@ export const Background = styled.div`
   position: relative;
 
 `
+
+export const ContainerBg = styled.div`
+  background-image: url('images/bgLoginSingUp.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 70%;
+
+`
+
 

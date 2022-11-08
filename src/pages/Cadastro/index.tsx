@@ -7,13 +7,11 @@ import * as Yup from 'yup';
 import { BackButton, ButtonAnimated } from 'components/Buttons';
 import { Input } from 'components/Form';
 import Header from 'components/Header';
-import { AnimationContainer, Background, Container, Content } from 'styles/signUp';
+import { AnimationContainer, Background, Container, ContainerBg, Content } from 'styles/signUp';
 import getValidationErrors from 'utils/getValidationErros';
 
-import Lottie from 'react-lottie';
 
 
-import * as animationData from '../../../public/lotties/singUp.json';
 
 
 const SignIn:React.FC = () =>{
@@ -39,7 +37,7 @@ const SignIn:React.FC = () =>{
 
 
   return(
-    <>
+    <ContainerBg>
       <Header/>
       <Container>
 
@@ -52,22 +50,22 @@ const SignIn:React.FC = () =>{
               </div>
               <label htmlFor="email">
                 Nome
-                <Input id='email' name="email" icon={FiUser}  placeholder="E-mail" />
+                <Input id='email' name="email" icon={FiUser} type="text"  placeholder="Digite seu nome" />
               </label>
 
               <label htmlFor="email">
                 Telefone
-                <Input id='email' name="email" icon={FiPhone}  placeholder="E-mail" />
+                <Input id='email' name="email" icon={FiPhone}  placeholder="Digite seu numero" />
               </label>
 
               <label htmlFor="email">
                 Email
-                <Input id='email' name="email" icon={FiMail}  placeholder="E-mail" />
+                <Input id='email' name="email" icon={FiMail} type="email"  placeholder="Digite um email valido" />
               </label>
 
               <label htmlFor="password">
                 Senha
-                <Input id='password' name="password" icon={FiLock} placeholder="Senha" type="password" />
+                <Input id='password' name="password" icon={FiLock} placeholder="A senha deve conter até 6 digitos" type="password" />
               </label>
 
               <div className='mt-5 w-full'>
@@ -78,26 +76,10 @@ const SignIn:React.FC = () =>{
         </Content>
         <Background>
 
-        <Lottie 
-          style={{maxWidth:'500px',}}
-          height={"80%"}
-          isClickToPauseDisabled 
-          options={{
-            loop: false,
-            autoplay: true, 
-            animationData: animationData,
-            rendererSettings: {
-              preserveAspectRatio: 'xMidYMid slice'
-            }
-          }} 
-          isStopped={false} 
-          isPaused={false}
-          />
-
         </Background>
 
     </Container>
-    </>
+    </ContainerBg>
   )
 }
 export default SignIn

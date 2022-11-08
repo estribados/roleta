@@ -1,6 +1,6 @@
 import React, { ButtonHTMLAttributes } from 'react'
 import Ripples from 'react-ripples'
-import { Container } from './styles'
+import { Container, ContainerAnimated } from './styles'
 
 interface ButtonProps extends  ButtonHTMLAttributes<HTMLButtonElement>{
   animation?:boolean
@@ -10,11 +10,13 @@ interface ButtonProps extends  ButtonHTMLAttributes<HTMLButtonElement>{
 
 const ButtonAnimated:React.FC<ButtonProps> = ({animation,textSize,children, ...rest}) =>{
   return(
-    <Container  className='flex items-center justify-center w-full   text-white' {...rest} animation ={animation}>
+    <ContainerAnimated animation ={animation}>
       <Ripples during={900}  className={`flex items-center  justify-center h-full w-full ${textSize}`} >
-      {children}
+        <Container  className='flex items-center justify-center w-full   text-white' {...rest} >
+          {children}
+        </Container>
       </Ripples>
-    </Container>
+    </ContainerAnimated>
   )
 }
 export { ButtonAnimated }

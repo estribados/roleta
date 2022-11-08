@@ -9,12 +9,13 @@ import { Input } from 'components/Form';
 import Header from 'components/Header';
 import { Facebook, Google } from 'components/Icons';
 import Link from 'next/link';
-import { AnimationContainer, Background, Container, Content } from 'styles/login';
+import { useRouter } from 'next/router';
+import { AnimationContainer, Container, ContainerBg, Content } from 'styles/login';
 import getValidationErrors from 'utils/getValidationErros';
 
 
 const SignIn:React.FC = () =>{
-
+  const router = useRouter()
   const formRef= useRef<FormHandles>(null)
 
   const handleSubmit= useCallback(async(data:any) =>{
@@ -35,19 +36,20 @@ const SignIn:React.FC = () =>{
     }
   },[])
 
+  const navigation = () =>{
+    alert('oi')
+  }
+
 
   return(
-    <>
+    <ContainerBg>
       <Header/>
       <Container>
-
-        <Background>
-        </Background>
 
         <Content>
           <AnimationContainer>
             <div className="socialButtons text- w-full">
-              <h5 className='mb-3'>Bem vindo(a)</h5>
+              <h5 className='mb-3'>Bem-Vindo(a)</h5>
                 <div className='gap-5 w-full flex'>
                   <ButtonAnimated textSize='text-xs'  style={{letterSpacing:'0'}} ><><Google size={28} /> Entrar com o Google</></ButtonAnimated>
                   <ButtonAnimated textSize='text-xs' style={{letterSpacing:'0'}}><><Facebook size={30}/>Entrar com o Facebook</></ButtonAnimated>
@@ -68,14 +70,14 @@ const SignIn:React.FC = () =>{
               </label>
 
               <div className='mt-5 w-full'>
-                <span className='cursor-pointer text-blue-500 mb-2 block text-sm w-full text-right'>Esqueceu a senha?</span>
-                <ButtonAnimated  type='submit' ><> Fazer Login</></ButtonAnimated>
+                <span className='cursor-pointer text-blue-500 mb-2 block text-sm w-full text-right font-bold'>Esqueceu a senha?</span>
+                  <ButtonAnimated onClick={() => router.push('/Roleta')} ><> Fazer Login</></ButtonAnimated>
 
-                <p className='mt-2 block text-sm w-full text-left'>Voce não tem conta ? 
+                <p className='mt-2 block text-sm w-full text-left '>Voce não tem conta ? 
                   <Link legacyBehavior href="Cadastro">
-                  <a>
-                    <span className='cursor-pointer text-blue-500 text-sm'>Cadastro</span>
-                  </a>
+                    <a>
+                      <span className='font-bold cursor-pointer text-blue-500 text-sm'>Cadastro</span>
+                    </a>
                   </Link>
                 </p>
               </div>
@@ -84,7 +86,7 @@ const SignIn:React.FC = () =>{
         </Content>
 
     </Container>
-    </>
+    </ContainerBg>
   )
 }
 export default SignIn

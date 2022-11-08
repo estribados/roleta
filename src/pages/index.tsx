@@ -30,8 +30,7 @@ export default function Home() {
               </a> 
             </h1>
             <div className='mb-14 md:mb-0'>
-    
-            <ButtonAnimated  animation >COMPRAR CREDITOS</ButtonAnimated>
+              <ButtonAnimated  animation >COMPRAR CREDITOS</ButtonAnimated>
             </div>
           </section>
         </Content>

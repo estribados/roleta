@@ -4,7 +4,7 @@ export const Container = styled.div`
 
 
 background-image: url('images/bgGeral.jpg');
-background-repeat:'no-repeat';
+background-repeat:no-repeat;
 background-size:cover;
 background-position:  70%;
 position:absolute;
