@@ -43,35 +43,21 @@ export const Content = styled.main`
   @media(max-height:916px){
   .responsive-container{
     bottom: 75px !important;
-
-  }
-}
-
-
-  @media(max-height:740px){
-    grid-template-columns:  1fr;
-
-    height: calc(100vh - 113px);
-
-    .responsive-container{
-      bottom: 59px;
-
     }
   }
 
-
+  @media(max-height:740px){
+    grid-template-columns:  1fr;
+    height: calc(100vh - 113px);
+    .responsive-container{
+      bottom: 59px;
+    }
+  }
 
   @media(max-width:720px){
     grid-template-columns:  1fr;
     padding: 0 20px;
-
     margin:  20px auto;
-
-
-    .containerRoullete{
-
-
-    }
   }
 
   section{

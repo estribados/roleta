@@ -32,6 +32,10 @@ export const Container = styled.div`
       border-radius: 8px;
       transition: all 200ms;
 
+      @media(max-width:720px){
+        font-size: 18px;
+      }
+
       span{
         font-weight: 400;
         font-size: 12px;
@@ -40,6 +44,7 @@ export const Container = styled.div`
 
       &:hover{
         background-color: gold;
+        box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);
       }
     }
   }
