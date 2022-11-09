@@ -68,7 +68,7 @@ export const Content = styled.main`
 
   @media(min-width:720px){
 
-    margin-top: 50px;
+    margin-top: 80px;
   }
 
   h1{
