@@ -30,7 +30,7 @@ aside{
 
 export const Content = styled.main`
   max-width: 1024px;
-  margin:  50px auto;
+  margin:  35px auto;
 
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -39,18 +39,38 @@ export const Content = styled.main`
   position: relative;
   overflow: hidden;
 
+    
+  @media(max-height:916px){
+  .responsive-container{
+    bottom: 90px !important;
+
+  }
+}
+
+
+  @media(max-height:740px){
+    grid-template-columns:  1fr;
+
+    height: calc(100vh - 113px);
+
+    .responsive-container{
+      bottom: 59px;
+
+    }
+  }
+
+
 
   @media(max-width:720px){
     grid-template-columns:  1fr;
     padding: 0 20px;
 
-  margin:  20px auto;
+    margin:  20px auto;
 
 
     .containerRoullete{
-      position: absolute;
-      top: 20%;
-      left: 17%;
+
+
     }
   }
 
@@ -59,8 +79,6 @@ export const Content = styled.main`
   flex-direction: column;
   justify-content: space-between;
   height: 100%;
-
-
 
   h1{
     font-weight: 600;
@@ -80,11 +98,19 @@ export const Content = styled.main`
     @media(max-width:720px){
       text-align: center;
       font-size:24px;
-    line-height: 44px;
+      line-height: 44px;
 
 
       a{
         font-size: 44px;
+      }
+    }
+
+    @media(max-width:420px){
+      font-size:20px;
+
+      span{
+        font-size: 36px;
       }
     }
   }

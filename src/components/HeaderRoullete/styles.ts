@@ -5,6 +5,11 @@ export const Container = styled.div`
   max-width: 1024px;
   margin: 40px  auto 0 auto;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+
+  @media(max-height:740px){
+    display: none;
+  }
+
   nav{
   padding: 5px 25px;
   margin: 0 20px ;

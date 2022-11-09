@@ -21,9 +21,9 @@ export default function Roleta() {
         <HeaderRoullete/>
         <Content>
           <section className=''>
-            <div className=' mb-14 md:mb-0 justify-between md:h-full  flex flex-col'>
+            <div className='  mb-14 md:mb-0 justify-between md:h-full  flex flex-col'>
               <div>
-                <h1 className=''>SALDO DISPONIVEL <br/>  
+                <h1 className='saldo'>SALDO DISPONIVEL <br/>  
                   <span className='font-extrabold text-5xl block'>
                     {'R$ 1700.00'}
                   </span>
@@ -40,14 +40,14 @@ export default function Roleta() {
               
             </div>
           </section>
-          <div className='containerRoullete'>
-            <div className='fixed right-0 md:bottom-5  bottom-24 '>
-              <DynamicComponentWithNoSSR data={staticData}/>
+            <div className='containerRoullete'>
+              <div className='responsive-container absolute right-2 md:-right-4 md:bottom-1  bottom-24 '>
+                <DynamicComponentWithNoSSR data={staticData}/>
+              </div>
             </div>
-          </div>
 
           <div className='visible md:invisible text-2xl md:text-3xl mt-auto flex justify-center items-center w-full md:h-16 h-10 bg-black border-solid border-2 border-gold100 font-bold bg-opacity-60 rounded-md'>
-                  R$ 100,00
+            R$ 100,00
           </div>
           
         </Content>
