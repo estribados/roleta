@@ -48,7 +48,7 @@ export const Content = styled.main`
 
   @media(max-height:740px){
     grid-template-columns:  1fr;
-    height: calc(100vh - 113px);
+    height: calc(100vh - 133px);
     .responsive-container{
       bottom: 59px;
     }

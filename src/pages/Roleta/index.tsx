@@ -20,7 +20,7 @@ export default function Roleta() {
         <Header/>
         <HeaderRoullete/>
         <Content>
-          <section className=''>
+          <section className='max-w-sm'>
             <div className='  mb-14 md:mb-0 justify-between md:h-full  flex flex-col'>
               <div>
                 <h1 className='saldo'>SALDO DISPONIVEL <br/>  
@@ -34,7 +34,7 @@ export default function Roleta() {
                   R$ 100,00
                 </div>
  
-              <div className=' mt-5'  >
+              <div className=' md:mt-5 mt-2'  >
                 <ButtonAnimated  animation >COMPRAR CREDITOS</ButtonAnimated>
               </div>
               

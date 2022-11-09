@@ -15,28 +15,28 @@ const HeaderRoullete:React.FC = () =>{
       </li>
 
       <li>
-        Prata
+        Ouro
         <span>
           R$ 1,00
         </span>
       </li>
 
       <li>
-        Prata
+        Rubi
         <span>
           R$ 1,00
         </span>
       </li>
 
       <li>
-        Prata
+        Esmeralda
         <span>
           R$ 1,00
         </span>
       </li>
 
       <li>
-        Prata
+        Diamante
         <span>
           R$ 1,00
         </span>
