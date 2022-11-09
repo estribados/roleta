@@ -42,7 +42,7 @@ export const Content = styled.main`
     
   @media(max-height:916px){
   .responsive-container{
-    bottom: 90px !important;
+    bottom: 75px !important;
 
   }
 }
