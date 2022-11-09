@@ -66,6 +66,11 @@ export const Content = styled.main`
   justify-content: space-between;
   height: 100%;
 
+  @media(min-width:720px){
+
+    margin-top: 50px;
+  }
+
   h1{
     font-weight: 600;
     font-size: 46px;
