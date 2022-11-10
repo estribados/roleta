@@ -1,19 +1,19 @@
 import { Transition } from '@headlessui/react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
-import { ButtonAnimated } from 'components/Buttons/ButtonAnimated';
-import Input from 'components/Form/Input';
-import { DefaultModal } from 'components/Modals/DefaultModal';
-import { useConfirm } from 'hooks/useConfirm';
-import { useToast } from 'hooks/useToast';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlineBank } from 'react-icons/ai';
 import { FiLock, FiMail, FiPhone, FiUser, FiX } from 'react-icons/fi';
-import getValidationErrors from 'utils/getValidationErros';
 import * as Yup from 'yup';
 
+import { ButtonAnimated } from 'components/Buttons/ButtonAnimated';
+import Input from 'components/Form/Input';
+import { DefaultModal } from 'components/Modals/DefaultModal';
+import { useConfirm } from 'hooks/useConfirm';
+import { useToast } from 'hooks/useToast';
+import getValidationErrors from 'utils/getValidationErros';
 
 import ButtonGoldOutLined from '../Buttons/ButtonGold';
 import { ContainerLabel, Label } from './styles';
@@ -109,7 +109,7 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
                   <p className='text-gray-300 font-bold'>
                     Senha
                   </p>
-                  <Input id='password' name="password" icon={FiLock} type="text"  placeholder="A senha deve conter 6 digitos" />
+                  <Input id='password' name="password" icon={FiLock} type="text"  placeholder="Minimo 6 digitos" />
                 </Label>
               </ContainerLabel>
 

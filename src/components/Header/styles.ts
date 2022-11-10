@@ -30,4 +30,10 @@ export const ContainerLabel = styled.div`
 display: flex;
 align-items: center;
 gap: 20px;
+
+
+@media(max-width:720px){
+  flex-direction: column;
+}
+
 `
