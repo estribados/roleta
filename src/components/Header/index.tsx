@@ -1,37 +1,156 @@
 import { Transition } from '@headlessui/react';
-import { MenuAlt2Icon } from '@heroicons/react/outline';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Fragment, useEffect, useState } from 'react';
-
+import { FormHandles } from '@unform/core';
+import { Form } from '@unform/web';
+import { ButtonAnimated } from 'components/Buttons/ButtonAnimated';
+import Input from 'components/Form/Input';
+import { DefaultModal } from 'components/Modals/DefaultModal';
 import { useConfirm } from 'hooks/useConfirm';
 import { useToast } from 'hooks/useToast';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { AiOutlineBank } from 'react-icons/ai';
+import { FiLock, FiMail, FiPhone, FiUser, FiX } from 'react-icons/fi';
+import getValidationErrors from 'utils/getValidationErros';
+import * as Yup from 'yup';
+
 
 import ButtonGoldOutLined from '../Buttons/ButtonGold';
+import { ContainerLabel, Label } from './styles';
 
-const navigation = [
-  { name: 'EMPRESAS', href: '/companies', icon:MenuAlt2Icon , current: true },
-  { name: 'TEMPLATE', href: '/templates', icon:MenuAlt2Icon , current: false },
-  {
-    name: 'GERENCIAR USUÁRIOS',
-    href: '/users',
-    icon: MenuAlt2Icon,
-    current: false,
-  },
-];
+interface ModalProps{
+  openModal(value:boolean):void
+  hasOpen:boolean
+}
 
-function classNames(...classes: any[]):any {
-  return classes.filter(Boolean).join(' ');
+interface DataProps{
+  name:string
+  sobrenome:string
+  telephone:string
+  password:string
+  email:string
+  pix:string
+  bank:string
+}
+
+const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
+  console.log(hasOpen)
+
+  const formRef= useRef<FormHandles>(null)
+
+  const handleSubmit= useCallback(async(data:DataProps) =>{
+    try{
+
+      formRef.current?.setErrors({});
+
+     
+    }catch(err){
+      if(err instanceof Yup.ValidationError){
+        const errors = getValidationErrors(err)
+        formRef.current?.setErrors(errors);
+
+        return
+      }
+      
+    }
+  },[])
+
+
+
+  return(
+    <DefaultModal
+        width="100%"
+        margin="auto 0"
+        isOpen={hasOpen}
+        setIsOpen={() =>{openModal(true)}}
+        content={
+          <div>
+            <header className='flex w-full justify-between items-center text-black mb-5'>
+              MEUS DADOS
+              <FiX cursor={'pointer'} onClick={() =>{openModal(false)}}/>
+            </header>
+
+            <Form className='w-full' ref={formRef} onSubmit={handleSubmit}>
+              <h4 className=' w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[220px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 mb-5'>Dados Pessoais</h4>
+              <ContainerLabel >
+                <Label htmlFor="nome">
+                  <p className='text-gray-300 font-bold'>
+                    Nome
+                  </p>
+                  <Input id='nome' name="nome" icon={FiUser} type="text"  placeholder="Primeiro nome" />
+                </Label>
+
+                <Label htmlFor="sobrenome">
+                  <p className='text-gray-300 font-bold'>
+                    Sobrenome
+                  </p>
+                  <Input id='sobrenome' name="sobrenome" icon={FiUser} type="text"  placeholder="Segundo nome" />
+                </Label>
+
+                <Label htmlFor="telefone">
+                  <p className='text-gray-300 font-bold'>
+                    Telefone
+                  </p>
+                  <Input id='telefone' name="telefone" icon={FiPhone} type="text"  placeholder="WhatsApp" />
+                </Label>
+              </ContainerLabel>
+
+              <h4 className='w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[200px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 my-5'>Dados de Acesso</h4>
+              
+              <ContainerLabel>
+                <Label htmlFor="email">
+                  <p className='text-gray-300 font-bold'>
+                    Email
+                  </p>
+                  <Input id='email' name="email" icon={FiMail} type="text"  placeholder="Digite um email valido" />
+                </Label>
+
+                <Label htmlFor="password">
+                  <p className='text-gray-300 font-bold'>
+                    Senha
+                  </p>
+                  <Input id='password' name="password" icon={FiLock} type="text"  placeholder="A senha deve conter 6 digitos" />
+                </Label>
+              </ContainerLabel>
+
+              <h4 className='w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[170px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 my-5'>Dados de Bancarios</h4>
+
+              <ContainerLabel>
+                <Label htmlFor="pix">
+                  <p className='text-gray-300 font-bold'>
+                    Pix
+                  </p>
+                  <Input id='pix' name="pix" icon={AiOutlineBank} type="text"  placeholder="Pix para deposito" />
+                </Label>
+
+                <Label htmlFor="bank">
+                  <p className='text-gray-300 font-bold'>
+                    Banco
+                  </p>
+                  <Input id='bank' name="bank" icon={AiOutlineBank} type="text"  placeholder="Banco do pix" />
+                </Label>
+              </ContainerLabel>
+              <div className='mt-5'>
+                <ButtonAnimated   animation={false} type='submit'>ATUALIZAR DADOS</ButtonAnimated>
+              </div>
+            </Form>
+          </div>
+        }
+      />
+  )
 }
 
 type Props = {
   children?: React.ReactNode; // 👈️ type children
 };
+
 const Header:React.FC<Props> = ({}) =>{
   const {confirm,confirmation} = useConfirm()
   const {notify} = useToast()
   const [toogle,setToogle] = useState(false)
+  const [updateOn,setUpdateOn] = useState(false)
   const user = true
+
 
   useEffect(() =>{
     if(confirmation.hasConfirm){
@@ -78,8 +197,9 @@ const Header:React.FC<Props> = ({}) =>{
                 title:"RESGATAR PRÊMIO" ,
                 text:"Apos solicitar um valor ele estara disponivel na conta registrada em ate 24 horas"
               })}>
-                <a className='text-gold100'>Resgatar Saldo</a></li> 
-              <li>
+                <a className='text-gold100'>Resgatar Saldo</a>
+              </li> 
+              <li onClick={() =>{setUpdateOn(true)}}>
                 <a className='text-gold100'>Atualizar Perfil</a>
               </li>
               <li>
@@ -102,6 +222,7 @@ const Header:React.FC<Props> = ({}) =>{
         }
         </div>
       </div>
+      <Modal openModal={setUpdateOn} hasOpen={updateOn} />
     </>
   );
 }
