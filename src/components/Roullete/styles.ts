@@ -99,7 +99,7 @@ p{
 
 export const Arrow = styled.div`
   transform: rotate(139deg);
-  z-index: 999;
+  z-index: 9;
   position: absolute;
   right: 25px;
   top: 27px;
