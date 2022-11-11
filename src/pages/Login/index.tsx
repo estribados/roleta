@@ -68,10 +68,10 @@ const SignIn:React.FC = () =>{
 
               <div className='mt-5 w-full'>
                 <span className='cursor-pointer text-blue-500 mb-2 block text-sm w-full text-right font-bold'>Esqueceu a senha?</span>
-                  <ButtonAnimated onClick={() => router.push('/Roleta')} ><> Fazer Login</></ButtonAnimated>
+                  <ButtonAnimated onClick={() => router.push('/roleta')} ><> Fazer Login</></ButtonAnimated>
 
                 <p className='mt-2 block text-sm w-full text-left '>Voce não tem conta ? 
-                  <Link legacyBehavior href="Cadastro">
+                  <Link legacyBehavior href="cadastro">
                     <a>
                       <span className='font-bold cursor-pointer text-blue-500 text-sm'>Cadastro</span>
                     </a>

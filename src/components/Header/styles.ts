@@ -20,6 +20,43 @@ form{
     background-color: red;
   }
 }
+
+.activeNavLink{
+  background: -webkit-linear-gradient(#eee, gold);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+}
+
+.activeNavLink::after{
+  content:"";
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  width:100%;
+  height: 4px;
+  margin-top: 5px;
+  border-radius: 20px;
+  background: -webkit-linear-gradient(#eee, gold);
+  -webkit-text-fill-color: transparent;
+  font-weight: bold;
+  animation-direction: normal;
+  animation: navlink 0.5s normal;
+  animation-direction: alternate;
+  -webkit-animation-name: navlink;
+  animation-name: navlink;
+
+}
+
+@keyframes navlink {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
 `
 
 export const Label = styled.label`

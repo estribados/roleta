@@ -49,13 +49,13 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
           <div className="mt-4 md:px-16 px-5 text-black">{text}</div>
             {hasInputValue && 
               <div className='mt-5'>
-                <label className='text-gray-500 font-bold  mt-5' htmlFor="valorDisponivel">Valor:</label>
+                <label className='text-gray-500 font-bold   mt-5' htmlFor="valorDisponivel">Valor:</label>
                 <input onChange={(e) =>{ 
                     confirm({
                       ...confirmation,
                       valueRescue:e.target.value
                     })
-                  }} id="valorDisponivel" type="text" placeholder={`Valor disponivel R$ 1200,00`} className="placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5" />
+                  }} id="valorDisponivel" type="text" placeholder={`Valor disponivel R$ 1200,00`} className="bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5" />
               </div>
             }
           </div>

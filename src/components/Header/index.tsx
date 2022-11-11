@@ -11,12 +11,13 @@ import * as Yup from 'yup';
 import { ButtonAnimated } from 'components/Buttons/ButtonAnimated';
 import Input from 'components/Form/Input';
 import { DefaultModal } from 'components/Modals/DefaultModal';
+import { NavLink } from 'components/NavLink';
 import { useConfirm } from 'hooks/useConfirm';
 import { useToast } from 'hooks/useToast';
 import getValidationErrors from 'utils/getValidationErros';
 
 import ButtonGoldOutLined from '../Buttons/ButtonGold';
-import { ContainerLabel, Label } from './styles';
+import { Container, ContainerLabel, Label } from './styles';
 
 interface ModalProps{
   openModal(value:boolean):void
@@ -34,7 +35,6 @@ interface DataProps{
 }
 
 const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
-  console.log(hasOpen)
 
   const formRef= useRef<FormHandles>(null)
 
@@ -54,8 +54,6 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
       
     }
   },[])
-
-
 
   return(
     <DefaultModal
@@ -111,6 +109,13 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
                   </p>
                   <Input id='password' name="password" icon={FiLock} type="text"  placeholder="Minimo 6 digitos" />
                 </Label>
+
+                <Label htmlFor="password">
+                  <p className='text-gray-300 font-bold'>
+                    Confirmação de Senha
+                  </p>
+                  <Input id='password' name="password" icon={FiLock} type="text"  placeholder="Repita sua senha" />
+                </Label>
               </ContainerLabel>
 
               <h4 className='w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[170px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 my-5'>Dados de Bancarios</h4>
@@ -150,6 +155,7 @@ const Header:React.FC<Props> = ({}) =>{
   const [toogle,setToogle] = useState(false)
   const [updateOn,setUpdateOn] = useState(false)
   const user = true
+  const admin = false
 
 
   useEffect(() =>{
@@ -164,12 +170,32 @@ const Header:React.FC<Props> = ({}) =>{
   },[confirmation.hasConfirm, notify])
 
   return (
-    <>
+    <Container>
       <div className="px-5 h-20   sticky  z-10 flex-shrink-0 flex shadow-header  bg-[rgba(0,0,0,0.5)]  ">
         <div className=' items-center max-w-5xl  mx-auto flex w-full justify-between'>
         <Link legacyBehavior href="/">
           <Image className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
-          </Link>
+        </Link>
+        
+          {admin &&
+            <div>
+              <nav>
+                <ul className=' mx-4 flex items-center'>
+                  <li className='relative'>
+                    <NavLink href="/usuarios"  activeClassName="activeNavLink">
+                      <a className='text-xs md:text-base'>USUARIOS</a>
+                    </NavLink>
+                  </li>
+                  <li className='ml-5 relative '>
+                    <NavLink href="/roletas"  activeClassName="activeNavLink">
+                      <a className='text-xs md:text-base'>ROLETAS</a>
+                    </NavLink>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          }
+
           {
           user ?
           <div  className="relative dropdown dropdown-end">
@@ -191,30 +217,35 @@ const Header:React.FC<Props> = ({}) =>{
               leaveTo="opacity-0"
             >
 
-            <ul  className={`${!toogle && 'hidden'} absolute right-0 menu  p-2 shadow bg-base-100 rounded-box text w-52 mt-4`}>
-           
-              <li onClick={() =>confirm({
-                title:"RESGATAR PRÊMIO" ,
-                text:"Apos solicitar um valor ele estara disponivel na conta registrada em ate 24 horas"
-              })}>
-                <a className='text-gold100'>Resgatar Saldo</a>
-              </li> 
-              <li onClick={() =>{setUpdateOn(true)}}>
-                <a className='text-gold100'>Atualizar Perfil</a>
-              </li>
-              <li>
-                <a className='flex items-center justify-center text-red-500 font-bold  bg-red-300'>Sair</a>
-              </li>
 
+            <ul style={{zIndex:999999}}  className={`${!toogle && 'hidden'} absolute z-50 right-0 menu  p-2 shadow bg-base-100 rounded-box text w-52 mt-4`}>
+              {!admin &&
+                <>
+                  <li onClick={() =>confirm({
+                    title:"RESGATAR PRÊMIO" ,
+                    text:"Apos solicitar um valor ele estara disponivel na conta registrada em ate 24 horas"
+                  })}>
+                    <a className='text-gold100'>Resgatar Saldo</a>
+                  </li> 
+                  <li onClick={() =>{setUpdateOn(true)}}>
+                    <a className='text-gold100'>Atualizar Perfil</a>
+                  </li>
+                </>
+                }
+
+                <li>
+                  <a className='flex items-center justify-center text-red-500 font-bold  bg-red-300'>Sair</a>
+                </li>
             </ul>
             
         </Transition.Child>
 
             </Transition.Root>
+
           </div>
           :
 
-          <Link legacyBehavior href="Login">
+          <Link legacyBehavior href="login">
             <a>
               <ButtonGoldOutLined  title='Entrar'/>
             </a>
@@ -223,7 +254,7 @@ const Header:React.FC<Props> = ({}) =>{
         </div>
       </div>
       <Modal openModal={setUpdateOn} hasOpen={updateOn} />
-    </>
+    </Container>
   );
 }
 export default Header
