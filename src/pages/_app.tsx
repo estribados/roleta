@@ -1,3 +1,4 @@
+import { AuthProvider } from 'hooks/useAuth';
 import { ConfirmProvider } from 'hooks/useConfirm';
 import { ToastProvider } from 'hooks/useToast';
 import { WinProvider } from 'hooks/useWin';
@@ -8,6 +9,7 @@ import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
+    <AuthProvider>
     <ToastProvider>
       <ConfirmProvider>
         <WinProvider>
@@ -16,6 +18,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         </WinProvider>
       </ConfirmProvider>
     </ToastProvider>
+    </AuthProvider>
 
   )
 }

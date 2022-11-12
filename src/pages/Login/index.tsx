@@ -10,12 +10,14 @@ import { ButtonAnimated } from 'components/Buttons';
 import { Input } from 'components/Form';
 import Header from 'components/Header';
 import { Facebook, Google } from 'components/Icons';
+import { useAuth } from 'hooks/useAuth';
 import { AnimationContainer, Container, ContainerBg, Content } from 'styles/login';
 import getValidationErrors from 'utils/getValidationErros';
 
 const SignIn:React.FC = () =>{
   const router = useRouter()
   const formRef= useRef<FormHandles>(null)
+  const {facebookAuth,googleAuth} = useAuth()
 
   const handleSubmit= useCallback(async(data:any) =>{
     try{
@@ -30,10 +32,10 @@ const SignIn:React.FC = () =>{
 
         return
       }
-      
-      
     }
   },[])
+
+  
 
   return(
     <ContainerBg>
@@ -44,8 +46,8 @@ const SignIn:React.FC = () =>{
             <div className="socialButtons text- w-full">
               <h5 className='mb-3 mt-3 l'>Bem-Vindo(a)</h5>
                 <div className='gap-5 w-full flex flex-col md:flex-row'>
-                  <ButtonAnimated textSize='text-xs'  style={{letterSpacing:'0'}} ><><Google size={28} /> Entrar com o Google</></ButtonAnimated>
-                  <ButtonAnimated textSize='text-xs' style={{letterSpacing:'0'}}><><Facebook size={30}/>Entrar com o Facebook</></ButtonAnimated>
+                  <ButtonAnimated onClick={googleAuth} textSize='text-xs'  style={{letterSpacing:'0'}} ><><Google size={28} /> Entrar com o Google</></ButtonAnimated>
+                  <ButtonAnimated onClick={facebookAuth} textSize='text-xs' style={{letterSpacing:'0'}}><><Facebook size={30}/>Entrar com o Facebook</></ButtonAnimated>
                 </div>
             </div>
 
