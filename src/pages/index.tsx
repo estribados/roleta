@@ -3,7 +3,6 @@ import { useRef } from 'react';
 
 import { ButtonAnimated } from 'components/Buttons';
 import Header from 'components/Header';
-import Link from 'next/link';
 import { Container, Content } from 'styles/home';
 import { staticData } from 'utils/staticRoullete';
 
@@ -32,9 +31,7 @@ export default function Home() {
             </h1>
             <div className='mb-14 md:mb-0'>
               <ButtonAnimated  animation >
-                <Link href={'login'}>
                 COMPRAR CREDITOS
-                </Link>
               </ButtonAnimated>
             </div>
           </section>
