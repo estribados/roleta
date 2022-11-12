@@ -155,7 +155,7 @@ const Header:React.FC<Props> = ({}) =>{
   const [toogle,setToogle] = useState(false)
   const [updateOn,setUpdateOn] = useState(false)
   const user = true
-  const admin = false
+  const admin = true
 
 
   useEffect(() =>{
@@ -219,8 +219,6 @@ const Header:React.FC<Props> = ({}) =>{
 
 
             <ul style={{zIndex:999999}}  className={`${!toogle && 'hidden'} absolute z-50 right-0 menu  p-2 shadow bg-base-100 rounded-box text w-52 mt-4`}>
-              {!admin &&
-                <>
                   <li onClick={() =>confirm({
                     title:"RESGATAR PRÊMIO" ,
                     text:"Apos solicitar um valor ele estara disponivel na conta registrada em ate 24 horas"
@@ -230,8 +228,6 @@ const Header:React.FC<Props> = ({}) =>{
                   <li onClick={() =>{setUpdateOn(true)}}>
                     <a className='text-gold100'>Atualizar Perfil</a>
                   </li>
-                </>
-                }
 
                 <li>
                   <a className='flex items-center justify-center text-red-500 font-bold  bg-red-300'>Sair</a>
