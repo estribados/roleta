@@ -17,19 +17,22 @@ export interface StyleType {
 
 interface RoulleteProps{
 data:Array<WheelData>
+disabled?:boolean
 setStopRoullet?(value:boolean):void
 }
 
-const Roullete:React.FC<RoulleteProps> = ({data, setStopRoullet}) =>{
+const Roullete:React.FC<RoulleteProps> = ({data,disabled = false, setStopRoullet}) =>{
   const {isWin,activeWin} = useWin()
 
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState<number>();
 
   const handleSpinClick = () => {
-    const newPrizeNumber = Math.floor(Math.random() * data.length)
-    setPrizeNumber(newPrizeNumber)
-    setMustSpin(true)
+    if(!disabled){
+      const newPrizeNumber = Math.floor(Math.random() * data.length)
+      setPrizeNumber(newPrizeNumber)
+      setMustSpin(true)
+    }
   }
 
   useEffect(() =>{
@@ -61,7 +64,7 @@ const Roullete:React.FC<RoulleteProps> = ({data, setStopRoullet}) =>{
             setMustSpin(false)
           }}
         />
-        <Spin active ={mustSpin} onClick={handleSpinClick}> 
+        <Spin disabled={disabled} active ={mustSpin} onClick={handleSpinClick}> 
           <p>
             Girar
           </p>
