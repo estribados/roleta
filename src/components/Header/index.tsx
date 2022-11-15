@@ -1,6 +1,7 @@
 import { Transition } from '@headlessui/react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
+import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
@@ -16,6 +17,7 @@ import { useConfirm } from 'hooks/useConfirm';
 import { useToast } from 'hooks/useToast';
 import getValidationErrors from 'utils/getValidationErros';
 
+import { useAuth } from 'hooks/useAuth';
 import ButtonGoldOutLined from '../Buttons/ButtonGold';
 import { Container, ContainerLabel, Label } from './styles';
 
@@ -40,10 +42,8 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
 
   const handleSubmit= useCallback(async(data:DataProps) =>{
     try{
-
       formRef.current?.setErrors({});
-
-     
+    
     }catch(err){
       if(err instanceof Yup.ValidationError){
         const errors = getValidationErrors(err)
@@ -152,11 +152,10 @@ type Props = {
 const Header:React.FC<Props> = ({}) =>{
   const {confirm,confirmation} = useConfirm()
   const {notify} = useToast()
+  const {user} = useAuth()
+  const {status} = useSession()
   const [toogle,setToogle] = useState(false)
   const [updateOn,setUpdateOn] = useState(false)
-  const user = true
-  const admin = true
-
 
   useEffect(() =>{
     if(confirmation.hasConfirm){
@@ -177,7 +176,7 @@ const Header:React.FC<Props> = ({}) =>{
           <Image className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
         </Link>
         
-          {admin &&
+          {user?.isAdmin &&
             <div>
               <nav>
                 <ul className=' mx-4 flex items-center'>
@@ -197,50 +196,45 @@ const Header:React.FC<Props> = ({}) =>{
           }
 
           {
-          user ?
+          status === 'authenticated' ?
           <div  className="relative dropdown dropdown-end">
             <label className="btn btn-circle swap swap-rotate">
-            <input onChange={(e) => setToogle(e.target.checked)} type="checkbox" />
-            <svg className="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/></svg>
-            
-            <svg className="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/></svg>
-            
-          </label>
-          <Transition.Root show={toogle} as={Fragment}>
-          <Transition.Child
-              as={Fragment}
-              enter="ease-out duration-500"
-              enterFrom="opacity-0"
-              enterTo="opacity-100"
-              leave="ease-in duration-500"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
+              <input onChange={(e) => setToogle(e.target.checked)} type="checkbox" />
+              <svg className="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/></svg>
+              <svg className="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/></svg>
+            </label>
+            <Transition.Root show={toogle} as={Fragment}>
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-500"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="ease-in duration-500"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
 
 
-            <ul style={{zIndex:999999}}  className={`${!toogle && 'hidden'} absolute z-50 right-0 menu  p-2 shadow bg-base-100 rounded-box text w-52 mt-4`}>
-                  <li onClick={() =>confirm({
-                    title:"RESGATAR PRÊMIO" ,
-                    text:"Apos solicitar um valor ele estara disponivel na conta registrada em ate 24 horas"
-                  })}>
-                    <a className='text-gold100'>Resgatar Saldo</a>
-                  </li> 
-                  <li onClick={() =>{setUpdateOn(true)}}>
-                    <a className='text-gold100'>Atualizar Perfil</a>
-                  </li>
-
-                <li>
-                  <a className='flex items-center justify-center text-red-500 font-bold  bg-red-300'>Sair</a>
+              <ul style={{zIndex:999999}}  className={`${!toogle && 'hidden'} absolute z-50 right-0 menu  p-2 shadow bg-base-100 rounded-box text w-52 mt-4`}>
+                <li onClick={() =>confirm({
+                  title:"RESGATAR PRÊMIO" ,
+                  text:"Apos solicitar um valor ele estara disponivel na conta registrada em ate 24 horas"
+                })}>
+                  <a className='text-gold100'>Resgatar Saldo</a>
+                </li> 
+                <li onClick={() =>{setUpdateOn(true)}}>
+                  <a className='text-gold100'>Atualizar Perfil</a>
                 </li>
-            </ul>
-            
-        </Transition.Child>
 
+              <li onClick={() =>{signOut({redirect:true})}}>
+                <a className='flex items-center justify-center text-red-500 font-bold  bg-red-300'>Sair</a>
+              </li>
+              </ul>
+              
+              </Transition.Child>
             </Transition.Root>
-
           </div>
           :
-
           <Link legacyBehavior href="login">
             <a>
               <ButtonGoldOutLined  title='Entrar'/>

@@ -59,7 +59,9 @@ const Input: React.FC<InputProps> = ({
 
       {error && (
         <Error title={error}>
-          <FiAlertCircle color="c53030" size={20} />
+          <div className="tooltip  tooltip-left" data-tip={error}>
+            <FiAlertCircle color="c53030" size={20} />
+          </div>
         </Error>
       )}
     </Container>

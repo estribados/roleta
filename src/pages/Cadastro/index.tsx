@@ -7,19 +7,54 @@ import * as Yup from 'yup';
 import { BackButton, ButtonAnimated } from 'components/Buttons';
 import { Input } from 'components/Form';
 import Header from 'components/Header';
+import { useToast } from 'hooks/useToast';
+import { prisma } from 'lib/prisma';
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
+import api from 'services/api';
 import { AnimationContainer, Container, ContainerBg, Content } from 'styles/signUp';
 import getValidationErrors from 'utils/getValidationErros';
 
-const SignIn:React.FC = () =>{
+interface DataProps{
+  name:string
+  email:string
+  telephone:string
+  password:string
+}
 
+const SignUp:React.FC = () =>{
+  const router = useRouter()
   const formRef= useRef<FormHandles>(null)
+  const {notify} = useToast()
 
-  const handleSubmit= useCallback(async(data:any) =>{
+  const handleSubmit= useCallback(async(data:DataProps) =>{
     try{
 
       formRef.current?.setErrors({});
 
-     
+      const schema = Yup.object().shape({
+        email:Yup.string().required('E-mail obrigatorio').email('Digite um e-mail valido'),
+        name:Yup.string().required('Nome obrigatorio'),
+        telephone:Yup.string().required('Telefone obrigatorio'),
+        password:Yup.string().required('Senha obrigatoria')
+      })
+
+      await schema.validate(data,{
+        abortEarly:false  
+      })
+
+      await api.post('/users/create',{
+        name:data.name,
+        email:data.email,
+        password:data.password,
+        telephone:data.telephone,
+      }).then(() => router.push('/login'))
+
+      notify({
+        message:"Usuário registrado, faça o login com suas credenciais",
+        types:"success"
+      })
+
     }catch(err){
       if(err instanceof Yup.ValidationError){
         const errors = getValidationErrors(err)
@@ -27,9 +62,8 @@ const SignIn:React.FC = () =>{
 
         return
       }
-      
     }
-  },[])
+  },[notify, router])
 
 
   return(
@@ -43,25 +77,25 @@ const SignIn:React.FC = () =>{
                 <h3 className='text-gold100 font-bold'>CADASTRO DE USUÁRIO</h3>
                   <BackButton path='Login'/>
               </div>
-              <label htmlFor="email">
+              <label htmlFor="name">
                 <p className='text-gray-300 font-bold'>
                   Nome
                 </p>
-                <Input id='email' name="email" icon={FiUser} type="text"  placeholder="Digite seu nome" />
+                <Input id='name' name="name" icon={FiUser} type="text"  placeholder="Digite seu nome" />
               </label>
 
-              <label htmlFor="email">
+              <label htmlFor="telephone">
                 <p className='text-gray-300 font-bold'>
                   Telefone
                 </p>
-                <Input id='email' name="email" icon={FiPhone}  placeholder="Digite seu numero" />
+                <Input id='telephone' name="telephone" icon={FiPhone} type={'tel'}  placeholder="Digite seu numero" />
               </label>
 
               <label htmlFor="email">
               <p className='text-gray-500 font-bold'>
                 Email
               </p>
-                <Input id='email' name="email" icon={FiMail} type="email"  placeholder="Digite um email valido" />
+                <Input id='email' name="email" icon={FiMail} type="text"  placeholder="Digite um email valido" />
               </label>
 
               <label htmlFor="password">
@@ -81,4 +115,15 @@ const SignIn:React.FC = () =>{
     </ContainerBg>
   )
 }
-export default SignIn
+
+
+export const getServerSideProps:GetServerSideProps = async () =>{
+  const users = await prisma.user.findMany()
+
+  return {
+    props:{
+      users:JSON.parse(JSON.stringify(users))
+    }
+  }
+}
+export default SignUp

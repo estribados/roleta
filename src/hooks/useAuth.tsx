@@ -1,5 +1,7 @@
-import { signIn } from 'next-auth/react';
-import { createContext, useContext } from 'react';
+import { IUser } from 'interfaces/types';
+import { signIn, useSession } from 'next-auth/react';
+import { createContext, useContext, useEffect, useState } from 'react';
+import api from 'services/api';
 
 interface loginProps{
   email:string
@@ -9,28 +11,51 @@ interface loginProps{
 interface AuthContextData{
   googleAuth():void
   facebookAuth():void
+  emailAndPasswordAuth({email,password}:loginProps):Promise<void>
+  user:IUser | undefined
+  status:'authenticated' | 'unauthenticated' | 'loading'
 }
 
 interface Props{
   children?: JSX.Element | JSX.Element[]
 }
 
-
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
-
 const AuthProvider = ({children}:Props) =>{
 
-  const googleAuth = () => {
+  const {status,data} = useSession()
+  const [user,setUser] = useState<IUser>()
+
+  const googleAuth = async () => {
     signIn('google')
   }
   const facebookAuth = () => {
     signIn('facebook')
   }
-  const emailAndPassword = ({email,password}:loginProps) =>{
+  const emailAndPasswordAuth = async({email,password}:loginProps) =>{
+    await signIn('credentials', {
+      redirect: false,
+      email: email,
+      password: password,
+      tenantKey: '12345',
+      callbackUrl: `${window.location.origin}`,
+    });
   }
+ 
+  useEffect(() =>{
+    api.post('users/findOne',{
+        email: data?.user?.email,
+        name:data?.user?.name
+      }).then((response) =>{
+      setUser(response.data)
+    })
+  },[data?.user?.email, data?.user?.name])
+
+
+  console.log(data)
 
   return(
-    <AuthContext.Provider value ={{facebookAuth,googleAuth}}>
+    <AuthContext.Provider value ={{status,user,facebookAuth,googleAuth,emailAndPasswordAuth}}>
       {children}
     </AuthContext.Provider>
   )

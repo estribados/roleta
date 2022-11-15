@@ -1,12 +1,17 @@
 import React from 'react'
 
 import Header from 'components/Header'
+import { IUser } from 'interfaces/types'
+import { prisma } from 'lib/prisma'
+import { GetServerSideProps } from 'next'
 import { Container } from 'styles/global'
 
-const Usuarios:React.FC = () =>{
+const Usuarios:React.FC = (props) =>{
+  const {users} = props as any
   return(
     <>
       <Header/>
+
         <h1 className='w-full text-4xl text-center mt-5'>USUÁRIOS</h1>
         <Container>
           <div className='w-full  h-full rounded-md shadow-md p-5 my-5'>
@@ -36,39 +41,24 @@ const Usuarios:React.FC = () =>{
                   </tr>
                 </thead>
                 <tbody>
-                  <tr >
-                    <td>Leandro santos do nascimento</td>
-                    <td>8599881760</td>
-                    <td>lsn_slim@yahoo.com.br</td>
-                    <td>Nubank</td>
-                    <td>324235325634</td>
-                    <td className='text-center' >R$ 1200.00</td>
-                    <td>
-                      <button className="btn btn-warning btn-sm mb-2">Aprovar</button>
-                    </td>
-                  </tr>
-                  <tr >
-                    <td>Leandro santos do nascimento</td>
-                    <td>8599881760</td>
-                    <td>lsn_slim@yahoo.com.br</td>
-                    <td>Nubank</td>
-                    <td>324235325634</td>
-                    <td className='text-center' >R$ 1200.00</td>
-                    <td>
-                      <button className="btn btn-warning btn-sm mb-2">Aprovar</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Leandro santos do nascimento</td>
-                    <td>8599881760</td>
-                    <td>lsn_slim@yahoo.com.br</td>
-                    <td>Nubank</td>
-                    <td>324235325634</td>
-                    <td className='text-center' >R$ 1200.00</td>
-                    <td>
-                      <button className="btn btn-warning btn-sm mb-2">Aprovar</button>
-                    </td>
-                  </tr>
+
+                  {users.map((user:IUser) =>{
+                    return(
+
+                    <tr key={user.id} >
+                      <td>{user.name} {user.last_name}</td>
+                      <td>{user.telephone}</td>
+                      <td>{user.email}</td>
+                      <td>{user.bank}</td>
+                      <td>{user.pix}</td>
+                      <td className='text-center' >R$ 1200.00</td>
+                      <td>
+                        <button className="btn btn-warning btn-sm mb-2">Aprovar</button>
+                      </td>
+                    </tr>
+                    )
+                  })}
+                  
                 </tbody>
               </table>
             </div>
@@ -76,5 +66,17 @@ const Usuarios:React.FC = () =>{
         </Container>
     </>
   )
+}
+
+
+
+export const getServerSideProps:GetServerSideProps = async () =>{
+  const users = await prisma.user.findMany()
+
+  return {
+    props:{
+      users:JSON.parse(JSON.stringify(users))
+    }
+  }
 }
 export default Usuarios

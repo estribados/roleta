@@ -21,7 +21,7 @@ export const Container = styled.div<ContainerProps>`
   ${props =>
     props.isErrored &&
     css`
-      border-color: #c53030;
+      border-color: #db6060;
     `}
   ${props =>
     props.isFocused &&
@@ -33,6 +33,7 @@ export const Container = styled.div<ContainerProps>`
   ${props =>
     props.isField &&
     css`
+      border-color: #ffd700;
       color: #ffd700;
     `}
   input{

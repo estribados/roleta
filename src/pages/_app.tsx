@@ -1,15 +1,20 @@
+import { SessionProvider } from 'next-auth/react';
+
 import { AuthProvider } from 'hooks/useAuth';
 import { ConfirmProvider } from 'hooks/useConfirm';
 import { ToastProvider } from 'hooks/useToast';
 import { WinProvider } from 'hooks/useWin';
 
-import type { AppProps } from 'next/app';
 import GlobalStyle from '../styles/global';
+
 import '../styles/globals.css';
 
-function MyApp({ Component, pageProps }: AppProps) {
+function MyApp({ Component,
+   pageProps:{ session ,...pageProps} }: any) {
   return (
+    <SessionProvider session={session}>
     <AuthProvider>
+      
     <ToastProvider>
       <ConfirmProvider>
         <WinProvider>
@@ -19,6 +24,8 @@ function MyApp({ Component, pageProps }: AppProps) {
       </ConfirmProvider>
     </ToastProvider>
     </AuthProvider>
+    </SessionProvider>
+
 
   )
 }

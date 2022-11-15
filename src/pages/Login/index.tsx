@@ -14,17 +14,46 @@ import { useAuth } from 'hooks/useAuth';
 import { AnimationContainer, Container, ContainerBg, Content } from 'styles/login';
 import getValidationErrors from 'utils/getValidationErros';
 
+interface loginProps{
+  email:string
+  password:string
+}
+
+
+// export const getServerSideProps: GetServerSideProps = async ({req}) =>{
+//   const session = await getSession({req})
+
+//   if(session){
+//     return {
+//       redirect:{
+//         destination:'/roleta',
+//         permanent:false
+//       }
+//     }
+//   }
+
+//   return {
+//     props:{}
+//   }
+// }
+
+
+
 const SignIn:React.FC = () =>{
   const router = useRouter()
   const formRef= useRef<FormHandles>(null)
-  const {facebookAuth,googleAuth} = useAuth()
+  const {facebookAuth,googleAuth, emailAndPasswordAuth} = useAuth()
 
-  const handleSubmit= useCallback(async(data:any) =>{
+  const handleSubmit= useCallback(async(data:loginProps) =>{
     try{
 
       formRef.current?.setErrors({});
 
-     
+      await emailAndPasswordAuth({
+        email:data.email,
+        password:data.password
+      })
+
     }catch(err){
       if(err instanceof Yup.ValidationError){
         const errors = getValidationErrors(err)
@@ -33,7 +62,7 @@ const SignIn:React.FC = () =>{
         return
       }
     }
-  },[])
+  },[emailAndPasswordAuth])
 
   
 
