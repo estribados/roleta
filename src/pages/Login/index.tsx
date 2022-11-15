@@ -75,8 +75,8 @@ const SignIn:React.FC = () =>{
             <div className="socialButtons text- w-full">
               <h5 className='mb-3 mt-3 l'>Bem-Vindo(a)</h5>
                 <div className='gap-5 w-full flex flex-col md:flex-row'>
-                  <ButtonAnimated onClick={googleAuth} textSize='text-xs'  style={{letterSpacing:'0'}} ><><Google size={28} /> Entrar com o Google</></ButtonAnimated>
-                  <ButtonAnimated onClick={facebookAuth} textSize='text-xs' style={{letterSpacing:'0'}}><><Facebook size={30}/>Entrar com o Facebook</></ButtonAnimated>
+                  <ButtonAnimated onClick={() =>googleAuth()} textSize='text-xs'  style={{letterSpacing:'0'}} ><><Google size={28} /> Entrar com o Google</></ButtonAnimated>
+                  <ButtonAnimated onClick={()=>facebookAuth()} textSize='text-xs' style={{letterSpacing:'0'}}><><Facebook size={30}/>Entrar com o Facebook</></ButtonAnimated>
                 </div>
             </div>
 

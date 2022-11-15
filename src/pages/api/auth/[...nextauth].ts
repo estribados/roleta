@@ -2,8 +2,6 @@ import NextAuth from 'next-auth';
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 
-
-
 export default NextAuth({
   providers: [
     // CredentialsProvider({
@@ -74,12 +72,5 @@ export default NextAuth({
       clientSecret:'3b498088acc408dd3e1f1314efd5fda6'
     })
   ],
-  callbacks: {
-    async session({ session,user, token }:any) {
-
-      session.user.accessToken = token.accessToken;
-        
-      return session;
-    },
-  }
+  
 });

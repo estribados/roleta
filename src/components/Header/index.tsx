@@ -1,7 +1,6 @@
 import { Transition } from '@headlessui/react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
-import { signOut, useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
@@ -13,11 +12,11 @@ import { ButtonAnimated } from 'components/Buttons/ButtonAnimated';
 import Input from 'components/Form/Input';
 import { DefaultModal } from 'components/Modals/DefaultModal';
 import { NavLink } from 'components/NavLink';
+import { useAuth } from 'hooks/useAuth';
 import { useConfirm } from 'hooks/useConfirm';
 import { useToast } from 'hooks/useToast';
 import getValidationErrors from 'utils/getValidationErros';
 
-import { useAuth } from 'hooks/useAuth';
 import ButtonGoldOutLined from '../Buttons/ButtonGold';
 import { Container, ContainerLabel, Label } from './styles';
 
@@ -51,97 +50,96 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
 
         return
       }
-      
     }
   },[])
 
   return(
     <DefaultModal
-        width="100%"
-        margin="auto 0"
-        isOpen={hasOpen}
-        setIsOpen={() =>{openModal(true)}}
-        content={
-          <div>
-            <header className='flex w-full justify-between items-center text-black mb-5'>
-              MEUS DADOS
-              <FiX cursor={'pointer'} onClick={() =>{openModal(false)}}/>
-            </header>
+      width="100%"
+      margin="auto 0"
+      isOpen={hasOpen}
+      setIsOpen={() =>{openModal(true)}}
+      content={
+        <div>
+          <header className='flex w-full justify-between items-center text-black mb-5'>
+            MEUS DADOS
+            <FiX cursor={'pointer'} onClick={() =>{openModal(false)}}/>
+          </header>
 
-            <Form className='w-full' ref={formRef} onSubmit={handleSubmit}>
-              <h4 className=' w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[220px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 mb-5'>Dados Pessoais</h4>
-              <ContainerLabel >
-                <Label htmlFor="nome">
-                  <p className='text-gray-300 font-bold'>
-                    Nome
-                  </p>
-                  <Input id='nome' name="nome" icon={FiUser} type="text"  placeholder="Primeiro nome" />
-                </Label>
+          <Form className='w-full' ref={formRef} onSubmit={handleSubmit}>
+            <h4 className=' w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[220px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 mb-5'>Dados Pessoais</h4>
+            <ContainerLabel >
+              <Label htmlFor="nome">
+                <p className='text-gray-300 font-bold'>
+                  Nome
+                </p>
+                <Input id='nome' name="nome" icon={FiUser} type="text"  placeholder="Primeiro nome" />
+              </Label>
 
-                <Label htmlFor="sobrenome">
-                  <p className='text-gray-300 font-bold'>
-                    Sobrenome
-                  </p>
-                  <Input id='sobrenome' name="sobrenome" icon={FiUser} type="text"  placeholder="Segundo nome" />
-                </Label>
+              <Label htmlFor="sobrenome">
+                <p className='text-gray-300 font-bold'>
+                  Sobrenome
+                </p>
+                <Input id='sobrenome' name="sobrenome" icon={FiUser} type="text"  placeholder="Segundo nome" />
+              </Label>
 
-                <Label htmlFor="telefone">
-                  <p className='text-gray-300 font-bold'>
-                    Telefone
-                  </p>
-                  <Input id='telefone' name="telefone" icon={FiPhone} type="text"  placeholder="WhatsApp" />
-                </Label>
-              </ContainerLabel>
+              <Label htmlFor="telefone">
+                <p className='text-gray-300 font-bold'>
+                  Telefone
+                </p>
+                <Input id='telefone' name="telefone" icon={FiPhone} type="text"  placeholder="WhatsApp" />
+              </Label>
+            </ContainerLabel>
 
-              <h4 className='w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[200px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 my-5'>Dados de Acesso</h4>
-              
-              <ContainerLabel>
-                <Label htmlFor="email">
-                  <p className='text-gray-300 font-bold'>
-                    Email
-                  </p>
-                  <Input id='email' name="email" icon={FiMail} type="text"  placeholder="Digite um email valido" />
-                </Label>
+            <h4 className='w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[200px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 my-5'>Dados de Acesso</h4>
+            
+            <ContainerLabel>
+              <Label htmlFor="email">
+                <p className='text-gray-300 font-bold'>
+                  Email
+                </p>
+                <Input id='email' name="email" icon={FiMail} type="text"  placeholder="Digite um email valido" />
+              </Label>
 
-                <Label htmlFor="password">
-                  <p className='text-gray-300 font-bold'>
-                    Senha
-                  </p>
-                  <Input id='password' name="password" icon={FiLock} type="text"  placeholder="Minimo 6 digitos" />
-                </Label>
+              <Label htmlFor="password">
+                <p className='text-gray-300 font-bold'>
+                  Senha
+                </p>
+                <Input id='password' name="password" icon={FiLock} type="text"  placeholder="Minimo 6 digitos" />
+              </Label>
 
-                <Label htmlFor="password">
-                  <p className='text-gray-300 font-bold'>
-                    Confirmação de Senha
-                  </p>
-                  <Input id='password' name="password" icon={FiLock} type="text"  placeholder="Repita sua senha" />
-                </Label>
-              </ContainerLabel>
+              <Label htmlFor="password">
+                <p className='text-gray-300 font-bold'>
+                  Confirmação de Senha
+                </p>
+                <Input id='password' name="password" icon={FiLock} type="text"  placeholder="Repita sua senha" />
+              </Label>
+            </ContainerLabel>
 
-              <h4 className='w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[170px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 my-5'>Dados de Bancarios</h4>
+            <h4 className='w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[170px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 my-5'>Dados de Bancarios</h4>
 
-              <ContainerLabel>
-                <Label htmlFor="pix">
-                  <p className='text-gray-300 font-bold'>
-                    Pix
-                  </p>
-                  <Input id='pix' name="pix" icon={AiOutlineBank} type="text"  placeholder="Pix para deposito" />
-                </Label>
+            <ContainerLabel>
+              <Label htmlFor="pix">
+                <p className='text-gray-300 font-bold'>
+                  Pix
+                </p>
+                <Input id='pix' name="pix" icon={AiOutlineBank} type="text"  placeholder="Pix para deposito" />
+              </Label>
 
-                <Label htmlFor="bank">
-                  <p className='text-gray-300 font-bold'>
-                    Banco
-                  </p>
-                  <Input id='bank' name="bank" icon={AiOutlineBank} type="text"  placeholder="Banco do pix" />
-                </Label>
-              </ContainerLabel>
-              <div className='mt-5'>
-                <ButtonAnimated   animation={false} type='submit'>ATUALIZAR DADOS</ButtonAnimated>
-              </div>
-            </Form>
-          </div>
-        }
-      />
+              <Label htmlFor="bank">
+                <p className='text-gray-300 font-bold'>
+                  Banco
+                </p>
+                <Input id='bank' name="bank" icon={AiOutlineBank} type="text"  placeholder="Banco do pix" />
+              </Label>
+            </ContainerLabel>
+            <div className='mt-5'>
+              <ButtonAnimated   animation={false} type='submit'>ATUALIZAR DADOS</ButtonAnimated>
+            </div>
+          </Form>
+        </div>
+      }
+    />
   )
 }
 
@@ -149,13 +147,14 @@ type Props = {
   children?: React.ReactNode; // 👈️ type children
 };
 
-const Header:React.FC<Props> = ({}) =>{
+const Header:React.FC<Props> = ({},props) =>{
   const {confirm,confirmation} = useConfirm()
   const {notify} = useToast()
-  const {user} = useAuth()
-  const {status} = useSession()
+  const {user,signOutProvider} = useAuth()
   const [toogle,setToogle] = useState(false)
+  const [authStatus,setAuthStatus] = useState(false)
   const [updateOn,setUpdateOn] = useState(false)
+
 
   useEffect(() =>{
     if(confirmation.hasConfirm){
@@ -168,6 +167,14 @@ const Header:React.FC<Props> = ({}) =>{
     }
   },[confirmation.hasConfirm, notify])
 
+  useEffect(() => {
+    if(user?.status === 'authenticated'){
+      setAuthStatus(true)
+    }
+  }
+    , [user?.status])
+
+
   return (
     <Container>
       <div className="px-5 h-20   sticky  z-10 flex-shrink-0 flex shadow-header  bg-[rgba(0,0,0,0.5)]  ">
@@ -176,7 +183,7 @@ const Header:React.FC<Props> = ({}) =>{
           <Image className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
         </Link>
         
-          {user?.isAdmin &&
+          {user?.user?.isAdmin &&
             <div>
               <nav>
                 <ul className=' mx-4 flex items-center'>
@@ -196,7 +203,7 @@ const Header:React.FC<Props> = ({}) =>{
           }
 
           {
-          status === 'authenticated' ?
+          authStatus ?
           <div  className="relative dropdown dropdown-end">
             <label className="btn btn-circle swap swap-rotate">
               <input onChange={(e) => setToogle(e.target.checked)} type="checkbox" />
@@ -226,7 +233,7 @@ const Header:React.FC<Props> = ({}) =>{
                   <a className='text-gold100'>Atualizar Perfil</a>
                 </li>
 
-              <li onClick={() =>{signOut({redirect:true})}}>
+              <li onClick={signOutProvider}>
                 <a className='flex items-center justify-center text-red-500 font-bold  bg-red-300'>Sair</a>
               </li>
               </ul>
@@ -235,7 +242,7 @@ const Header:React.FC<Props> = ({}) =>{
             </Transition.Root>
           </div>
           :
-          <Link legacyBehavior href="login">
+          <Link legacyBehavior href="/login">
             <a>
               <ButtonGoldOutLined  title='Entrar'/>
             </a>
@@ -247,4 +254,7 @@ const Header:React.FC<Props> = ({}) =>{
     </Container>
   );
 }
+
+
 export default Header
+

@@ -16,7 +16,7 @@ export default function Roleta() {
   const audioRef = useRef(null)
 
   return (
-      <Container>
+      <Container >
         <Header/>
         <HeaderRoullete/>
         <Content>

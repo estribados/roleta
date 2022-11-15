@@ -1,5 +1,7 @@
 import { FormHandles } from '@unform/core';
 import { Form } from "@unform/web";
+import { GetServerSideProps } from 'next';
+import { useRouter } from 'next/router';
 import React, { useCallback, useRef } from 'react';
 import { FiLock, FiMail, FiPhone, FiUser } from 'react-icons/fi';
 import * as Yup from 'yup';
@@ -9,8 +11,6 @@ import { Input } from 'components/Form';
 import Header from 'components/Header';
 import { useToast } from 'hooks/useToast';
 import { prisma } from 'lib/prisma';
-import { GetServerSideProps } from 'next';
-import { useRouter } from 'next/router';
 import api from 'services/api';
 import { AnimationContainer, Container, ContainerBg, Content } from 'styles/signUp';
 import getValidationErrors from 'utils/getValidationErros';
@@ -75,7 +75,7 @@ const SignUp:React.FC = () =>{
             <Form className='w-full' ref={formRef} onSubmit={handleSubmit}>
               <div className='flex justify-between md:text-lg text-sm items-center'>
                 <h3 className='text-gold100 font-bold'>CADASTRO DE USUÁRIO</h3>
-                  <BackButton path='Login'/>
+                  <BackButton path='login'/>
               </div>
               <label htmlFor="name">
                 <p className='text-gray-300 font-bold'>

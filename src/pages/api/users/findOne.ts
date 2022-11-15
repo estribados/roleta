@@ -1,10 +1,9 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { getSession } from 'next-auth/react';
+
 import { prisma } from './../../../lib/prisma';
 
 export default async function findUser(req:NextApiRequest,res:NextApiResponse){
-  const {name,last_name,email,password,bank,pix,telephone} = req.body
-  const data = await getSession()
+  const {name,email} = req.body
 
   const user = await prisma.user.findFirst({
     where:{
