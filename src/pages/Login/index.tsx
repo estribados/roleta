@@ -99,7 +99,7 @@ const SignIn:React.FC = () =>{
 
               <div className='mt-5 w-full'>
                 <span className='cursor-pointer text-blue-500 mb-2 block text-sm w-full text-right font-bold'>Esqueceu a senha?</span>
-                  <ButtonAnimated onClick={() => router.push('/roleta')} ><> Fazer Login</></ButtonAnimated>
+                  <ButtonAnimated  ><> Fazer Login</></ButtonAnimated>
 
                 <p className='mt-2 block text-sm w-full text-left '>Voce não tem conta ? 
                   <Link legacyBehavior href="cadastro">
@@ -109,6 +109,7 @@ const SignIn:React.FC = () =>{
                   </Link>
                 </p>
               </div>
+              
             </Form>
           </AnimationContainer>
         </Content>

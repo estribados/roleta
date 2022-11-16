@@ -1,7 +1,8 @@
+import { Session } from 'next-auth';
 import { signIn, signOut, useSession } from 'next-auth/react';
-import router from 'next/router';
+import { useRouter } from 'next/router';
 import { destroyCookie, parseCookies, setCookie } from 'nookies';
-import { createContext, useCallback, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 
 import { IUser } from 'interfaces/types';
 import api from 'services/api';
@@ -13,7 +14,7 @@ interface loginProps{
 
 interface UserProps{
   user:IUser
-  status: any
+  status: 'authenticated' | 'unauthenticated' | 'loading'
 }
 
 interface AuthContextData{
@@ -21,8 +22,9 @@ interface AuthContextData{
   facebookAuth():void
   emailAndPasswordAuth({email,password}:loginProps):Promise<void>
   signOutProvider():void
-  user:UserProps | undefined
   status:'authenticated' | 'unauthenticated' | 'loading'
+  authentication:Session | null
+  user:UserProps
 }
 
 interface Props{
@@ -32,10 +34,11 @@ interface Props{
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 const AuthProvider = ({children}:Props) =>{
 
-  const {status,data} = useSession()
-
+  const {status,data:authentication} = useSession()
+  const router = useRouter()
+  
   const [user,setUser] =useState<UserProps>(()=>{
-    const {'nextAuth.user':user} = parseCookies()
+    const {'nextAuthUser':user} = parseCookies()
     if(user){
       return {status:JSON.parse(user).status,user:JSON.parse(user)}
     }
@@ -43,60 +46,53 @@ const AuthProvider = ({children}:Props) =>{
     return {} as any
   })
 
-  const findOrCreateUser = useCallback( async() =>{
-    await api.post('users/findOne',{
-      email: data?.user?.email,
-      name:data?.user?.name
-    }).then((response) =>{
-      setCookie(undefined,'nextAuth.user',JSON.stringify({user:response.data,status}),{
-        maxAge: 60 * 60 * 1, // 1 hora
+  useEffect( () =>{
+     const response = api.post('users/find',{
+        email: authentication?.user.email,
+      }).then((response) =>{
+        setCookie(undefined,'nextAuthUser',JSON.stringify({user:response.data,status}),{
+          maxAge: 60 * 60 * 1, // 1 hora
+        })
+        setUser({user:response.data,status})
       })
-      setUser({user:response.data,status})
-    })
 
-  },[data?.user?.email, data?.user?.name, status])
-
-  useEffect(() =>{
-    setUser(previousState => {
-      return { ...previousState, status }
-    });
-  },[status])
+  },[authentication?.user.email, status])
 
   const googleAuth = async () => {
-
     Promise.all([
       await signIn('google'),
-      await findOrCreateUser()
     ])
 
   }
   const facebookAuth = async () => {
     Promise.all([
       await signIn('facebook'),
-      await findOrCreateUser()
     ])
   }
   const emailAndPasswordAuth = async({email,password}:loginProps) =>{
-    await signIn('credentials', {
+   const c =  await signIn('credentials', {
       redirect: false,
       email: email,
       password: password,
-      tenantKey: '12345',
-      callbackUrl: `${window.location.origin}`,
-    });
+    }).then((response) =>{
+      if(response?.ok){
+        if(response.url){
+          router.push(response?.url)
+        }
+      }
+    }).catch((response) =>{
+    })
+
   }
   const signOutProvider = () =>{
     signOut({redirect:true})
     
-    setUser({} as UserProps)
-    destroyCookie(null,'nextAuth.user')
+    destroyCookie(null,'nextAuthUser')
     router.push('/')
   }
 
-  console.log(user)
-
   return(
-    <AuthContext.Provider value ={{status,user,signOutProvider,facebookAuth,googleAuth,emailAndPasswordAuth}}>
+    <AuthContext.Provider value ={{user,authentication,status,signOutProvider,facebookAuth,googleAuth,emailAndPasswordAuth}}>
       {children}
     </AuthContext.Provider>
   )

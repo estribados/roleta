@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
-import { prisma } from './../../../lib/prisma';
+import { prisma } from '../../../lib/prisma';
 
-export default async function findUser(req:NextApiRequest,res:NextApiResponse){
+export default async function findOrCreate(req:NextApiRequest,res:NextApiResponse){
   const {name,email} = req.body
+
 
   const user = await prisma.user.findFirst({
     where:{
@@ -20,7 +21,6 @@ export default async function findUser(req:NextApiRequest,res:NextApiResponse){
         name
       }
     })
-
-    return user
+    return res.status(201).json(user)
   }
 }

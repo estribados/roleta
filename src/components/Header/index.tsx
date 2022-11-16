@@ -150,11 +150,10 @@ type Props = {
 const Header:React.FC<Props> = ({},props) =>{
   const {confirm,confirmation} = useConfirm()
   const {notify} = useToast()
-  const {user,signOutProvider} = useAuth()
+  const {user:{user,status},signOutProvider} = useAuth()
   const [toogle,setToogle] = useState(false)
   const [authStatus,setAuthStatus] = useState(false)
   const [updateOn,setUpdateOn] = useState(false)
-
 
   useEffect(() =>{
     if(confirmation.hasConfirm){
@@ -168,11 +167,11 @@ const Header:React.FC<Props> = ({},props) =>{
   },[confirmation.hasConfirm, notify])
 
   useEffect(() => {
-    if(user?.status === 'authenticated'){
+    if(status === 'authenticated'){
       setAuthStatus(true)
     }
   }
-    , [user?.status])
+    , [status])
 
 
   return (
@@ -183,7 +182,7 @@ const Header:React.FC<Props> = ({},props) =>{
           <Image className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
         </Link>
         
-          {user?.user?.isAdmin &&
+          {user?.isAdmin &&
             <div>
               <nav>
                 <ul className=' mx-4 flex items-center'>
@@ -220,7 +219,6 @@ const Header:React.FC<Props> = ({},props) =>{
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
-
 
               <ul style={{zIndex:999999}}  className={`${!toogle && 'hidden'} absolute z-50 right-0 menu  p-2 shadow bg-base-100 rounded-box text w-52 mt-4`}>
                 <li onClick={() =>confirm({
