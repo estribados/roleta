@@ -17,6 +17,7 @@ import { useConfirm } from 'hooks/useConfirm';
 import { useToast } from 'hooks/useToast';
 import getValidationErrors from 'utils/getValidationErros';
 
+import api from 'services/api';
 import ButtonGoldOutLined from '../Buttons/ButtonGold';
 import { Container, ContainerLabel, Label } from './styles';
 
@@ -39,9 +40,47 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
 
   const formRef= useRef<FormHandles>(null)
 
+  const {authentication} = useAuth()
+  const {notify} = useToast()
+
   const handleSubmit= useCallback(async(data:DataProps) =>{
     try{
       formRef.current?.setErrors({});
+
+      const schema = Yup.object().shape({
+        password:Yup.string().required('Campo obrigatório'),
+        name:Yup.string().required('Campo obrigatório'),
+        confirmPassword:Yup.string().oneOf([Yup.ref('password'), null], 'Senha e confirmação de senha devem ser iguais').required('Campo obrigatório'),
+      })
+
+      await schema.validate(data,{
+        abortEarly:false
+      })
+
+        const user =await api.put(`users/update`,{
+          id:authentication?.user.id,
+          bank:data.bank,
+          name:data.name,
+          last_name:data.sobrenome,
+          pix:data.pix,
+          telephone:data.telephone,
+          password:data.password,
+          email:data.email
+        })
+        .then((response) =>{
+          openModal(false)
+
+          notify({
+            message:"Pefil Atualizado",
+            types:"success"
+          })
+          if(authentication?.user){
+            authentication.user = response.data
+          }
+        })
+
+        console.log(user)
+      
     
     }catch(err){
       if(err instanceof Yup.ValidationError){
@@ -51,7 +90,9 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
         return
       }
     }
-  },[])
+  },[authentication?.user.id])
+
+
 
   return(
     <DefaultModal
@@ -66,14 +107,14 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
             <FiX cursor={'pointer'} onClick={() =>{openModal(false)}}/>
           </header>
 
-          <Form className='w-full' ref={formRef} onSubmit={handleSubmit}>
+          <Form className='w-full' initialData={{...authentication?.user,password:''}} ref={formRef} onSubmit={handleSubmit}>
             <h4 className=' w-full flex items-center after:flex after:-right-1 after:h-1 after:w-full after:max-w-[220px]  after:bg-gold100 relative after:ml-5 after:rounded-lg  text-gray-500 mb-5'>Dados Pessoais</h4>
             <ContainerLabel >
               <Label htmlFor="nome">
                 <p className='text-gray-300 font-bold'>
                   Nome
                 </p>
-                <Input id='nome' name="nome" icon={FiUser} type="text"  placeholder="Primeiro nome" />
+                <Input id='nome' name="name" icon={FiUser} type="text"  placeholder="Primeiro nome" />
               </Label>
 
               <Label htmlFor="sobrenome">
@@ -87,7 +128,7 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
                 <p className='text-gray-300 font-bold'>
                   Telefone
                 </p>
-                <Input id='telefone' name="telefone" icon={FiPhone} type="text"  placeholder="WhatsApp" />
+                <Input id='telefone' name="telephone" icon={FiPhone} type="text"  placeholder="WhatsApp" />
               </Label>
             </ContainerLabel>
 
@@ -98,21 +139,21 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
                 <p className='text-gray-300 font-bold'>
                   Email
                 </p>
-                <Input id='email' name="email" icon={FiMail} type="text"  placeholder="Digite um email valido" />
+                <Input disabled id='email' name="email" icon={FiMail} type="text"  placeholder="Digite um email valido" />
               </Label>
 
               <Label htmlFor="password">
                 <p className='text-gray-300 font-bold'>
                   Senha
                 </p>
-                <Input id='password' name="password" icon={FiLock} type="text"  placeholder="Minimo 6 digitos" />
+                <Input id='password' name="password" icon={FiLock} type="password"  placeholder="Minimo 6 digitos" />
               </Label>
 
-              <Label htmlFor="password">
+              <Label htmlFor="confirmPassword">
                 <p className='text-gray-300 font-bold'>
                   Confirmação de Senha
                 </p>
-                <Input id='password' name="password" icon={FiLock} type="text"  placeholder="Repita sua senha" />
+                <Input id='confirmPassword' name="confirmPassword" icon={FiLock} type="text"  placeholder="Repita sua senha" />
               </Label>
             </ContainerLabel>
 
@@ -150,7 +191,7 @@ type Props = {
 const Header:React.FC<Props> = ({},props) =>{
   const {confirm,confirmation} = useConfirm()
   const {notify} = useToast()
-  const {user:{user,status},signOutProvider} = useAuth()
+  const {signOutProvider,authentication,status} = useAuth()
   const [toogle,setToogle] = useState(false)
   const [authStatus,setAuthStatus] = useState(false)
   const [updateOn,setUpdateOn] = useState(false)
@@ -170,9 +211,7 @@ const Header:React.FC<Props> = ({},props) =>{
     if(status === 'authenticated'){
       setAuthStatus(true)
     }
-  }
-    , [status])
-
+  }, [status])
 
   return (
     <Container>
@@ -182,17 +221,17 @@ const Header:React.FC<Props> = ({},props) =>{
           <Image className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
         </Link>
         
-          {user?.isAdmin &&
+          {authentication?.user.isAdmin &&
             <div>
               <nav>
                 <ul className=' mx-4 flex items-center'>
                   <li className='relative'>
-                    <NavLink href="/usuarios"  activeClassName="activeNavLink">
+                    <NavLink href="/painel/usuarios"  activeClassName="activeNavLink">
                       <a className='text-xs md:text-base'>USUARIOS</a>
                     </NavLink>
                   </li>
                   <li className='ml-5 relative '>
-                    <NavLink href="/roletas"  activeClassName="activeNavLink">
+                    <NavLink href="/painel/roletas"  activeClassName="activeNavLink">
                       <a className='text-xs md:text-base'>ROLETAS</a>
                     </NavLink>
                   </li>

@@ -51,6 +51,15 @@ const SignIn:React.FC = () =>{
 
       formRef.current?.setErrors({});
 
+      const schema = Yup.object().shape({
+        email:Yup.string().required('E-mail obrigatório').email('Digite um e-mail valido'),
+        password:Yup.string().required('Senha obrigatória')
+      })
+
+      await schema.validate(data,{
+        abortEarly:false  
+      })
+
       await emailAndPasswordAuth({
         email:data.email,
         password:data.password

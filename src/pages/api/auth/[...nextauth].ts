@@ -6,7 +6,10 @@ import GoogleProvider from "next-auth/providers/google";
 import api from 'services/api';
 
 export default NextAuth({
-  
+  pages:{
+    signIn:'/',
+    signOut:'/',
+  },
   jwt: {
     maxAge: 100000,
   },
@@ -23,8 +26,6 @@ export default NextAuth({
           email:credentials?.email,
           password:credentials?.password
        })
-
-
         if(response.data){
           return response.data;
         }else{
@@ -48,18 +49,27 @@ export default NextAuth({
       clientSecret:'3b498088acc408dd3e1f1314efd5fda6'
     }),
   ],
-  session:{
-    strategy:"jwt",
-  },
   callbacks:{
     async jwt({ token, user, account, profile, isNewUser }) {
       return token
     },
     
     async session({ session, user, token }:any) {
+     const result =  await api.post('users/find',{
+        email: session.user.email,
+      })
 
-      return session
-    },
+
+      const newSession ={
+        ...session,
+        user:{
+          ...result.data,
+          image:session.user.image
+        },
+      }
+
+      return session = newSession
+      },
     async signIn({ user, account, profile, email, credentials }) {
 
       if(user){
@@ -67,9 +77,9 @@ export default NextAuth({
           email: user.email,
           name:user.name
         })
-      }
-
       return true
+      }
+      return false
     },
   }
 });

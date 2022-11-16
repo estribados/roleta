@@ -2,6 +2,8 @@ import React from 'react'
 
 import { ButtonGold } from 'components/Buttons'
 import Header from 'components/Header'
+import { GetServerSideProps } from 'next'
+import { getSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Container } from 'styles/global'
 
@@ -72,5 +74,23 @@ const Roletas:React.FC = () =>{
         </Container>
     </>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({req}) =>{
+  const session = await getSession({req})
+
+  if(!session?.user.isAdmin){
+    return {
+      redirect:{
+        destination:'/',
+        permanent:false
+      }
+    }
+  }
+
+  return {
+    props:{}
+  }
 }
 export default Roletas

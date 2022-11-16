@@ -4,6 +4,8 @@ import { useRef } from 'react';
 import { ButtonAnimated } from 'components/Buttons';
 import Header from 'components/Header';
 import HeaderRoullete from 'components/HeaderRoullete';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import { Container, Content } from 'styles/roleta';
 import { staticData } from 'utils/staticRoullete';
 
@@ -52,4 +54,22 @@ export default function Roleta() {
       </Container>
 
   );
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({req}) =>{
+  const session = await getSession({req})
+
+  if(!session){
+    return {
+      redirect:{
+        destination:'/',
+        permanent:false
+      }
+    }
+  }
+
+  return {
+    props:{}
+  }
 }

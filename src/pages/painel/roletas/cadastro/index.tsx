@@ -6,6 +6,8 @@ import { BackButton, ButtonAnimated } from 'components/Buttons'
 import { Input } from 'components/Form'
 import Header from 'components/Header'
 import { DefaultModal } from 'components/Modals/DefaultModal'
+import { GetServerSideProps } from 'next'
+import { getSession } from 'next-auth/react'
 import dynamic from 'next/dynamic'
 import { AiFillEye, AiOutlineClose } from 'react-icons/ai'
 import { FiX } from 'react-icons/fi'
@@ -159,5 +161,22 @@ const Cadastro:React.FC = () =>{
       />
     </>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({req}) =>{
+  const session = await getSession({req})
+  if(!session?.user.isAdmin){
+    return {
+      redirect:{
+        destination:'/',
+        permanent:false
+      }
+    }
+  }
+
+  return {
+    props:{}
+  }
 }
 export default Cadastro

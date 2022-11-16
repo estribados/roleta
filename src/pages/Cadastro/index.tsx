@@ -33,10 +33,10 @@ const SignUp:React.FC = () =>{
       formRef.current?.setErrors({});
 
       const schema = Yup.object().shape({
-        email:Yup.string().required('E-mail obrigatorio').email('Digite um e-mail valido'),
-        name:Yup.string().required('Nome obrigatorio'),
-        telephone:Yup.string().required('Telefone obrigatorio'),
-        password:Yup.string().required('Senha obrigatoria')
+        email:Yup.string().required('E-mail obrigatório').email('Digite um e-mail valido'),
+        name:Yup.string().required('Nome obrigatório'),
+        telephone:Yup.string().required('Telefone obrigatório'),
+        password:Yup.string().required('Senha obrigatória')
       })
 
       await schema.validate(data,{
@@ -55,13 +55,18 @@ const SignUp:React.FC = () =>{
         types:"success"
       })
 
-    }catch(err){
+    }catch(err:any){
       if(err instanceof Yup.ValidationError){
         const errors = getValidationErrors(err)
         formRef.current?.setErrors(errors);
 
         return
       }
+
+      notify({
+        message:err.response.data,
+        types:"error"
+      })
     }
   },[notify, router])
 

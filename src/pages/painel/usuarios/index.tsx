@@ -4,6 +4,7 @@ import Header from 'components/Header'
 import { IUser } from 'interfaces/types'
 import { prisma } from 'lib/prisma'
 import { GetServerSideProps } from 'next'
+import { getSession } from 'next-auth/react'
 import { Container } from 'styles/global'
 
 const Usuarios:React.FC = (props) =>{
@@ -68,10 +69,18 @@ const Usuarios:React.FC = (props) =>{
   )
 }
 
-
-
-export const getServerSideProps:GetServerSideProps = async () =>{
+export const getServerSideProps:GetServerSideProps = async ({req}) =>{
   const users = await prisma.user.findMany()
+  const session = await getSession({req})
+
+  if(!session?.user.isAdmin){
+    return {
+      redirect:{
+        destination:'/',
+        permanent:false
+      }
+    }
+  }
 
   return {
     props:{
