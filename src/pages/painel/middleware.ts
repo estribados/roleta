@@ -1,8 +1,8 @@
 import { withAuth } from 'next-auth/middleware'
 
 export default withAuth({
-  // pages:{
-  //   signIn:"/",
-  //   error:"/"
-  // }
+  pages:{
+    signIn:"/",
+    error:'/404'
+  }
 })

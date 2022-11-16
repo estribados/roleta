@@ -1,6 +1,7 @@
 import { FormHandles } from '@unform/core';
 import { Form } from "@unform/web";
 import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
 import React, { useCallback, useRef } from 'react';
 import { FiLock, FiMail, FiPhone, FiUser } from 'react-icons/fi';
@@ -10,7 +11,6 @@ import { BackButton, ButtonAnimated } from 'components/Buttons';
 import { Input } from 'components/Form';
 import Header from 'components/Header';
 import { useToast } from 'hooks/useToast';
-import { prisma } from 'lib/prisma';
 import api from 'services/api';
 import { AnimationContainer, Container, ContainerBg, Content } from 'styles/signUp';
 import getValidationErrors from 'utils/getValidationErros';
@@ -117,13 +117,21 @@ const SignUp:React.FC = () =>{
 }
 
 
-export const getServerSideProps:GetServerSideProps = async () =>{
-  const users = await prisma.user.findMany()
+export const getServerSideProps: GetServerSideProps = async ({req}) =>{
+  const session = await getSession({req})
 
-  return {
-    props:{
-      users:JSON.parse(JSON.stringify(users))
+  if(session){
+    return {
+      redirect:{
+        destination:'painel/roleta',
+        permanent:false
+      }
     }
   }
+
+  return {
+    props:{}
+  }
 }
+
 export default SignUp

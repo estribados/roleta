@@ -7,6 +7,8 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { IUser } from 'interfaces/types';
 import api from 'services/api';
 
+import { useToast } from './useToast';
+
 interface loginProps{
   email:string
   password:string
@@ -35,6 +37,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 const AuthProvider = ({children}:Props) =>{
 
   const {status,data:authentication} = useSession()
+  const {notify} = useToast()
   const router = useRouter()
   
   const [user,setUser] =useState<UserProps>(()=>{
@@ -46,8 +49,11 @@ const AuthProvider = ({children}:Props) =>{
     return {} as any
   })
 
+
   useEffect( () =>{
-     const response = api.post('users/find',{
+    if(status === 'authenticated'){
+
+     api.post('users/find',{
         email: authentication?.user.email,
       }).then((response) =>{
         setCookie(undefined,'nextAuthUser',JSON.stringify({user:response.data,status}),{
@@ -55,6 +61,7 @@ const AuthProvider = ({children}:Props) =>{
         })
         setUser({user:response.data,status})
       })
+    }
 
   },[authentication?.user.email, status])
 
@@ -70,17 +77,24 @@ const AuthProvider = ({children}:Props) =>{
     ])
   }
   const emailAndPasswordAuth = async({email,password}:loginProps) =>{
-   const c =  await signIn('credentials', {
+   await signIn('credentials', {
       redirect: false,
       email: email,
       password: password,
     }).then((response) =>{
-      if(response?.ok){
-        if(response.url){
-          router.push(response?.url)
-        }
+      if(response?.status === 401){
+        notify({
+          message:"Usuário não encontrado",
+          types:'error'
+        })
       }
-    }).catch((response) =>{
+
+      if(response?.ok){
+        notify({
+          message:"Bem-vindo",
+          types:'success'
+        })
+      }
     })
 
   }

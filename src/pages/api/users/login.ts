@@ -14,7 +14,7 @@ export default async function login(req:NextApiRequest,res:NextApiResponse){
 
 
   if(!user){
-    return res.status(404).json('usuario nao encontrado')
+    return res.status(401).json('usuario nao encont')
 
   }
 

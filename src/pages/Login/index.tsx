@@ -1,5 +1,7 @@
 import { FormHandles } from '@unform/core';
 import { Form } from "@unform/web";
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useCallback, useRef } from 'react';
@@ -20,22 +22,22 @@ interface loginProps{
 }
 
 
-// export const getServerSideProps: GetServerSideProps = async ({req}) =>{
-//   const session = await getSession({req})
+export const getServerSideProps: GetServerSideProps = async ({req}) =>{
+  const session = await getSession({req})
 
-//   if(session){
-//     return {
-//       redirect:{
-//         destination:'/roleta',
-//         permanent:false
-//       }
-//     }
-//   }
+  if(session){
+    return {
+      redirect:{
+        destination:'painel/roleta',
+        permanent:false
+      }
+    }
+  }
 
-//   return {
-//     props:{}
-//   }
-// }
+  return {
+    props:{}
+  }
+}
 
 
 

@@ -13,17 +13,16 @@ function MyApp({ Component,
    pageProps:{ session ,...pageProps} }: any) {
   return (
     <SessionProvider session={session}>
-    <AuthProvider>
-      
-    <ToastProvider>
-      <ConfirmProvider>
-        <WinProvider>
-          <GlobalStyle/>
-          <Component {...pageProps} />
-        </WinProvider>
-      </ConfirmProvider>
-    </ToastProvider>
-    </AuthProvider>
+        <ToastProvider>
+      <AuthProvider>
+          <ConfirmProvider>
+            <WinProvider>
+              <GlobalStyle/>
+              <Component {...pageProps} />
+            </WinProvider>
+          </ConfirmProvider>
+      </AuthProvider>
+        </ToastProvider>
     </SessionProvider>
 
 
