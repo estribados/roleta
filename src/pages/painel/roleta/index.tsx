@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { ButtonAnimated } from 'components/Buttons';
 import Header from 'components/Header';
 import HeaderRoullete from 'components/HeaderRoullete';
+import { useAuth } from 'hooks/useAuth';
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import { Container, Content } from 'styles/roleta';
@@ -16,6 +17,7 @@ const DynamicComponentWithNoSSR = dynamic(
 
 export default function Roleta() {
   const audioRef = useRef(null)
+  const {authentication} = useAuth()
 
   return (
       <Container >
@@ -27,14 +29,14 @@ export default function Roleta() {
               <div>
                 <h1 className='saldo'>SALDO DISPONIVEL <br/>  
                   <span className='font-extrabold text-5xl block'>
-                    {'R$ 1700.00'}
+                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}
                   </span>
                 </h1>
               </div>
 
               <div className='hidden md:flex text-2xl md:text-3xl mt-auto  justify-center items-center w-full md:h-16 h-10 bg-black border-solid border-2 border-gold100 font-bold bg-opacity-60 rounded-md'>
-                  R$ 100,00
-                </div>
+                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}
+              </div>
 
               <div className=' md:mt-5 mt-2'  >
                 <ButtonAnimated  animation >COMPRAR CREDITOS</ButtonAnimated>

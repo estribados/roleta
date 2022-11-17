@@ -90,9 +90,7 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
         return
       }
     }
-  },[authentication?.user.id])
-
-
+  },[authentication, notify, openModal])
 
   return(
     <DefaultModal

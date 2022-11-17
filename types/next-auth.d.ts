@@ -13,6 +13,7 @@ declare module "next-auth" {
       telephone:string
       pix:string
       bank:string
+      credits:number
     } & DefaultSession["user"]
   }
 }

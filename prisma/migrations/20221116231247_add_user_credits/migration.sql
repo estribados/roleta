@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `user` ADD COLUMN `credits` INTEGER NULL DEFAULT 0;

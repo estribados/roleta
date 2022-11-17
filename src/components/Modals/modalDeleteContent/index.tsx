@@ -3,6 +3,7 @@ import React, { ReactNode, useRef } from 'react';
 
 import { useConfirm } from 'hooks/useConfirm';
 
+import { useAuth } from 'hooks/useAuth';
 import { ButtonConfirm, CancelButton } from './styles';
 
 interface ConfirmProps{
@@ -32,6 +33,7 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
 }) => {
   const cancelButtonRef = useRef(null);
   const {confirmation,confirm} = useConfirm()
+  const {authentication} = useAuth()
 
   return (
     <>
@@ -55,7 +57,10 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
                       ...confirmation,
                       valueRescue:e.target.value
                     })
-                  }} id="valorDisponivel" type="text" placeholder={`Valor disponivel R$ 1200,00`} className="bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5" />
+                  }} 
+                  id="valorDisponivel" type="text"
+                  placeholder={`Valor disponivel ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}`}
+                  className="bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5" />
               </div>
             }
           </div>
