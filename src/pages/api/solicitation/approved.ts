@@ -38,6 +38,14 @@ export default async function approved(req:NextApiRequest,res:NextApiResponse){
     }
   })
 
+  await prisma.notifications.create({
+    data:{
+      userId,
+      solicitationId,
+      description:'Solicitação aprovada, verifique sua conta, ou entre em contato com o suporte'
+    }
+  })
+
   const userApproved = {
     ...approved,
     credits:user.credits

@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+
 import { prisma } from '../../../lib/prisma';
 
 export default async function userSolicitation(req:NextApiRequest,res:NextApiResponse){
@@ -8,7 +9,6 @@ export default async function userSolicitation(req:NextApiRequest,res:NextApiRes
         where:{
           status:{
             equals:'SOLICITADO'
-          
           },
         },
         orderBy:{

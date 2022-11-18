@@ -67,11 +67,11 @@ const AuthProvider = ({children}:Props) =>{
           types:'error'
         })
       }else if(response?.ok){
+        router.push('/painel/roleta')
         notify({
           message:`Bem-vindo`,
           types:'success'
         })
-        router.push('/painel/roleta')
       }
     })
 
@@ -80,7 +80,6 @@ const AuthProvider = ({children}:Props) =>{
     await signOut({redirect:true})
     await router.push('/')
   }
-
 
   return(
     <AuthContext.Provider value ={{setAuthentication,authentication,status,signOutProvider,facebookAuth,googleAuth,emailAndPasswordAuth}}>

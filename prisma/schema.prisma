@@ -21,24 +21,39 @@ model User{
   bank String?
   pix String? 
   isAdmin Boolean @default(false)
-  credits Int? @default(0)
+  credits Float? @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   solicitations Solicitation[]
+  notifications Notifications[]
 }
 
 model Solicitation {
   id String @id @default(uuid())
   user   User @relation(fields: [userId], references: [id])
-  value_solicitation Int
+  value_solicitation Float
   userId String
   status  Status    @default(SOLICITADO)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  notifications Notifications[]
 }
 
 enum Status {
   PAGO
   SOLICITADO
+  RECUSADO
+}
+
+model Notifications {
+  id String @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  solicitation Solicitation @relation(fields: [solicitationId], references: [id])
+  solicitationId String
+  visualized  Boolean @default(false)
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

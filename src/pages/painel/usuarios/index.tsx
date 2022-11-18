@@ -1,4 +1,6 @@
 import moment from 'moment';
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import React, { Fragment, useState } from 'react';
 import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { useQuery } from 'react-query';
@@ -16,60 +18,85 @@ interface ApproveProps{
   value_solicitation:number
   creditsByUser:number
   userId:string
+  typeSolicitation:'approve' | 'recuse'
 }
 
-
 const Usuarios:React.FC = (props) =>{
-
   const [userId,setUserId] = useState<string>()
+  const [textDescription,setTextDescription] = useState('')
   const {authentication,setAuthentication} = useAuth()
   const {notify} = useToast()
-  
 
   const {data:users} = useQuery<IUser[]>(['users'], async () =>{
     const response = await api.get('users/userSolicitations')
     return response.data
   })
 
-
-  const approved = async ({solicitationId,creditsByUser,value_solicitation,userId}:ApproveProps) =>{
+  const approvedOrRecuse = async ({solicitationId,creditsByUser,value_solicitation,userId,typeSolicitation}:ApproveProps) =>{
     try{
-    const response = await api.post('solicitation/approved',{
-      solicitationId,
-      creditsByUser,
-      value_solicitation,
-      userId
-    })
+      if(typeSolicitation === 'approve'){
+        const response = await api.patch('solicitation/approved',{
+          solicitationId,
+          creditsByUser,
+          value_solicitation,
+          userId
+        })
 
-    const previousUsers = queryClient.getQueryData<IUser[]>('users')
-    if(previousUsers){
-      const nextRepos = previousUsers?.map((user) =>{
-        if(user?.id === response.data.userId){
-            
-          return {
-            ...user,
-            credits:response.data.credits,
-            solicitations:[]
+        const previousUsers = queryClient.getQueryData<IUser[]>('users')
+        if(previousUsers){
+          const nextRepos = previousUsers?.map((user) =>{
+            if(user?.id === response.data.userId){
+                
+              return {
+                ...user,
+                credits:response.data.credits,
+                solicitations:[]
+              }
+            }else{
+              return user
+            }
+          })
+
+          if(authentication){
+            setAuthentication({
+              expires:authentication?.expires,
+              user:{
+                ...authentication.user,
+                credits:response.data.credits,
+                solicitations:[]
+              }
+            })
           }
-        }else{
-          return user
+          queryClient.setQueriesData('users',nextRepos)
         }
-      })
 
-      if(authentication){
-        setAuthentication({
-          expires:authentication?.expires,
-          user:{
-            ...authentication.user,
-            credits:response.data.credits,
-            solicitations:[]
-          }
+        notify({
+          message:'Solicitação aprovada',
+          types:"success"
+        })
+      }else{
+        await api.patch('notifications/desaprovedSolicitation',{
+          userId,
+          solicitationId,
+          textDescription
+        })
+        if(authentication){
+          setAuthentication({
+            expires:authentication?.expires,
+            user:{
+              ...authentication.user,
+              solicitations:[]
+            }
+          })
+        }
+
+       await queryClient.invalidateQueries('users')
+
+        notify({
+          message:'O usuário foi notificado',
+          types:"info"
         })
       }
-
-      console.log(response.data)
-      queryClient.setQueriesData('users',nextRepos)
-    }
 
     }catch(err:any){
       notify({
@@ -82,7 +109,6 @@ const Usuarios:React.FC = (props) =>{
   return(
     <>
       <Header/>
-
         <h1 className='w-full text-4xl text-center mt-5'>USUÁRIOS</h1>
         <Container>
           <div className='w-full  h-full rounded-md shadow-md p-5 my-5'>
@@ -133,7 +159,7 @@ const Usuarios:React.FC = (props) =>{
                                 <tr>
                                   
                                   <td className="w-full bg-slate-300 font-bold text-black">
-                                    {moment(solicitation.createdAt).locale('pt-BR').format('LL')}
+                                    {moment(solicitation.createdAt).locale('pt-br').format('LLLL')}
                                   </td>
                                   <td className="w-full bg-slate-300 font-bold text-black">
                                     {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(solicitation.value_solicitation)}
@@ -144,17 +170,36 @@ const Usuarios:React.FC = (props) =>{
                                       solicitation.status === 'SOLICITADO' && 
                                       <>
                                       <button onClick={() =>{
-                                        approved({
+                                        approvedOrRecuse({
                                           solicitationId:solicitation.id,
                                           value_solicitation:solicitation.value_solicitation,
                                           creditsByUser:user.credits,
-                                          userId:user.id
+                                          userId:user.id,
+                                          typeSolicitation:'approve'
                                         })}}
-                                        className="btn btn-warning btn-sm ">
+                                        className="mr-5 btn btn-warning btn-sm ">
                                           Aprovar
                                       </button>
 
-                                      
+                                    <div className=" dropdown dropdown-right">
+                                      <button tabIndex={0} className=" btn btn-error btn-sm m-1">Recusar</button>
+                                      <ul tabIndex={0} className="dropdown-content  p-2 shadow bg-slate-200 rounded-box ">
+                                        <div className='flex flex-col items-center md:w-80 w-60' >
+                                            <h6 className='text-sm'>Texto da notificação</h6>
+                                            <input onChange={(e) =>{setTextDescription(e.target.value)}} type="text" placeholder="Mensagem de notificação para o usuário" className="input my-3 bg-white input-warning input-bordered input-sm w-full max-w-xs" />
+                                            <button
+                                              onClick={() =>{
+                                                approvedOrRecuse({
+                                                  solicitationId:solicitation.id,
+                                                  value_solicitation:solicitation.value_solicitation,
+                                                  creditsByUser:user.credits,
+                                                  userId:user.id,
+                                                  typeSolicitation:'recuse'
+                                                })}}
+                                              className="btn btn-outline btn-warning w-full btn-sm">Enviar</button>
+                                        </div>
+                                      </ul>
+                                    </div>
                                       </>
                                     }
                                   </td>
@@ -177,6 +222,24 @@ const Usuarios:React.FC = (props) =>{
         </Container>
     </>
   )
+}
+
+
+export const getServerSideProps: GetServerSideProps = async ({req}) =>{
+  const session = await getSession({req})
+
+  if(!session){
+    return {
+      redirect:{
+        destination:'/login',
+        permanent:false
+      }
+    }
+  }
+
+  return {
+    props:{}
+  }
 }
 
 export default Usuarios

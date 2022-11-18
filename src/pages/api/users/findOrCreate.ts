@@ -5,10 +5,9 @@ import { prisma } from '../../../lib/prisma';
 export default async function findOrCreate(req:NextApiRequest,res:NextApiResponse){
   const {name,email} = req.body
 
-
   const user = await prisma.user.findFirst({
     where:{
-      email:email as string
+      email:email
     }
   })  
 

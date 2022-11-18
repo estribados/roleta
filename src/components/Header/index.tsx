@@ -1,11 +1,14 @@
-import { Transition } from '@headlessui/react';
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
+import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlineBank } from 'react-icons/ai';
+import { BsBellFill } from 'react-icons/bs';
 import { FiLock, FiMail, FiPhone, FiUser, FiX } from 'react-icons/fi';
+import { GiHamburgerMenu } from 'react-icons/gi';
+import { useQuery } from 'react-query';
 import * as Yup from 'yup';
 
 import { ButtonAnimated } from 'components/Buttons/ButtonAnimated';
@@ -15,11 +18,15 @@ import { NavLink } from 'components/NavLink';
 import { useAuth } from 'hooks/useAuth';
 import { useConfirm } from 'hooks/useConfirm';
 import { useToast } from 'hooks/useToast';
+import { INotifications } from 'interfaces/types';
 import api from 'services/api';
+import { queryClient } from 'services/queryClient';
 import getValidationErrors from 'utils/getValidationErros';
 
 import ButtonGoldOutLined from '../Buttons/ButtonGold';
-import { Container, ContainerLabel, Label } from './styles';
+import { Container, ContainerLabel, Label, Notifications } from './styles';
+
+import 'react-dropdown/style.css';
 
 interface ModalProps{
   openModal(value:boolean):void
@@ -35,6 +42,8 @@ interface DataProps{
   pix:string
   bank:string
 }
+
+
 
 const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
 
@@ -198,6 +207,27 @@ const Header:React.FC<Props> = ({},props) =>{
     }
   }, [status])
 
+  const {data:notifications} = useQuery<INotifications[]>(['notifications',authentication?.user.id], async () =>{
+    const response = await api.get('notifications/getNotificationsByUser',{
+      params:{
+        userId:authentication?.user.id
+      }
+    })
+    return response.data
+  })
+
+  const updateNotifications = async () =>{
+    if(authentication?.user.id){
+      await api.patch('notifications/update',{
+        userId:authentication?.user.id
+      })
+    }
+
+    await queryClient.invalidateQueries('notifications')
+  }
+
+  const hasNotificationsNotVisualized = notifications?.some((notification) => !notification.visualized)
+
   return (
     <Container>
       <div className="px-5 h-20   sticky  z-10 flex-shrink-0 flex shadow-header  bg-[rgba(0,0,0,0.5)]  ">
@@ -205,8 +235,7 @@ const Header:React.FC<Props> = ({},props) =>{
         <Link legacyBehavior href="/">
           <Image className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
         </Link>
-          {
-          authentication?.user.isAdmin &&
+          {authentication?.user.isAdmin &&
             <div>
               <nav>
                 <ul className=' mx-4 flex items-center'>
@@ -225,49 +254,70 @@ const Header:React.FC<Props> = ({},props) =>{
             </div>
           }
 
-          {
-            authStatus ?
-            <div  className="relative dropdown dropdown-end">
-              <label className="btn btn-circle swap swap-rotate">
-                <input onChange={(e) => setToogle(e.target.checked)} type="checkbox" />
-                <svg className="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z"/></svg>
-                <svg className="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 512 512"><polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49"/></svg>
-              </label>
-              <Transition.Root show={toogle} as={Fragment}>
-                <Transition.Child
-                  as={Fragment}
-                  enter="ease-out duration-500"
-                  enterFrom="opacity-0"
-                  enterTo="opacity-100"
-                  leave="ease-in duration-500"
-                  leaveFrom="opacity-100"
-                  leaveTo="opacity-0"
-                >
-
-                <ul style={{zIndex:999999}}  className={`${!toogle && 'hidden'} absolute z-50 right-0 menu  p-2 shadow bg-base-100 rounded-box text w-52 mt-4`}>
-                  <li onClick={() =>{}}>
-                    <Link href={'/painel/roleta'}>
-                      <a className='text-gold100'>Roleta</a>
-                    </Link>
-                  </li> 
-                  <li onClick={() =>confirm({
-                    title:"RESGATAR PRÊMIO" ,
-                    text:"Apos solicitar um valor ele estara disponivel na conta registrada em ate 24 horas"
-                  })}>
-                    <a className='text-gold100'>Resgatar Saldo</a>
-                  </li> 
-                  <li onClick={() =>{setUpdateOn(true)}}>
-                    <a className='text-gold100'>Atualizar Perfil</a>
-                  </li>
-
-                <li onClick={signOutProvider}>
-                  <a className='flex items-center justify-center text-red-500 font-bold  bg-red-300'>Sair</a>
-                </li>
+          {authStatus ?
+            <div className='flex items-center rounded-xl    gap-5'>
+              <Notifications hasNotificatons={hasNotificationsNotVisualized} className="rounded-xl   dropdown dropdown-end  ">
+                <label tabIndex={0} className=" m-1 ">
+                  <BsBellFill onClick={updateNotifications}  cursor={"pointer"} className='newNotification'/>
+                </label>
+                <ul tabIndex={0} className="rounded-xl   dropdown-content menu  bg-base-100 w-64">
+                  <div>
+                    <header className=' p-3 text-base font-bold rounded-t-xl w-full bg-gold100 h-16 flex items-center justify-start'>
+                      CENTRAL DE NOTIFICAÇÕES
+                    </header>
+                    <div className='overflow-y-auto h-64'>
+                    { !!notifications?.length ?
+                    notifications?.map((notification) =>{
+                        return(
+                          <div key={notification.id} className='p-3 border-gray-200 border-b-2 '>
+                          <div className='w-full justify-between flex gap-2 items-center mb-3'>
+                            <p className='text-base font-bold'><>{notification.solicitation.status}</></p>
+                            <span className='text-gray-300 text-sm '><>{ 
+                            moment(notification.solicitation.createdAt).format('DD/MM - H') + 'h'
+                            }</></span>
+                          </div>
+                          <div className='text-xs'>
+                            {notification.description}
+                          </div>
+                        </div>
+                        )
+                    })
+                    :
+                    <div className='w-full h-full flex items-center justify-center'>Nenhuma notificação</div>
+                    }
+                    </div>
+                  </div>
                 </ul>
-                
-                </Transition.Child>
-              </Transition.Root>
+              </Notifications>
+              <div  className="dropdown dropdown-bottom dropdown-end">
+                <label  tabIndex={0} className="btn btn-circle swap swap-rotate">
+                  <input onChange={(e) => setToogle(e.target.checked)} type="checkbox" />
+                  <GiHamburgerMenu size={24}/>
+                </label>
+                  <ul tabIndex={0} style={{zIndex:999999}}  className={` dropdown-content menu p-2 shadow bg-base-100 rounded-box absolute z-50 right-0  text w-52 mt-4`}>
+                    <li onClick={() =>{}}>
+                      <Link href={'/painel/roleta'}>
+                        <a className='text-gold100'>Roleta</a>
+                      </Link>
+                    </li> 
+                    <li onClick={() =>confirm({
+                      title:"RESGATAR PRÊMIO" ,
+                      text:"Apos solicitar um valor ele estara disponivel na conta registrada em ate 24 horas"
+                    })}>
+                      <a className='text-gold100'>Resgatar Saldo</a>
+                    </li> 
+                    <li onClick={() =>{setUpdateOn(true)}}>
+                      <a className='text-gold100'>Atualizar Perfil</a>
+                    </li>
+
+                  <li onClick={signOutProvider}>
+                    <a className='flex items-center justify-center text-red-500 font-bold  bg-red-300'>Sair</a>
+                  </li>
+                  </ul>
+              </div>
+
             </div>
+
             :
             <Link legacyBehavior href="/login">
               <a>

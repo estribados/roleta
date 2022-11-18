@@ -1,3 +1,5 @@
+import { Solicitation, User } from "@prisma/client"
+
 export interface ISolicitation{
   id:string
   value_solicitation:number
@@ -19,6 +21,15 @@ export interface IUser{
   isAdmin:boolean
   credits:number
   solicitations?:ISolicitation[]
+}
+
+export interface INotifications{
+  createdAt:string
+  description:string
+  id:string
+  solicitation:Solicitation
+  user:User
+  visualized:boolean
 }
 
 

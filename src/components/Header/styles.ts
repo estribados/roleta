@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 export const Container = styled.div`
 form{
@@ -12,7 +12,7 @@ form{
   }
 
   h4::before{
-    content: "ee";
+    content: "";
     position: absolute;
     width: 100%;
     max-width: 120px;
@@ -56,6 +56,37 @@ form{
     width: 100%;
   }
 }
+
+.newNotification{
+
+}
+
+`
+
+interface NotificationsProps{
+  hasNotificatons:boolean | undefined
+}
+
+export const Notifications = styled.div<NotificationsProps>`
+
+${props =>
+    props.hasNotificatons &&
+  css`
+    label::before{
+    content:"";
+    text-align: center;
+    box-shadow: 0px -2px 10px rgba(98, 73, 138, 0.2);
+    border-radius: 20px;
+    background: #E5BD31;
+    height:10px;
+    width:10px;
+    position: absolute;
+    left: 15px;
+    top:23px;
+  }
+`}
+
+
 
 `
 

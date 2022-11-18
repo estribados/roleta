@@ -38,14 +38,14 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
   const {confirmation,confirm} = useConfirm()
   const {authentication,setAuthentication} = useAuth()
   const {notify} = useToast()
-  const [hasSolicitations, setHasSolicitations] = useState(!!authentication?.user.solicitations.length)
-
+  const [hasSolicitations, setHasSolicitations] = useState(!!authentication?.user?.solicitations?.length)
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const solicitaton = (async () =>{
     try{
       handleConfirm({...confirmation,hasConfirm:true})
 
-      const response = await api.post('/solicitation/create',{
+      await api.post('/solicitation/create',{
         userId:authentication?.user.id,
         value_solicitation:Number(confirmation.valueRescue)
       })
@@ -84,6 +84,20 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
     }
   })
 
+  // const handleKeyUp = (e:FormEvent<HTMLInputElement>) =>{
+  //   let value = e.currentTarget.value
+  //   value = value.replace(/\D/g,"")
+
+  //   const currencyFormat = new Intl.NumberFormat('pt-BR',{
+  //     style:  'currency',
+  //     currency:   'BRL'
+  //   }).format(Number(value)/100)
+
+  //   e.currentTarget.value = currencyFormat
+
+  // }
+
+
   return (
     <>
       <div>
@@ -106,17 +120,18 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
                   :
                   <>
                     <label className='text-gray-500 font-bold   mt-5' htmlFor="valorDisponivel">Valor:</label>
-                    <input onChange={(e) =>{ 
-                        confirm({
-                          ...confirmation,
-                          valueRescue:e.target.value
-                        })
-                      }} 
-                      id="valorDisponivel"
-                      type="text"
-                      placeholder={`Valor disponivel 
-                      ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}`}
-                      className="bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5" />
+                      <input onChange={(e) =>{ 
+                          confirm({
+                            ...confirmation,
+                            valueRescue:e.target.value
+                          })
+                        }} 
+                        ref={inputRef}
+                        // onKeyUp={handleKeyUp}
+                        id="valorDisponivel"
+                        type="number"
+                        placeholder={`Valor disponivel ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}`}
+                        className="bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5" />
                   </>
                 }
                 
