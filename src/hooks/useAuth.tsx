@@ -1,7 +1,7 @@
 import { Session } from 'next-auth';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { createContext, useContext } from 'react';
+import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from 'react';
 
 import { IUser } from 'interfaces/types';
 
@@ -24,6 +24,7 @@ interface AuthContextData{
   signOutProvider():void
   status:'authenticated' | 'unauthenticated' | 'loading'
   authentication:Session | null
+  setAuthentication:Dispatch<SetStateAction<Session | null>>
 }
 
 interface Props{
@@ -33,10 +34,16 @@ interface Props{
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 const AuthProvider = ({children}:Props) =>{
 
-  const {status,data:authentication} = useSession()
+  const {status,data} = useSession()
   const {notify} = useToast()
   const router = useRouter()
-  
+
+  const [authentication,setAuthentication] = useState(data)
+
+  useEffect(() =>{
+    setAuthentication(data)
+  },[data])
+
   const googleAuth = async () => {
     await signIn('google')
   }
@@ -76,7 +83,7 @@ const AuthProvider = ({children}:Props) =>{
 
 
   return(
-    <AuthContext.Provider value ={{authentication,status,signOutProvider,facebookAuth,googleAuth,emailAndPasswordAuth}}>
+    <AuthContext.Provider value ={{setAuthentication,authentication,status,signOutProvider,facebookAuth,googleAuth,emailAndPasswordAuth}}>
       {children}
     </AuthContext.Provider>
   )

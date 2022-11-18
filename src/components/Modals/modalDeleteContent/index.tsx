@@ -5,6 +5,7 @@ import { useAuth } from 'hooks/useAuth';
 import { useConfirm } from 'hooks/useConfirm';
 import { useToast } from 'hooks/useToast';
 import api from 'services/api';
+import { queryClient } from 'services/queryClient';
 
 import { ButtonConfirm, CancelButton } from './styles';
 
@@ -35,7 +36,7 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
 }) => {
   const cancelButtonRef = useRef(null);
   const {confirmation,confirm} = useConfirm()
-  const {authentication} = useAuth()
+  const {authentication,setAuthentication} = useAuth()
   const {notify} = useToast()
   const [hasSolicitations, setHasSolicitations] = useState(!!authentication?.user.solicitations.length)
 
@@ -50,18 +51,30 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
       })
       .then((response) =>{
         if(authentication){
-          authentication.user.solicitations = [...authentication.user.solicitations,response.data]
+          setAuthentication({
+            ...authentication,
+            user:{
+              ...authentication.user,
+              solicitations:[...authentication.user.solicitations,response.data]
+            }
+          })
+          
           setIsOpen(false)
           setTimeout(() =>{
             setHasSolicitations(!!authentication.user.solicitations.length)
             handleConfirm({hasConfirm:false})
           },500)
         }
+
+        queryClient.invalidateQueries('users')
+
       })
       notify({
         message:'Solicitação em andamento, em até 24 horas o valor estará disponivel na conta registrada',
         types:'info'
       })
+
+      
     }catch(err:any){
 
       notify({
@@ -71,6 +84,7 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
     }
   })
 
+  console.log(authentication)
 
   return (
     <>

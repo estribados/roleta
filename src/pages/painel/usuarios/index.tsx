@@ -4,13 +4,18 @@ import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
 import { useQuery } from 'react-query';
 
 import Header from 'components/Header';
+import { useAuth } from 'hooks/useAuth';
 import { IUser } from 'interfaces/types';
 import api from 'services/api';
+import { queryClient } from 'services/queryClient';
 import { Container } from 'styles/global';
 
 const Usuarios:React.FC = (props) =>{
 
   const [userId,setUserId] = useState<string>()
+
+  const {authentication,setAuthentication} = useAuth()
+  
 
   const {data:users} = useQuery<IUser[]>(['users'], async () =>{
     const response = await api.get('users/userSolicitations')
@@ -25,8 +30,33 @@ const Usuarios:React.FC = (props) =>{
       }
     })
 
-    console.log(response.data)
+    // queryClient.invalidateQueries('users')
+
+    const previousUsers = queryClient.getQueryData<IUser[]>('users')
+    if(previousUsers){
+      const nextRepos = previousUsers?.map((user) =>{
+        if(user?.id === response.data.userId){
+            
+          return {...user,solicitations:[]}
+        }else{
+          return user
+        }
+      })
+
+      if(authentication){
+      setAuthentication({
+        expires:authentication?.expires,
+        user:{
+          ...authentication.user,
+          solicitations:[]
+        }
+      })
+    }
+      queryClient.setQueriesData('users',nextRepos)
+    }
   }
+
+
 
   return(
     <>
@@ -53,25 +83,30 @@ const Usuarios:React.FC = (props) =>{
                 <tbody>
                   {users?.map((user:IUser) =>{
                     return(
-                    <Fragment key={user.id} >
+                    <Fragment key={user?.id} >
                       <tr >
-                        <td>{user.name} {user.last_name}</td>
-                        <td>{user.telephone}</td>
-                        <td>{user.email}</td>
-                        <td>{user.bank}</td>
-                        <td>{user.pix}</td>
-                        <td className={`${!!user.solicitations?.length && "flex items-center justify-center"}`}>
-                          {!!user.solicitations?.length && 
+                        <td>{user?.name} {user?.last_name}</td>
+                        <td>{user?.telephone}</td>
+                        <td>{user?.email}</td>
+                        <td>{user?.bank}</td>
+                        <td>{user?.pix}</td>
+                        <td className={`${!!user?.solicitations?.length && "flex items-center justify-center"}`}>
+                          {!!user?.solicitations?.length && 
                             <button className="tooltip w-5 h-5 rounded-full bg-green-600" data-tip="Solicitação Pendente"/>
                           }
                         </td>
-                        <td onClick={() =>{setUserId(user.id)}}><MdOutlineKeyboardArrowDown cursor={'pointer'}/></td>
+                        <td onClick={() =>{setUserId(user.id)}}>
+                          {!!user?.solicitations?.length && 
+                            <MdOutlineKeyboardArrowDown cursor={'pointer'}/>
+                          }
+                        </td>
                       </tr>
-                      {userId === user.id &&
+                      {userId === user?.id &&
                         <>
                           {user?.solicitations?.map((solicitation) =>(
                               <Fragment key={solicitation.id}>
                                 <tr>
+                                  
                                   <td className="w-full bg-slate-300 font-bold text-black">
                                     {moment(solicitation.createdAt).locale('pt-BR').format('LL')}
                                   </td>
