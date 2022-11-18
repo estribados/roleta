@@ -84,8 +84,6 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
     }
   })
 
-  console.log(authentication)
-
   return (
     <>
       <div>

@@ -5,16 +5,25 @@ import { useQuery } from 'react-query';
 
 import Header from 'components/Header';
 import { useAuth } from 'hooks/useAuth';
+import { useToast } from 'hooks/useToast';
 import { IUser } from 'interfaces/types';
 import api from 'services/api';
 import { queryClient } from 'services/queryClient';
 import { Container } from 'styles/global';
 
+interface ApproveProps{
+  solicitationId:string
+  value_solicitation:number
+  creditsByUser:number
+  userId:string
+}
+
+
 const Usuarios:React.FC = (props) =>{
 
   const [userId,setUserId] = useState<string>()
-
   const {authentication,setAuthentication} = useAuth()
+  const {notify} = useToast()
   
 
   const {data:users} = useQuery<IUser[]>(['users'], async () =>{
@@ -23,40 +32,52 @@ const Usuarios:React.FC = (props) =>{
   })
 
 
-  const approved = async ({solicitationId}:{solicitationId:string}) =>{
-    const response = await api.get('solicitation/approved',{
-      params:{
-        solicitationId
-      }
+  const approved = async ({solicitationId,creditsByUser,value_solicitation,userId}:ApproveProps) =>{
+    try{
+    const response = await api.post('solicitation/approved',{
+      solicitationId,
+      creditsByUser,
+      value_solicitation,
+      userId
     })
-
-    // queryClient.invalidateQueries('users')
 
     const previousUsers = queryClient.getQueryData<IUser[]>('users')
     if(previousUsers){
       const nextRepos = previousUsers?.map((user) =>{
         if(user?.id === response.data.userId){
             
-          return {...user,solicitations:[]}
+          return {
+            ...user,
+            credits:response.data.credits,
+            solicitations:[]
+          }
         }else{
           return user
         }
       })
 
       if(authentication){
-      setAuthentication({
-        expires:authentication?.expires,
-        user:{
-          ...authentication.user,
-          solicitations:[]
-        }
-      })
-    }
+        setAuthentication({
+          expires:authentication?.expires,
+          user:{
+            ...authentication.user,
+            credits:response.data.credits,
+            solicitations:[]
+          }
+        })
+      }
+
+      console.log(response.data)
       queryClient.setQueriesData('users',nextRepos)
     }
+
+    }catch(err:any){
+      notify({
+        message:err.response.data.err,
+        types:"error"
+      })
+    }
   }
-
-
 
   return(
     <>
@@ -74,6 +95,7 @@ const Usuarios:React.FC = (props) =>{
                     <th className='absolute -z-10'>Nome</th>
                     <th>Telefone</th>
                     <th>Email</th>
+                    <th>Valor disponivel</th>
                     <th>Banco</th>
                     <th>Pix</th>
                     <th>Solicitações</th>
@@ -88,6 +110,9 @@ const Usuarios:React.FC = (props) =>{
                         <td>{user?.name} {user?.last_name}</td>
                         <td>{user?.telephone}</td>
                         <td>{user?.email}</td>
+                        <td className=''>
+                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(user.credits)}
+                        </td>
                         <td>{user?.bank}</td>
                         <td>{user?.pix}</td>
                         <td className={`${!!user?.solicitations?.length && "flex items-center justify-center"}`}>
@@ -117,8 +142,23 @@ const Usuarios:React.FC = (props) =>{
                                   <td className="w-full bg-slate-300 font-bold text-black">
                                     {
                                       solicitation.status === 'SOLICITADO' && 
-                                      <button onClick={() =>{approved({solicitationId:solicitation.id})}} className="btn btn-warning btn-sm ">Aprovar</button>
+                                      <>
+                                      <button onClick={() =>{
+                                        approved({
+                                          solicitationId:solicitation.id,
+                                          value_solicitation:solicitation.value_solicitation,
+                                          creditsByUser:user.credits,
+                                          userId:user.id
+                                        })}}
+                                        className="btn btn-warning btn-sm ">
+                                          Aprovar
+                                      </button>
+
+                                      
+                                      </>
                                     }
+                                  </td>
+                                  <td className="w-full bg-slate-300 font-bold text-black">
                                   </td>
                                   <td className="w-full bg-slate-300 font-bold text-black"></td>
                                   <td className="w-full bg-slate-300 font-bold text-black"></td>
