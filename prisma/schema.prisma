@@ -25,5 +25,20 @@ model User{
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  solicitations Solicitation[]
+}
 
+model Solicitation {
+  id String @id @default(uuid())
+  user   User @relation(fields: [userId], references: [id])
+  value_solicitation Int
+  userId String
+  status  Status    @default(SOLICITADO)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum Status {
+  PAGO
+  SOLICITADO
 }

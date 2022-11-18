@@ -1,14 +1,33 @@
-import React from 'react'
+import moment from 'moment';
+import React, { Fragment, useState } from 'react';
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md';
+import { useQuery } from 'react-query';
 
-import Header from 'components/Header'
-import { IUser } from 'interfaces/types'
-import { prisma } from 'lib/prisma'
-import { GetServerSideProps } from 'next'
-import { getSession } from 'next-auth/react'
-import { Container } from 'styles/global'
+import Header from 'components/Header';
+import { IUser } from 'interfaces/types';
+import api from 'services/api';
+import { Container } from 'styles/global';
 
 const Usuarios:React.FC = (props) =>{
-  const {users} = props as any
+
+  const [userId,setUserId] = useState<string>()
+
+  const {data:users} = useQuery<IUser[]>(['users'], async () =>{
+    const response = await api.get('users/userSolicitations')
+    return response.data
+  })
+
+
+  const approved = async ({solicitationId}:{solicitationId:string}) =>{
+    const response = await api.get('solicitation/approved',{
+      params:{
+        solicitationId
+      }
+    })
+
+    console.log(response.data)
+  }
+
   return(
     <>
       <Header/>
@@ -17,16 +36,6 @@ const Usuarios:React.FC = (props) =>{
         <Container>
           <div className='w-full  h-full rounded-md shadow-md p-5 my-5'>
             <div className='mb-5'>
-              {/* <h1 className='mb-5 text-3xl'>Filtros</h1>
-              <div className='flex flex-wrap gap-5'>
-                <input type="text" placeholder="Banco" className="bg-white input input-bordered input-warning w-full max-w-xs" />
-                <select className="select select-warning w-full max-w-xs bg-white">
-                    <option disabled selected>Filtro por Aprovar</option>
-                    <option>Todos</option>
-                    <option>Aprovar</option>
-                </select>
-              </div> */}
-            
             </div>
             <div className="overflow-x-auto ">
               <table className=" table table-compact  w-full">
@@ -37,29 +46,55 @@ const Usuarios:React.FC = (props) =>{
                     <th>Email</th>
                     <th>Banco</th>
                     <th>Pix</th>
-                    <th className='text-center'>Valor Solicitado</th>
+                    <th>Solicitações</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-
-                  {users.map((user:IUser) =>{
+                  {users?.map((user:IUser) =>{
                     return(
+                    <Fragment key={user.id} >
+                      <tr >
+                        <td>{user.name} {user.last_name}</td>
+                        <td>{user.telephone}</td>
+                        <td>{user.email}</td>
+                        <td>{user.bank}</td>
+                        <td>{user.pix}</td>
+                        <td className={`${!!user.solicitations?.length && "flex items-center justify-center"}`}>
+                          {!!user.solicitations?.length && 
+                            <button className="tooltip w-5 h-5 rounded-full bg-green-600" data-tip="Solicitação Pendente"/>
+                          }
+                        </td>
+                        <td onClick={() =>{setUserId(user.id)}}><MdOutlineKeyboardArrowDown cursor={'pointer'}/></td>
+                      </tr>
+                      {userId === user.id &&
+                        <>
+                          {user?.solicitations?.map((solicitation) =>(
+                              <Fragment key={solicitation.id}>
+                                <tr>
+                                  <td className="w-full bg-slate-300 font-bold text-black">
+                                    {moment(solicitation.createdAt).locale('pt-BR').format('LL')}
+                                  </td>
+                                  <td className="w-full bg-slate-300 font-bold text-black">
+                                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(solicitation.value_solicitation)}
+                                  </td>
 
-                    <tr key={user.id} >
-                      <td>{user.name} {user.last_name}</td>
-                      <td>{user.telephone}</td>
-                      <td>{user.email}</td>
-                      <td>{user.bank}</td>
-                      <td>{user.pix}</td>
-                      <td className='text-center' >R$ 1200.00</td>
-                      <td>
-                        <button className="btn btn-warning btn-sm mb-2">Aprovar</button>
-                      </td>
-                    </tr>
-                    )
-                  })}
-                  
+                                  <td className="w-full bg-slate-300 font-bold text-black">
+                                    {
+                                      solicitation.status === 'SOLICITADO' && 
+                                      <button onClick={() =>{approved({solicitationId:solicitation.id})}} className="btn btn-warning btn-sm ">Aprovar</button>
+                                    }
+                                  </td>
+                                  <td className="w-full bg-slate-300 font-bold text-black"></td>
+                                  <td className="w-full bg-slate-300 font-bold text-black"></td>
+                                  <td className="w-full bg-slate-300 font-bold text-black"></td>
+                                  <td className="w-full bg-slate-300 font-bold text-black"></td>
+                                </tr>
+                              </Fragment>
+                          ))}
+                        </>}
+                    </Fragment>
+                    )})}
                 </tbody>
               </table>
             </div>
@@ -69,23 +104,4 @@ const Usuarios:React.FC = (props) =>{
   )
 }
 
-export const getServerSideProps:GetServerSideProps = async ({req}) =>{
-  const users = await prisma.user.findMany()
-  const session = await getSession({req})
-
-  if(!session?.user.isAdmin){
-    return {
-      redirect:{
-        destination:'/',
-        permanent:false
-      }
-    }
-  }
-
-  return {
-    props:{
-      users:JSON.parse(JSON.stringify(users))
-    }
-  }
-}
 export default Usuarios

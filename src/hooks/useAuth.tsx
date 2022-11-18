@@ -74,6 +74,7 @@ const AuthProvider = ({children}:Props) =>{
     await router.push('/')
   }
 
+
   return(
     <AuthContext.Provider value ={{authentication,status,signOutProvider,facebookAuth,googleAuth,emailAndPasswordAuth}}>
       {children}

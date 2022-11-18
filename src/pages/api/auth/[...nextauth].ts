@@ -60,11 +60,13 @@ export default NextAuth({
       })
 
 
+
+
       const newSession ={
         ...session,
         user:{
-          ...result.data,
-          image:session.user.image
+          image:session.user.image,
+          ...result.data
         },
       }
 

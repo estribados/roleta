@@ -14,6 +14,13 @@ declare module "next-auth" {
       pix:string
       bank:string
       credits:number
+      solicitations:Array<{
+        id:string
+        value_solicitation:number
+        userId:string
+        status: 'PAGO' | 'SOLICITADO'
+        createdAt:string
+      }>
     } & DefaultSession["user"]
   }
 }

@@ -1,6 +1,6 @@
 import tw from 'tailwind-styled-components';
 
-const ButtonConfirm = tw.div`
+const ButtonConfirm = tw.button`
 w-full
 inline-flex 
 justify-center 

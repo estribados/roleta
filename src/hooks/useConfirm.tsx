@@ -14,7 +14,7 @@ interface ConfirmProps{
 interface ConfirmContextData{
   confirm(value:ConfirmProps):void
   confirmation:ConfirmProps
-}
+} 
 
 interface Props{
   children?: JSX.Element | JSX.Element[]

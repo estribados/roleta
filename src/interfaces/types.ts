@@ -1,3 +1,12 @@
+export interface ISolicitation{
+  id:string
+  value_solicitation:number
+  userId:string
+  status: 'SOLICITADO' | 'PAGO'
+  createdAt:string
+  }
+
+
 export interface IUser{
   id:string
   name:string
@@ -8,4 +17,7 @@ export interface IUser{
   telephone:string
   image?:string
   isAdmin:boolean
+  solicitations?:ISolicitation[]
 }
+
+

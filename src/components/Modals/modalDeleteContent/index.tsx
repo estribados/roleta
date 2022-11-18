@@ -1,9 +1,11 @@
 import { Dialog } from '@headlessui/react';
-import React, { ReactNode, useRef } from 'react';
-
-import { useConfirm } from 'hooks/useConfirm';
+import React, { ReactNode, useRef, useState } from 'react';
 
 import { useAuth } from 'hooks/useAuth';
+import { useConfirm } from 'hooks/useConfirm';
+import { useToast } from 'hooks/useToast';
+import api from 'services/api';
+
 import { ButtonConfirm, CancelButton } from './styles';
 
 interface ConfirmProps{
@@ -34,6 +36,41 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
   const cancelButtonRef = useRef(null);
   const {confirmation,confirm} = useConfirm()
   const {authentication} = useAuth()
+  const {notify} = useToast()
+  const [hasSolicitations, setHasSolicitations] = useState(!!authentication?.user.solicitations.length)
+
+
+  const solicitaton = (async () =>{
+    try{
+      handleConfirm({...confirmation,hasConfirm:true})
+
+      const response = await api.post('/solicitation/create',{
+        userId:authentication?.user.id,
+        value_solicitation:Number(confirmation.valueRescue)
+      })
+      .then((response) =>{
+        if(authentication){
+          authentication.user.solicitations = [...authentication.user.solicitations,response.data]
+          setIsOpen(false)
+          setTimeout(() =>{
+            setHasSolicitations(!!authentication.user.solicitations.length)
+            handleConfirm({hasConfirm:false})
+          },500)
+        }
+      })
+      notify({
+        message:'Solicitação em andamento, em até 24 horas o valor estará disponivel na conta registrada',
+        types:'info'
+      })
+    }catch(err:any){
+
+      notify({
+        message:err.response.data.err,
+        types:'info'
+      })
+    }
+  })
+
 
   return (
     <>
@@ -51,29 +88,34 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
           <div className="mt-4 md:px-16 px-5 text-black">{text}</div>
             {hasInputValue && 
               <div className='mt-5'>
-                <label className='text-gray-500 font-bold   mt-5' htmlFor="valorDisponivel">Valor:</label>
-                <input onChange={(e) =>{ 
-                    confirm({
-                      ...confirmation,
-                      valueRescue:e.target.value
-                    })
-                  }} 
-                  id="valorDisponivel" type="text"
-                  placeholder={`Valor disponivel ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}`}
-                  className="bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5" />
+
+                {hasSolicitations ?
+                  <strong className='text-red-400' >Você ja tem solicitações em andamento qualquer duvida entre em contato com o suporte</strong >
+                  :
+                  <>
+                    <label className='text-gray-500 font-bold   mt-5' htmlFor="valorDisponivel">Valor:</label>
+                    <input onChange={(e) =>{ 
+                        confirm({
+                          ...confirmation,
+                          valueRescue:e.target.value
+                        })
+                      }} 
+                      id="valorDisponivel"
+                      type="text"
+                      placeholder={`Valor disponivel 
+                      ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}`}
+                      className="bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5" />
+                  </>
+                }
+                
               </div>
             }
           </div>
       </div>
       <div className="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense ">
-        <ButtonConfirm  onClick={() =>{
-          handleConfirm({...confirmation,hasConfirm:true})
-          setIsOpen(false)
-          setTimeout(() =>{
-            handleConfirm({hasConfirm:false})
-          },1000)
-
-        }}>
+        <ButtonConfirm className={`${hasSolicitations && 'bg-gray-400 cursor-not-allowed'} `}
+          disabled={hasSolicitations}
+          onClick={solicitaton}>
           Confirmar
         </ButtonConfirm>
         <CancelButton
