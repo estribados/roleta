@@ -1,10 +1,12 @@
 import dynamic from 'next/dynamic';
-import { useRef } from 'react';
+import Image from 'next/image';
 
 import { ButtonAnimated } from 'components/Buttons';
 import Header from 'components/Header';
 import { Container, Content } from 'styles/home';
 import { staticData } from 'utils/staticRoullete';
+
+import bg from '../../public/images/caverna-home.webp';
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('../components/Roullete'),
@@ -12,10 +14,15 @@ const DynamicComponentWithNoSSR = dynamic(
 )
 
 export default function Home() {
-  const audioRef = useRef(null)
 
   return (
-      <Container>
+      <Container className='relative'>
+        <Image 
+        placeholder='blur'
+        className='w-screen h-screen object-cover left-0 bg-fixed' 
+        src={bg} 
+        layout='fill'
+        alt="logo do sistema"/>
         <Header/>
         <Content>
           <div className='containerRoullete'>

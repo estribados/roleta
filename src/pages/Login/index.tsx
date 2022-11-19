@@ -2,8 +2,8 @@ import { FormHandles } from '@unform/core';
 import { Form } from "@unform/web";
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 import React, { useCallback, useRef } from 'react';
 import { FiLock, FiMail } from 'react-icons/fi';
 import * as Yup from 'yup';
@@ -15,6 +15,8 @@ import { Facebook, Google } from 'components/Icons';
 import { useAuth } from 'hooks/useAuth';
 import { AnimationContainer, Container, ContainerBg, Content } from 'styles/login';
 import getValidationErrors from 'utils/getValidationErros';
+
+import bg from '../../../public/images/caverna-tesouro.webp';
 
 interface loginProps{
   email:string
@@ -39,10 +41,7 @@ export const getServerSideProps: GetServerSideProps = async ({req}) =>{
   }
 }
 
-
-
 const SignIn:React.FC = () =>{
-  const router = useRouter()
   const formRef= useRef<FormHandles>(null)
   const {facebookAuth,googleAuth, emailAndPasswordAuth} = useAuth()
 
@@ -74,13 +73,17 @@ const SignIn:React.FC = () =>{
       }
     }
   },[emailAndPasswordAuth])
-
-  
-
   return(
     <ContainerBg>
+      <Image 
+        placeholder='empty'
+        className='w-screen h-screen object-cover left-0 bg-fixed' 
+        src={bg} 
+        layout='fill'
+        alt="logo do sistema"/>
       <Header/>
       <Container>
+        
         <Content className='mx-5'>
           <AnimationContainer className='mx-5 glass px-5 py-2 rounded-lg'>
             <div className="socialButtons text- w-full">

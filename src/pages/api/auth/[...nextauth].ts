@@ -55,20 +55,27 @@ export default NextAuth({
     },
     
     async session({ session, user, token }:any) {
-     const result =  await api.post('users/find',{
-        email: session.user.email,
-      })
+      if(token){
+
+        const result =  await api.post('users/find',{
+            email: session.user.email,
+          })
 
 
-      const newSession ={
-        ...session,
-        user:{
-          image:session.user.image,
-          ...result.data
-        },
-      }
+          const newSession ={
+            ...session,
+            user:{
+              image:session.user.image,
+              ...result.data
+            },
+          }
 
-      return session = newSession
+          return session = newSession
+
+        }
+
+      return session
+
       },
     async signIn({ user, account, profile, email, credentials }) {
       if(user){

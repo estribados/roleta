@@ -3,7 +3,8 @@ import { Form } from '@unform/web';
 import moment from 'moment';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
+import { memo, useCallback, useEffect, useRef, useState } from 'react';
 import { AiOutlineBank } from 'react-icons/ai';
 import { BsBellFill } from 'react-icons/bs';
 import { FiLock, FiMail, FiPhone, FiUser, FiX } from 'react-icons/fi';
@@ -25,8 +26,6 @@ import getValidationErrors from 'utils/getValidationErros';
 
 import ButtonGoldOutLined from '../Buttons/ButtonGold';
 import { Container, ContainerLabel, Label, Notifications } from './styles';
-
-import 'react-dropdown/style.css';
 
 interface ModalProps{
   openModal(value:boolean):void
@@ -189,17 +188,13 @@ const Modal:React.FC<ModalProps> = ({hasOpen,openModal}) => {
   )
 }
 
-type Props = {
-  children?: React.ReactNode; // 👈️ type children
-};
 
-const Header:React.FC<Props> = ({},props) =>{
+const Header:React.FC = () =>{
   const {confirm} = useConfirm()
-  const {notify} = useToast()
   const {signOutProvider,authentication,status} = useAuth()
-  const [toogle,setToogle] = useState(false)
   const [authStatus,setAuthStatus] = useState(false)
   const [updateOn,setUpdateOn] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     if(status === 'authenticated'){
@@ -208,15 +203,21 @@ const Header:React.FC<Props> = ({},props) =>{
   }, [status])
 
   const {data:notifications} = useQuery<INotifications[]>(['notifications',authentication?.user.id], async () =>{
-    const response = await api.get('notifications/getNotificationsByUser',{
-      params:{
-        userId:authentication?.user.id
-      }
-    })
-    return response.data
-  })
+    if(authentication){
+      const response = await api.get('notifications/getNotificationsByUser',{
+        params:{
+          userId:authentication?.user.id
+        }
+      })
+      return response.data
+    }
+  },{
+    staleTime: 1200000 , //20 minutos,
+    cacheTime: 1200000,
+    refetchOnWindowFocus:false
+  } )
 
-  const updateNotifications = async () =>{
+  const updateNotifications = useCallback( async () =>{
     if(authentication?.user.id){
       await api.patch('notifications/update',{
         userId:authentication?.user.id
@@ -224,7 +225,7 @@ const Header:React.FC<Props> = ({},props) =>{
     }
 
     await queryClient.invalidateQueries('notifications')
-  }
+  },[authentication?.user.id])
 
   const hasNotificationsNotVisualized = notifications?.some((notification) => !notification.visualized)
 
@@ -232,9 +233,7 @@ const Header:React.FC<Props> = ({},props) =>{
     <Container>
       <div className="px-5 h-20   sticky  z-10 flex-shrink-0 flex shadow-header  bg-[rgba(0,0,0,0.5)]  ">
         <div className=' items-center max-w-5xl  mx-auto flex w-full justify-between'>
-        <Link legacyBehavior href="/">
-          <Image className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
-        </Link>
+          <Image onClick={() =>{router.push('/')}} className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
           {authentication?.user.isAdmin &&
             <div>
               <nav>
@@ -291,7 +290,7 @@ const Header:React.FC<Props> = ({},props) =>{
               </Notifications>
               <div  className="dropdown dropdown-bottom dropdown-end">
                 <label  tabIndex={0} className="btn btn-circle swap swap-rotate">
-                  <input onChange={(e) => setToogle(e.target.checked)} type="checkbox" />
+                  <input type="checkbox" />
                   <GiHamburgerMenu size={24}/>
                 </label>
                   <ul tabIndex={0} style={{zIndex:999999}}  className={` dropdown-content menu p-2 shadow bg-base-100 rounded-box absolute z-50 right-0  text w-52 mt-4`}>
@@ -317,7 +316,6 @@ const Header:React.FC<Props> = ({},props) =>{
               </div>
 
             </div>
-
             :
             <Link legacyBehavior href="/login">
               <a>
@@ -327,11 +325,13 @@ const Header:React.FC<Props> = ({},props) =>{
           }
         </div>
       </div>
-      <Modal openModal={setUpdateOn} hasOpen={updateOn} />
+      {updateOn && 
+        <Modal openModal={setUpdateOn} hasOpen={updateOn} />
+      }
     </Container>
   );
 }
 
 
-export default Header
+export default memo(Header)
 

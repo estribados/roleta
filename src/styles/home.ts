@@ -3,15 +3,16 @@ import styled from 'styled-components'
 export const Container = styled.div`
 
 
-background-image: url('images/caverna-home.webp');
+/* background-image: url('images/caverna-home.webp');
 background-repeat:no-repeat;
 background-size:cover;
 background-position:  70%;
 position:absolute;
 width:100vw;
 left:0;
+align-items:center; */
 height:100vh;
-align-items:center;
+
 
 aside{
   height: 100%;

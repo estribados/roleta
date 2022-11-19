@@ -2,6 +2,7 @@ import { FormHandles } from '@unform/core';
 import { Form } from "@unform/web";
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback, useRef } from 'react';
 import { FiLock, FiMail, FiPhone, FiUser } from 'react-icons/fi';
@@ -14,6 +15,8 @@ import { useToast } from 'hooks/useToast';
 import api from 'services/api';
 import { AnimationContainer, Container, ContainerBg, Content } from 'styles/signUp';
 import getValidationErrors from 'utils/getValidationErros';
+
+import bg from '../../../public/images/caverna-tesouro.webp';
 
 interface DataProps{
   name:string
@@ -73,6 +76,12 @@ const SignUp:React.FC = () =>{
 
   return(
     <ContainerBg>
+      <Image 
+        placeholder='empty'
+        className='w-screen h-screen object-cover left-0 bg-fixed' 
+        src={bg} 
+        layout='fill'
+        alt="logo do sistema"/>
       <Header/>
       <Container>
         <Content className='mx-5'>
