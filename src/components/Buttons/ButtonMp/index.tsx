@@ -59,8 +59,8 @@ const ButtonMP:React.FC<ButtonProps> = ({animation,textSize,children, ...rest}) 
 
             <div className='mx-auto w-full max-w-sm flex items-center justify-center flex-col'>
               <h1 className='text-gold100 font-bold'>Digite o valor de creitos que ira comprar</h1>
-              <input onChange={(e) =>{setCredits(e.target.value)}} type="number" placeholder="Valor do credito" className="input text-black input-bordered w-full input-warning  max-w-xs bg-slate-100 my-3" />
-              <button onClick={buyCredits} className="w-full btn btn-outline btn-warning">COMPRAR</button>
+              <input onChange={(e) =>{setCredits(e.target.value)}} type="number" placeholder="Valor do credito" className="input text-black input-bordered w-full input-warning   bg-slate-100 my-3" />
+              <button onClick={buyCredits} className="w-full btn btn-outline btn-warning">ESCOLHER FORMA DE PAGAMENTO</button>
             </div>
           </div>
         }
