@@ -4,6 +4,7 @@ import { QueryClientProvider } from 'react-query';
 
 import { AuthProvider } from 'hooks/useAuth';
 import { ConfirmProvider } from 'hooks/useConfirm';
+import { ScriptProvider } from 'hooks/useScript';
 import { ToastProvider } from 'hooks/useToast';
 import { WinProvider } from 'hooks/useWin';
 import { queryClient } from 'services/queryClient';
@@ -23,8 +24,10 @@ function MyApp({ Component,
           <AuthProvider>
             <ConfirmProvider>
               <WinProvider>
-                <GlobalStyle/>
-                <Component {...pageProps} />
+                <ScriptProvider>
+                  <GlobalStyle/>
+                  <Component {...pageProps} />
+                </ScriptProvider>
               </WinProvider>
             </ConfirmProvider>
           </AuthProvider>

@@ -10,7 +10,7 @@ export default async function getNotificationsByUser(req:NextApiRequest,res:Next
       userId:userId as string
     },
     orderBy:{
-      visualized:'asc'
+      visualized:'desc'
     },
     include:{
       solicitation:true,

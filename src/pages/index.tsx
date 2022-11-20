@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 
-import { ButtonAnimated } from 'components/Buttons';
+import { ButtonMP } from 'components/Buttons';
 import Header from 'components/Header';
 import { Container, Content } from 'styles/home';
 import { staticData } from 'utils/staticRoullete';
@@ -37,9 +37,9 @@ export default function Home() {
               </a> 
             </h1>
             <div className='mb-14 md:mb-0'>
-              <ButtonAnimated  animation >
+              <ButtonMP  animation >
                 COMPRAR CREDITOS
-              </ButtonAnimated>
+              </ButtonMP>
             </div>
           </section>
         </Content>

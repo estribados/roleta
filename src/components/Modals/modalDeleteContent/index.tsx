@@ -76,9 +76,10 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
 
       
     }catch(err:any){
+      console.log(err.response)
 
       notify({
-        message:err.response.data.err,
+        message:err?.response?.data?.err,
         types:'info'
       })
     }
