@@ -1,22 +1,25 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
 
 import apiMp from 'services/apiMp';
 
 export default async function createPayment(req:NextApiRequest,res:NextApiResponse){
-  const {creditSolicitation,userId} = req.body
+  const {creditSolicitation,email,first_name,last_name} = req.body
+  const user = await getSession({ req });
 
- const response =await apiMp.post(`checkout/preferences?access_token=${process.env.ACCESS_TOKEN_MP}`,{
-    items: [
-      {
-        id:userId,
-        title: "Creditos - Estribados.com",
-        unit_price: creditSolicitation,
-        quantity: 1,
-        currency_id:"BRL"
-      }
-    ]
+  if(user){
+
+  const response =await apiMp.post(`v1/payments?access_token=${process.env.ACCESS_TOKEN_MP}`,{
+    transaction_amount: creditSolicitation,
+    description: 'Creditos - estribado.com',
+    payment_method_id: 'pix',
+    payer: {
+      email:user?.user.email,
+      first_name:user?.user.name,
+      last_name:user?.user.last_name,
+    }
   })
-
   return res.status(200).json(response.data)
+}
 
 }

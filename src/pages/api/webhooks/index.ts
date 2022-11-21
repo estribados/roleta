@@ -3,6 +3,7 @@
 import { prisma } from 'lib/prisma';
 
 import type { NextApiRequest, NextApiResponse } from 'next';
+import { getSession } from 'next-auth/react';
 import apiMp from 'services/apiMp';
 
 
@@ -13,24 +14,20 @@ export default async function webhooks(
   const {data:{id}} = req.body
 
   const response = await apiMp.get(`v1/payments/${id}?access_token=${process.env.ACCESS_TOKEN_MP}`)
-  const {status,transaction_amount,additional_info} = response.data
-  const userId = additional_info.items[0].id
+  const {status,transaction_amount,} = response.data
 
- const user = await prisma.user.findFirst({
-    where:{
-      id:userId
-    }
-  })
+  console.log(response.data )
+  const user = await getSession({ req });
 
   if(user){
     if(status === 'approved'){
       //atualizar usuario com creditos de transaction_amount
       await prisma.user.update({
         where:{
-          id:userId
+          id:user.user.id
         },
         data:{
-          credits:user.credits + transaction_amount
+          credits:user.user.credits + transaction_amount
         }
     })
 

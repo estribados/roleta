@@ -25,21 +25,18 @@ const ButtonMP:React.FC<ButtonProps> = ({animation,textSize,children, ...rest}) 
   const buyCredits = useCallback(async () =>{
    const response = await api.post('mercadoPago/createPayment',{
       creditSolicitation:Number(credits),
-      userId:authentication?.user.id
     })
-    const {init_point} = response.data
 
     notify({
-      message:"Você será direcionado para a tela de pagamentos",
+      message:"Gerando codigo pix",
       types:'info'
     })
 
     setTimeout(() =>{
-      push(init_point)
+      push(response.data.point_of_interaction.transaction_data.ticket_url)
     },2000)
 
-
-  },[authentication?.user.id, credits, notify, push])
+  },[credits, notify, push])
 
   return(
     <div className=''>
@@ -67,13 +64,14 @@ const ButtonMP:React.FC<ButtonProps> = ({animation,textSize,children, ...rest}) 
             <div className='mx-auto w-full max-w-sm flex items-center justify-center flex-col'>
               <h1 className='text-gold100 font-bold'>Digite o valor de creitos que ira comprar</h1>
               <input onChange={(e) =>{setCredits(e.target.value)}} type="number" placeholder="Valor do credito" className="input text-black input-bordered w-full input-warning   bg-slate-100 my-3" />
-              <button onClick={buyCredits} className="w-full btn btn-outline btn-warning">ESCOLHER FORMA DE PAGAMENTO</button>
-            </div>
+              <button onClick={buyCredits} className="w-full btn btn-outline btn-warning">Pagar com pix</button>
+            <div>
           </div>
+      </div>
+    </div>
         }
       />
     </div>
-
   )
 }
 export { ButtonMP }
