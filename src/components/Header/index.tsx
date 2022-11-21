@@ -268,11 +268,11 @@ const Header:React.FC = () =>{
                     { !!notifications?.length ?
                     notifications?.map((notification) =>{
                         return(
-                          <div key={notification.id} className='p-3 border-gray-200 border-b-2 '>
+                          <div key={notification?.id} className='p-3 border-gray-200 border-b-2 '>
                           <div className='w-full justify-between flex gap-2 items-center mb-3'>
-                            <p className='text-base font-bold'><>{notification.solicitation.status}</></p>
+                            <p className='text-base font-bold'><>{notification.solicitation?.status}</></p>
                             <span className='text-gray-300 text-sm '><>{ 
-                            moment(notification.solicitation.createdAt).format('DD/MM - H') + 'h'
+                            moment(notification.solicitation?.createdAt).format('DD/MM - H') + 'h'
                             }</></span>
                           </div>
                           <div className='text-xs'>

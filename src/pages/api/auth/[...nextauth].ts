@@ -34,8 +34,8 @@ export default NextAuth({
       }
     }),
     GoogleProvider({
-      clientId: '130175532944-akiu2dgbpgjrde803c09r1rsurfm0ugo.apps.googleusercontent.com',
-      clientSecret: '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',
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
       authorization: {
         params: {
           prompt: "consent",
@@ -60,7 +60,6 @@ export default NextAuth({
         const result =  await api.post('users/find',{
             email: session.user.email,
           })
-
 
           const newSession ={
             ...session,

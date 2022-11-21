@@ -3,6 +3,7 @@ import React, { ButtonHTMLAttributes, useCallback, useState } from 'react'
 import { FiX } from 'react-icons/fi'
 
 import { DefaultModal } from 'components/Modals/DefaultModal'
+import { useAuth } from 'hooks/useAuth'
 import { useToast } from 'hooks/useToast'
 import api from 'services/api'
 
@@ -17,12 +18,14 @@ interface ButtonProps extends  ButtonHTMLAttributes<HTMLButtonElement>{
 const ButtonMP:React.FC<ButtonProps> = ({animation,textSize,children, ...rest}) =>{
   const {push} = useRouter()
   const {notify} = useToast()
+  const {authentication} = useAuth()
 
   const [openModal,setOpenModal] = useState(false)
   const [credits,setCredits] = useState('')
   const buyCredits = useCallback(async () =>{
    const response = await api.post('mercadoPago/createPayment',{
-      creditSolicitation:Number(credits)
+      creditSolicitation:Number(credits),
+      userId:authentication?.user.id
     })
     const {init_point} = response.data
 
@@ -36,11 +39,15 @@ const ButtonMP:React.FC<ButtonProps> = ({animation,textSize,children, ...rest}) 
     },2000)
 
 
-  },[credits, notify, push])
+  },[authentication?.user.id, credits, notify, push])
 
   return(
     <div className=''>
-    <ContainerAnimated onClick={() =>{setOpenModal(true)}} animation ={animation}>
+    <ContainerAnimated onClick={() =>{
+      !!authentication ?
+      setOpenModal(true) : 
+      push('/login')
+      }} animation ={animation}>
       <Container   className='flex items-center justify-center w-full h-full   text-white' {...rest} >
         {children}
       </Container>

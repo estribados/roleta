@@ -1,12 +1,12 @@
+import { GetServerSideProps } from 'next';
+import { getSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 import { useRef } from 'react';
 
-import { ButtonAnimated } from 'components/Buttons';
+import { ButtonMP } from 'components/Buttons';
 import Header from 'components/Header';
 import HeaderRoullete from 'components/HeaderRoullete';
 import { useAuth } from 'hooks/useAuth';
-import { GetServerSideProps } from 'next';
-import { getSession } from 'next-auth/react';
 import { Container, Content } from 'styles/roleta';
 import { staticData } from 'utils/staticRoullete';
 
@@ -39,7 +39,9 @@ export default function Roleta() {
               </div>
 
               <div className=' md:mt-5 mt-2'  >
-                <ButtonAnimated  animation >COMPRAR CREDITOS</ButtonAnimated>
+                <ButtonMP  animation >
+                  COMPRAR CREDITOS
+                </ButtonMP>
               </div>
               
             </div>
@@ -54,7 +56,6 @@ export default function Roleta() {
           </div>
         </Content>
       </Container>
-
   );
 }
 
