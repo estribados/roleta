@@ -6,7 +6,7 @@ export const Container = styled.div`
   margin: 40px  auto 0 auto;
   box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
 
-  @media(max-height:740px){
+  @media(min-height:740px){
     display: none;
   }
 

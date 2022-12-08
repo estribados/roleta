@@ -1,7 +1,6 @@
 import { GetServerSideProps } from 'next';
 import { getSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
-import { useRef } from 'react';
 
 import { ButtonMP } from 'components/Buttons';
 import Header from 'components/Header';
@@ -24,7 +23,7 @@ export default function Roleta() {
         <HeaderRoullete/>
         <Content>
           <section className='md:max-w-sm'>
-            <div className='  mb-14 md:mb-0 justify-between md:h-full  flex flex-col'>
+            <div className='mb-14 md:mb-0 justify-between md:h-full  flex flex-col'>
               <div>
                 <h1 className='saldo'>SALDO DISPONIVEL <br/>  
                   <span className='font-extrabold text-5xl block'>
@@ -46,7 +45,7 @@ export default function Roleta() {
             </div>
           </section>
           <div className='containerRoullete'>
-            <div className='responsive-container absolute right-2 md:-right-4 md:bottom-1  bottom-24 '>
+            <div className='responsive-container absolute right-2 md:-right-4 md:bottom-1  bottom-20 '>
               <DynamicComponentWithNoSSR data={staticData}/>
             </div>
           </div>

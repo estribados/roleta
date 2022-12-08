@@ -34,20 +34,20 @@ export const Content = styled.main`
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  height: calc(100vh - 253px);
+  height: calc(100vh - 150px);
   position: relative;
   overflow: hidden;
 
     
   @media(max-height:916px){
   .responsive-container{
-    bottom: 75px !important;
+    bottom: 15px !important;
     }
   }
 
   @media(max-height:740px){
     grid-template-columns:  1fr;
-    height: calc(100vh - 133px);
+    height: calc(100vh - 233px);
     .responsive-container{
       bottom: 59px;
     }
@@ -67,7 +67,7 @@ export const Content = styled.main`
 
   @media(min-width:720px){
 
-    margin-top: 80px;
+    margin-top: 40px;
   }
 
   h1{

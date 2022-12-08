@@ -6,7 +6,6 @@ const HeaderRoullete:React.FC = () =>{
   return(
     <Container>
       <nav>
-
       <li>
         Prata
         <span>
@@ -17,34 +16,32 @@ const HeaderRoullete:React.FC = () =>{
       <li>
         Ouro
         <span>
-          R$ 1,00
+          R$ 2,00
         </span>
       </li>
 
       <li>
         Rubi
         <span>
-          R$ 1,00
+          R$ 3,00
         </span>
       </li>
 
       <li>
         Esmeralda
         <span>
-          R$ 1,00
+          R$ 4,00
         </span>
       </li>
 
       <li>
         Diamante
         <span>
-          R$ 1,00
+          R$ 5,00
         </span>
       </li>
       
       </nav>
-
-      
     </Container>
   )
 }
