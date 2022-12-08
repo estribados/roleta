@@ -1,11 +1,11 @@
-import NextAuth from 'next-auth';
+import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import FacebookProvider from "next-auth/providers/facebook";
 import GoogleProvider from "next-auth/providers/google";
 
 import api from 'services/api';
 
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
   pages:{
     signIn:'/',
     signOut:'/',
@@ -87,5 +87,6 @@ export default NextAuth({
       return false
     },
   }
-  
-});
+}
+
+export default NextAuth(authOptions);

@@ -57,3 +57,11 @@ export const Container = styled.button`
 
 `
 
+export const QrCodeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: #000000;
+`
+

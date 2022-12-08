@@ -16,7 +16,6 @@ const DynamicComponentWithNoSSR = dynamic(
 )
 
 export default function Roleta() {
-  const audioRef = useRef(null)
   const {authentication} = useAuth()
 
   return (
