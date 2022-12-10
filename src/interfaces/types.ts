@@ -32,4 +32,11 @@ export interface INotifications{
   visualized:boolean
 }
 
+export interface IRoullete{
+  nameCategory:string
+  id:string
+  status:string
+  price_roullete:number
+}
+
 

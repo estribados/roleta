@@ -57,3 +57,30 @@ model Notifications {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model Roulletes{
+  id String @id @default(uuid())
+  nameCategory String
+  price_roullete Int
+  status  StatusRoullete    @default(ATIVA)
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+  quotas Quotas[]
+
+}
+
+enum StatusRoullete {
+  ATIVA
+  INATIVA
+}
+
+model Quotas{
+  id String @id @default(uuid())
+  roulleteId String
+  roullete Roulletes? @relation(fields: [roulleteId], references: [id])
+  valueQuota Int
+  color String
+  percentageQuota Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime? @updatedAt
+}

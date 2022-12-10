@@ -6,8 +6,16 @@ import { GetServerSideProps } from 'next'
 import { getSession } from 'next-auth/react'
 import Link from 'next/link'
 import { Container } from 'styles/global'
+import { useQuery } from 'react-query'
+import api from 'services/api'
+import { IRoullete } from 'interfaces/types'
 
 const Roletas:React.FC = () =>{
+  const {data:roulletes} = useQuery<IRoullete[]>(['roulletes'], async () =>{
+    const response = await api.get('roulletes/getRoulletes')
+    return response.data
+  })
+
   return(
     <>
       <Header/>
@@ -38,35 +46,29 @@ const Roletas:React.FC = () =>{
                   <tr className='text-left'>
                     <th>Categoria</th>
                     <th>Valor</th>
-                    <th className='text-center'>N de cotas</th>
+                    <th>Status</th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr >
-                    <td>Prata</td>
-                    <td>1 real</td>
-                    <td className='text-center'>25</td>
+                <>
+                  {roulletes?.map((roullete) =>(
+                    <tr key={roullete.id} >
+                    <td>{roullete.nameCategory}</td>
+                    <td >{new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(roullete.price_roullete)}</td>
+                    <td>{roullete.status}</td>
                     <td>
-                      <button className="btn btn-primary btn-sm mb-2">Ver</button>
+                      <Link href={`roletas/${roullete.id}`}>
+                        <a >
+                          <button className="btn btn-primary btn-sm mb-2">Ver</button>
+                        </a>
+                      </Link>
                     </td>
                   </tr>
-                  <tr >
-                    <td>Prata</td>
-                    <td>1 real</td>
-                    <td className='text-center'>25</td>
-                    <td>
-                      <button className="btn btn-primary btn-sm mb-2">Ver</button>
-                    </td>
-                  </tr>
-                  <tr>
-                      <td>Prata</td>
-                      <td>1 real</td>
-                      <td className='text-center'>25</td>
-                      <td>
-                        <button className="btn btn-primary btn-sm mb-2">Ver</button>
-                      </td>
-                  </tr>
+                  ))}
+                  
+                </>
+
                 </tbody>
               </table>
             </div>
