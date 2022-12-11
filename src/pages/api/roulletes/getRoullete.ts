@@ -3,10 +3,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { prisma } from 'lib/prisma';
 
 export default async function getRoulletes(req:NextApiRequest,res:NextApiResponse){
-  const {id} = req.body
+  const {id} = req.query
   const roullete = await prisma.roulletes.findFirst({
     where:{
-      id
+      id:id as string
+    },
+    include:{
+      quotas:true
     }
   })
   

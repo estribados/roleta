@@ -39,4 +39,20 @@ export interface IRoullete{
   price_roullete:number
 }
 
+export interface IQuotas{
+  color:string
+  id:string
+  percentageQuota:number
+  roulleteId:string
+  valueQuota:number
+}
+
+export interface IRoulleteQuota{
+  nameCategory:string
+  id:string
+  status:string
+  price_roullete:number
+  quotas:IQuotas[]
+}
+
 
