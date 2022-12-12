@@ -16,8 +16,9 @@ import getValidationErrors from 'utils/getValidationErros'
 import { staticData } from 'utils/staticRoullete'
 import * as Yup from 'yup'
 import api from 'services/api'
-import { useQuery } from 'react-query'
-import { IRoullete, IRoulleteQuota } from 'interfaces/types'
+import { IRoulleteQuota } from 'interfaces/types'
+import { useToast } from 'hooks/useToast'
+import { useRouter } from 'next/router'
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('components/Roullete'),
@@ -26,67 +27,48 @@ const DynamicComponentWithNoSSR = dynamic(
 
 interface dataRoulleteProps{
   color?:string | undefined
-  value?:number | undefined
-  percentage?:number | undefined
+  valueQuota?:number | undefined
+  percentageQuota?:number | undefined
 }
 interface FormProps{
   id?:string
+  roullete?:IRoulleteQuota
 }
 
-const FormRoullete:React.FC<FormProps> = ({id}) =>{
-  const {data:roullete} = useQuery<IRoulleteQuota>(['roulleteShow',id], async () =>{
-    if(id){
-      const response = await api.get('roulletes/getRoullete',{
-        params:{
-          id
-        }
-      })
-      return response.data
-    }
-  })
+const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
+  const {notify} = useToast()
+  const { push } = useRouter();
+
 
   const formRef= useRef<FormHandles>(null)
   const [hasOpen,setHasOpen] = useState(false)
   const [lineInput,setLineInput] = useState<dataRoulleteProps>()
   const [nameForm,setNameForm] = useState(() =>{
-    const newQuotas = roullete?.quotas.map((quota) =>{
-      const newQuota = {
-        value:quota.valueQuota,
-        percentage:quota.percentageQuota,
-        color:quota.color
-      }
-
-      return newQuota
-    })
-
     if(id){
-      if(newQuotas){
-        return newQuotas
+      if(roullete?.quotas){
+        return roullete?.quotas
       }else{
-        return [{value:0,percentage:0,color:'#000000'}]
+        return [{valueQuota:undefined,percentageQuota:undefined,color:'#000000'}]
       }
     }else{
       return [
-        {value:0,percentage:0,color:'#000000'},
+        {valueQuota:undefined,percentageQuota:undefined,color:'#000000'},
       ]
-  }
+    }
+  })
 
-  }
-    
-  )
+  const changeValues = ({valueQuota,percentageQuota,color}:dataRoulleteProps, index:number) =>{
+    setLineInput({valueQuota,percentageQuota,color})
 
-  const changeValues = ({value,percentage,color}:dataRoulleteProps, index:number) =>{
-    setLineInput({value,percentage,color})
-
-    if(percentage) nameForm[index].percentage = percentage
-    if(value) nameForm[index].value = value
+    if(percentageQuota) nameForm[index].percentageQuota= percentageQuota
+    if(valueQuota) nameForm[index].valueQuota = valueQuota
     if(color) nameForm[index].color = color
 
-    setLineInput({percentage:0,value:0,color:'#000000'})
+    setLineInput({percentageQuota:undefined,valueQuota:undefined,color:'#000000'})
   }
 
   const duplicateInput = () =>{
-    setNameForm(oldArray => [...oldArray, {value:0,percentage:0,color:'#000000'}]);
+    setNameForm(oldArray => [...oldArray, {valueQuota:undefined,percentageQuota:undefined,color:'#000000'}]);
   }
 
   const removeLineInput = (index:number) =>{
@@ -98,14 +80,19 @@ const FormRoullete:React.FC<FormProps> = ({id}) =>{
     }
   }
 
-  const updateRoullete = async ({id,itens,roullete}:{id:string,roullete:{nameCategory:string,valueCategory:string},itens:dataRoulleteProps}) => {
-
+  const updateRoullete = async ({id,itens,roullete}:{id:string,roullete:{nameCategory:string,valueCategory:number},itens:dataRoulleteProps}) => {
+    console.log("aqui")
+    await api.put('roulletes/update',{
+      id,
+      itens,
+      roullete
+    })
   }
 
-  const  createRoullete = async ({itens,roullete}:{roullete:{nameCategory:string,valueCategory:string},itens:dataRoulleteProps}) => {
+  const createRoullete = async ({itens,roullete}:{roullete:{nameCategory:string,valueCategory:string},itens:dataRoulleteProps}) => {
     await api.post('roulletes/create',{
       nameCategory:roullete.nameCategory,
-      price_roullete:roullete.valueCategory,
+      price_roullete:Number(roullete.valueCategory),
       quotas:itens
     })
   }
@@ -116,16 +103,16 @@ const FormRoullete:React.FC<FormProps> = ({id}) =>{
       formRef.current?.setErrors({});
 
       if(id){
-        updateRoullete({
+        await updateRoullete({
           id,
           itens:nameForm as dataRoulleteProps,
           roullete:{
             nameCategory:data.nameCategory,
-            valueCategory:data.valueCategory
+            valueCategory:Number(data.valueCategory)
           }
         })
       }else{
-        createRoullete({
+        await createRoullete({
           itens:nameForm as dataRoulleteProps,
           roullete:{
             nameCategory:data.nameCategory,
@@ -133,20 +120,26 @@ const FormRoullete:React.FC<FormProps> = ({id}) =>{
           }
         })
       }
+
+      notify({
+        message:`Roleta ${id ? 'atualizada' : 'criada'} com sucesso`,
+        types:'success'
+      })
+      push('/painel/roletas')
      
     }catch(err){
       if(err instanceof Yup.ValidationError){
         const errors = getValidationErrors(err)
         formRef.current?.setErrors(errors);
-
         return
       }
     }
-  },[id, nameForm])
+  },[id, nameForm, notify, push])
 
-  if(id && !roullete){
-    return <h1>carregando</h1>
-  }
+  const roulleteData = nameForm.map((form) =>{
+    const mountObj = { option: form.valueQuota, style: { backgroundColor: form.color, textColor: '#fff' } }
+    return mountObj
+  })
 
   return(
     <>
@@ -182,17 +175,17 @@ const FormRoullete:React.FC<FormProps> = ({id}) =>{
                   <div key={index} className='bg-black50 shadow-sm my-2 p-2 rounded-md flex flex-col md:flex-row  justify-between gap-0 md:gap-5 w-full items-end'>
                     <div className='  w-full'>
                       <label htmlFor="" className=' text-sm'>Valor</label>
-                      <input defaultValue={item.value} onBlur={(e) =>{changeValues({...lineInput,value:Number(e.target.value)},index)}} type="text" placeholder="Cota" className="md:mb-0 mb-2 text-black  input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
+                      <input defaultValue={item?.valueQuota} onBlur={(e) =>{changeValues({...lineInput,valueQuota:Number(e.target.value)},index)}} type="text" placeholder="Cota" className="md:mb-0 mb-2 text-black  input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
                     </div>
 
                     <div className='  w-full'>
                       <label className='text-sm' htmlFor="">Porcentagem </label>
-                      <input defaultValue={item.percentage} onBlur={(e) =>{changeValues({...lineInput,percentage:Number(e.target.value)},index)}} type="text" placeholder="% Acerto" className="md:mb-0 mb-2 text-black input-sm  bg-white input input-bordered input-warning w-full max-w-xs" />
+                      <input defaultValue={item.percentageQuota} onBlur={(e) =>{changeValues({...lineInput,percentageQuota:Number(e.target.value)},index)}} type="text" placeholder="% Acerto" className="md:mb-0 mb-2 text-black input-sm  bg-white input input-bordered input-warning w-full max-w-xs" />
                     </div>
 
                     <div className=' w-full'>
                       <label htmlFor="" className='text-sm'>Cor de fundo</label>
-                      <input type={'color'} placeholder="Type here"  onBlur={(e) =>{changeValues({...lineInput,color:e.target.value},index)}} className="md:mb-0 mb-4 input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
+                      <input defaultValue={item.color} type={'color'} placeholder="Type here"  onBlur={(e) =>{changeValues({...lineInput,color:e.target.value},index)}} className="md:mb-0 mb-4 input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
                     </div>
                     
                     {nameForm.length > 1 
@@ -205,7 +198,7 @@ const FormRoullete:React.FC<FormProps> = ({id}) =>{
                   </div>
                   )
                 })}
-              <div className='mb-5 flex gap-5'>
+              <div className='my-5 flex gap-5'>
                 <ButtonAnimated type='button'  onClick={duplicateInput} animation={false}><IoMdAdd/></ButtonAnimated>
                 <ButtonAnimated  type='submit' animation={false}>Salvar</ButtonAnimated>
               </div>

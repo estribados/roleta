@@ -40,11 +40,11 @@ export interface IRoullete{
 }
 
 export interface IQuotas{
-  color:string
-  id:string
-  percentageQuota:number
-  roulleteId:string
-  valueQuota:number
+  color?:string | undefined
+  id?:string
+  percentageQuota?:number | undefined
+  roulleteId?:string
+  valueQuota?:number | undefined 
 }
 
 export interface IRoulleteQuota{

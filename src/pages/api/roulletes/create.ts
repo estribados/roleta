@@ -16,9 +16,7 @@ export default async function create(req:NextApiRequest,res:NextApiResponse){
 
   const newQuotas = quotas.map((quota:any) =>{
     const newQuota= {
-      percentageQuota:Number(quota.percentage),
-      valueQuota:Number(quota.value),
-      color:quota.color,
+      ...quota,
       roulleteId:roullete.id
     }
 
