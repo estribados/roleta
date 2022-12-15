@@ -3,7 +3,7 @@ import React, { useCallback, useRef, useState } from 'react'
 import { FormHandles } from '@unform/core'
 import { Form } from '@unform/web'
 import { BackButton, ButtonAnimated } from 'components/Buttons'
-import { Input } from 'components/Form'
+import { Input, MaskInput } from 'components/Form'
 import Header from 'components/Header'
 import { DefaultModal } from 'components/Modals/DefaultModal'
 import dynamic from 'next/dynamic'
@@ -19,6 +19,7 @@ import api from 'services/api'
 import { IRoulleteQuota } from 'interfaces/types'
 import { useToast } from 'hooks/useToast'
 import { useRouter } from 'next/router'
+import { WheelData } from 'react-custom-roulette/dist/components/Wheel/types'
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('components/Roullete'),
@@ -39,7 +40,6 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
   const {notify} = useToast()
   const { push } = useRouter();
 
-
   const formRef= useRef<FormHandles>(null)
   const [hasOpen,setHasOpen] = useState(false)
   const [lineInput,setLineInput] = useState<dataRoulleteProps>()
@@ -59,6 +59,8 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
 
   const changeValues = ({valueQuota,percentageQuota,color}:dataRoulleteProps, index:number) =>{
     setLineInput({valueQuota,percentageQuota,color})
+
+    // console.log(valueQuota.replace(/(\d{3})(\d)/, "$1.$2");)
 
     if(percentageQuota) nameForm[index].percentageQuota= percentageQuota
     if(valueQuota) nameForm[index].valueQuota = valueQuota
@@ -137,8 +139,11 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
   },[id, nameForm, notify, push])
 
   const roulleteData = nameForm.map((form) =>{
-    const mountObj = { option: form.valueQuota, style: { backgroundColor: form.color, textColor: '#fff' } }
-    return mountObj
+    if(form.valueQuota){
+
+      const mountObj = { option: form.valueQuota.toString(), style: { backgroundColor: form.color, textColor: '#fff' } }
+      return mountObj
+    }
   })
 
   return(
@@ -149,8 +154,8 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
           <div className='w-full md:w-1/2 border-r-2 px-5'>
 
             <div className='flex justify-between items-center'>
-            <h1 className='md:text-2xl md:text-center text-left text-1xl   '>CADASTRO DE ROLETA</h1>
-            <BackButton  path='/roletas' title={'Cadastrar'}/>
+            <h1 className='md:text-2xl md:text-center text-left text-1xl'>CADASTRO DE ROLETA</h1>
+            <BackButton  path='/painel/roletas' title={'Cadastrar'}/>
             </div>
 
             <Form initialData={{nameCategory:roullete?.nameCategory,valueCategory:roullete?.price_roullete}} className='mt-5 w-full overflow-y-auto max-h-[500px]' ref={formRef} onSubmit={handleSubmit}>
@@ -175,7 +180,8 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
                   <div key={index} className='bg-black50 shadow-sm my-2 p-2 rounded-md flex flex-col md:flex-row  justify-between gap-0 md:gap-5 w-full items-end'>
                     <div className='  w-full'>
                       <label htmlFor="" className=' text-sm'>Valor</label>
-                      <input defaultValue={item?.valueQuota} onBlur={(e) =>{changeValues({...lineInput,valueQuota:Number(e.target.value)},index)}} type="text" placeholder="Cota" className="md:mb-0 mb-2 text-black  input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
+                      {/* <MaskInput getValue={(e) =>{changeValues({...lineInput,valueQuota:Number(e.replace(/([^\d])+/gim, ''))},index)}} mask='currency'/> */}
+                      <input defaultValue={item?.valueQuota} onBlur={(e) =>{changeValues({...lineInput,valueQuota:Number(e)},index)}} type="text" placeholder="Cota" className="md:mb-0 mb-2 text-black  input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
                     </div>
 
                     <div className='  w-full'>
@@ -190,7 +196,7 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
                     
                     {nameForm.length > 1 
                     &&
-                    <button onClick={() =>{removeLineInput(index)}} className={"md:w-10 w-full btn btn-outline btn-error btn-sm"}>
+                    <button type='button' onClick={() =>{removeLineInput(index)}} className={"md:w-10 w-full btn btn-outline btn-error btn-sm"}>
                       <AiOutlineClose  color='red' size={20}/>
                     </button>
                     }
@@ -207,7 +213,7 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
 
           </div>
           <div className='md:block hidden'>
-            <DynamicComponentWithNoSSR disabled data={staticData}/>
+            <DynamicComponentWithNoSSR disabled data={roulleteData as WheelData[]}/>
           </div>
         </div>
       </Container>

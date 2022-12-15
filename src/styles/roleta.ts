@@ -29,7 +29,7 @@ aside{
 
 export const Content = styled.main`
   max-width: 1024px;
-  margin:  35px auto;
+  margin:  20px auto;
 
   display: grid;
   grid-template-columns: 1fr 1fr;

@@ -7,7 +7,7 @@ import { currencyFormat } from '../../utils/currencyNumber';
 import { Arrow, Container, RoulleteContainer, Spin } from './styles';
 
 export interface WheelData {
-  option: string;
+  option?: string;
   style?: StyleType;
 }
 export interface StyleType {

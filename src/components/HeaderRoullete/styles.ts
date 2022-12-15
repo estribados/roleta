@@ -20,7 +20,24 @@ export const Container = styled.div`
   overflow: auto;
   justify-content: space-between;
 
-    li{
+
+  &::-webkit-scrollbar-track {
+    background-color: #F4F4F4;
+    border-radius: 30px;
+
+    }
+    &::-webkit-scrollbar {
+        height: 5px;
+        border-radius: 30px;
+        background: #000000;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: yellow;
+        border-radius: 30px;
+
+    }
+
+    a{
       cursor:pointer;
       /* min-width:100px; */
       display: flex;
@@ -46,6 +63,11 @@ export const Container = styled.div`
         background-color: gold;
         box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);
       }
+    }
+
+    .activeNavLink{
+      background-color: gold;
+      box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);
     }
   }
 `

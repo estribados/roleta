@@ -1,5 +1,5 @@
 interface WheelProps{
-  option:string
+  option?:string
   style?:any
 }
 
@@ -11,7 +11,7 @@ export const currencyFormat = (data:WheelProps[]) =>{
       currency: 'BRL',
       minimumFractionDigits: 2
 
-  }).format(Number(item.option))
+  }).format(Number(item?.option) | 0)
 
 
   const obj = {

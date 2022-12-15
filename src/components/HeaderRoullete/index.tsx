@@ -1,46 +1,32 @@
+import { IRoullete } from 'interfaces/types'
+import { useRouter } from 'next/router'
 import React from 'react'
+import { NavLink } from 'components/NavLink'
 
 import { Container } from './styles'
 
-const HeaderRoullete:React.FC = () =>{
+interface HeaderProps{
+  roulletes:IRoullete[]
+}
+
+const HeaderRoullete:React.FC<HeaderProps> = ({roulletes}) =>{
+
+  const {push} = useRouter()
   return(
     <Container>
       <nav>
-      <li>
-        Prata
-        <span>
-          R$ 1,00
-        </span>
-      </li>
-
-      <li>
-        Ouro
-        <span>
-          R$ 2,00
-        </span>
-      </li>
-
-      <li>
-        Rubi
-        <span>
-          R$ 3,00
-        </span>
-      </li>
-
-      <li>
-        Esmeralda
-        <span>
-          R$ 4,00
-        </span>
-      </li>
-
-      <li>
-        Diamante
-        <span>
-          R$ 5,00
-        </span>
-      </li>
-      
+        {roulletes.map((roullete) =>(
+          <NavLink   key={roullete.id} href={`/painel/roleta/${roullete.id}`}  activeClassName="activeNavLink">
+            <a >
+              {roullete.nameCategory}
+              <span>
+                {
+                  new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(roullete.price_roullete)
+                }
+              </span>
+            </a>
+          </NavLink>  
+        ))}
       </nav>
     </Container>
   )
