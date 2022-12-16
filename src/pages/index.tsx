@@ -27,7 +27,7 @@ export default function Home() {
         <Content>
           <div className='containerRoullete'>
             <div className='fixed'>
-              <DynamicComponentWithNoSSR data={staticData}/>
+              <DynamicComponentWithNoSSR staticItens/>
             </div>
           </div>
           <section className=''>

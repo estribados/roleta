@@ -32,6 +32,17 @@ export interface INotifications{
   visualized:boolean
 }
 
+
+export interface StyleType {
+  backgroundColor?: string;
+  textColor?: string;
+}
+
+
+export interface WheelData {
+  option?: string;
+  style?: StyleType;
+}
 export interface IRoullete{
   nameCategory:string
   id:string
@@ -53,6 +64,11 @@ export interface IRoulleteQuota{
   status:string
   price_roullete:number
   quotas:IQuotas[]
+}
+
+export interface RoulleteQuotas{
+  roullete?:IRoullete
+  data:IQuotas[]
 }
 
 

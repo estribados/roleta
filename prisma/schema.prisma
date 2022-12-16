@@ -21,10 +21,10 @@ model User{
   bank String?
   pix String? 
   isAdmin Boolean @default(false)
-  credits Float? @default(0)
+  credits Decimal? @db.Decimal(9,2) @default(0) 
 
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime? @updatedAt
   solicitations Solicitation[]
   notifications Notifications[]
 }
@@ -32,11 +32,11 @@ model User{
 model Solicitation {
   id String @id @default(uuid())
   user   User @relation(fields: [userId], references: [id])
-  value_solicitation Float
+  value_solicitation Decimal @db.Decimal(9,2)
   userId String
   status  Status    @default(SOLICITADO)
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime? @updatedAt
   notifications Notifications[]
 }
 
@@ -55,14 +55,14 @@ model Notifications {
   visualized  Boolean @default(false)
   description String?
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime? @updatedAt
 }
 
 model Roulletes{
   id String @id @default(uuid())
   nameCategory String
-  price_roullete Int
-  status  StatusRoullete    @default(ATIVA)
+  price_roullete Decimal @db.Decimal(9,2)
+  status  StatusRoullete    @default(INATIVA)
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
   quotas Quotas[]
@@ -78,9 +78,9 @@ model Quotas{
   id String @id @default(uuid())
   roulleteId String
   roullete Roulletes? @relation(fields: [roulleteId], references: [id])
-  valueQuota Int
+  valueQuota Decimal @db.Decimal(9,2)
   color String
-  percentageQuota Int
+  percentageQuota Decimal @db.Decimal(9,2)
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
 }

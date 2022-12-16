@@ -66,7 +66,7 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
     if(valueQuota) nameForm[index].valueQuota = valueQuota
     if(color) nameForm[index].color = color
 
-    setLineInput({percentageQuota:undefined,valueQuota:undefined,color:'#000000'})
+    //setLineInput({percentageQuota:undefined,valueQuota:undefined,color:'#000000'})
   }
 
   const duplicateInput = () =>{
@@ -83,7 +83,6 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
   }
 
   const updateRoullete = async ({id,itens,roullete}:{id:string,roullete:{nameCategory:string,valueCategory:number},itens:dataRoulleteProps}) => {
-    console.log("aqui")
     await api.put('roulletes/update',{
       id,
       itens,
@@ -103,6 +102,7 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
     try{
 
       formRef.current?.setErrors({});
+
 
       if(id){
         await updateRoullete({
@@ -138,13 +138,6 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
     }
   },[id, nameForm, notify, push])
 
-  const roulleteData = nameForm.map((form) =>{
-    if(form.valueQuota){
-
-      const mountObj = { option: form.valueQuota.toString(), style: { backgroundColor: form.color, textColor: '#fff' } }
-      return mountObj
-    }
-  })
 
   return(
     <>
@@ -181,17 +174,17 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
                     <div className='  w-full'>
                       <label htmlFor="" className=' text-sm'>Valor</label>
                       {/* <MaskInput getValue={(e) =>{changeValues({...lineInput,valueQuota:Number(e.replace(/([^\d])+/gim, ''))},index)}} mask='currency'/> */}
-                      <input defaultValue={item?.valueQuota} onBlur={(e) =>{changeValues({...lineInput,valueQuota:Number(e)},index)}} type="text" placeholder="Cota" className="md:mb-0 mb-2 text-black  input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
+                      <input defaultValue={item?.valueQuota} onChange={(e) =>{changeValues({...lineInput,valueQuota:Number(e.target.value)},index)}} type="number" placeholder="Cota" className="md:mb-0 mb-2 text-black  input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
                     </div>
 
                     <div className='  w-full'>
                       <label className='text-sm' htmlFor="">Porcentagem </label>
-                      <input defaultValue={item.percentageQuota} onBlur={(e) =>{changeValues({...lineInput,percentageQuota:Number(e.target.value)},index)}} type="text" placeholder="% Acerto" className="md:mb-0 mb-2 text-black input-sm  bg-white input input-bordered input-warning w-full max-w-xs" />
+                      <input defaultValue={item.percentageQuota} onChange={(e) =>{changeValues({...lineInput,percentageQuota:Number(e.target.value)},index)}} type="text" placeholder="% Acerto" className="md:mb-0 mb-2 text-black input-sm  bg-white input input-bordered input-warning w-full max-w-xs" />
                     </div>
 
                     <div className=' w-full'>
                       <label htmlFor="" className='text-sm'>Cor de fundo</label>
-                      <input defaultValue={item.color} type={'color'} placeholder="Type here"  onBlur={(e) =>{changeValues({...lineInput,color:e.target.value},index)}} className="md:mb-0 mb-4 input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
+                      <input defaultValue={item.color} type={'color'} placeholder="Type here"  onChange={(e) =>{changeValues({...lineInput,color:e.target.value},index)}} className="md:mb-0 mb-4 input-sm bg-white input input-bordered input-warning w-full max-w-xs" />
                     </div>
                     
                     {nameForm.length > 1 
@@ -213,7 +206,7 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
 
           </div>
           <div className='md:block hidden'>
-            <DynamicComponentWithNoSSR disabled data={roulleteData as WheelData[]}/>
+            <DynamicComponentWithNoSSR disabled item={{data:nameForm}}/>
           </div>
         </div>
       </Container>
@@ -231,7 +224,7 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
             </header>
             
             <div className='ml-5 flex items-center justify-center w-full h-full'>
-            <DynamicComponentWithNoSSR disabled data={staticData}/>
+            <DynamicComponentWithNoSSR disabled item={{data:nameForm}}/>
           </div>
           </div>
         }

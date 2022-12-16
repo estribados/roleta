@@ -6,9 +6,17 @@ export default function Roleta() {
   const {push} = useRouter()
 
   useEffect(() =>{
-    api.get('roulletes/getRoulletes')
+    api.get('roulletes/getRoulletes',{
+      params:{
+        status:'ATIVA'
+      }
+    })
     .then((result) =>{
-      push(`/painel/roleta/${result.data[0].id}`)
+      if(!!result.data.length){
+        push(`/painel/roleta/${result.data[0].id}`)
+      }else{
+        push(`/`)
+      }
     })
   },[push])
 

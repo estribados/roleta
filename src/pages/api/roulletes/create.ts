@@ -1,7 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 
 import { prisma } from 'lib/prisma';
-import { Quotas } from '@prisma/client';
 
 export default async function create(req:NextApiRequest,res:NextApiResponse){
   const {nameCategory,price_roullete,quotas} = req.body

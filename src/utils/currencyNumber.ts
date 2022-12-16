@@ -5,14 +5,13 @@ interface WheelProps{
 
 export const currencyFormat = (data:WheelProps[]) =>{
 
- const formatedData =  data.map((item) =>{
+ const formatedData =  data?.map((item) =>{
    const formatedOption =  new Intl.NumberFormat('pt-BR', {
       style: 'currency',
       currency: 'BRL',
       minimumFractionDigits: 2
 
-  }).format(Number(item?.option) | 0)
-
+  }).format(Number(item?.option))
 
   const obj = {
     ...item,

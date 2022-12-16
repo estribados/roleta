@@ -7,50 +7,30 @@ import Header from 'components/Header';
 import HeaderRoullete from 'components/HeaderRoullete';
 import { useAuth } from 'hooks/useAuth';
 import { Container, Content } from 'styles/roleta';
-import { staticData } from 'utils/staticRoullete';
 import api from 'services/api';
 import { useEffect, useState } from 'react';
-import { IQuotas, IRoullete } from 'interfaces/types';
-import { useRouter } from 'next/router';
-import { WheelData } from 'react-custom-roulette/dist/components/Wheel/types'
-
+import { IRoullete, RoulleteQuotas } from 'interfaces/types';
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('components/Roullete'),
   { ssr: false }
 )
 
-export default function Roleta() {
-  const {authentication} = useAuth()
+export default function Roleta(quotas:RoulleteQuotas) {
+  let {authentication} = useAuth()
   const [roulletes,setRoulletes] = useState<IRoullete[]>([])
-  const [quotas,setQuotas] = useState<WheelData[]>([])
-  const {query:{id}} = useRouter()
+  const [result,setResult] = useState<number>()
 
   useEffect(() =>{
-    api.get('roulletes/getRoulletes')
+    api.get('roulletes/getRoulletes',{
+      params:{
+        status:'ATIVA'
+      }
+    })
     .then((result) =>{
       setRoulletes(result.data)
     })
   },[])
-
-  useEffect(() =>{
-    api.get(`quotas/byId`,{
-      params:{
-        id
-      }
-    })
-    .then((response) =>{
-      const roulleteData = response.data.map((quotas:IQuotas) =>{
-        if(quotas.valueQuota){
-    
-          const mountObj = { option: quotas.valueQuota.toString(), style: { backgroundColor: quotas.color, textColor: '#fff' } }
-          return mountObj
-        }
-      })
-
-      setQuotas(roulleteData)
-    })
-  },[id])
 
   return (
       <Container >
@@ -68,7 +48,7 @@ export default function Roleta() {
               </div>
 
               <div className='hidden md:flex text-2xl md:text-3xl mt-auto  justify-center items-center w-full md:h-16 h-10 bg-black border-solid border-2 border-gold100 font-bold bg-opacity-60 rounded-md'>
-                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}
+                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(result || 0)}
               </div>
 
               <div className=' md:mt-5 mt-2'  >
@@ -81,7 +61,7 @@ export default function Roleta() {
           </section>
           <div className='containerRoullete'>
             <div className='responsive-container absolute right-2 md:-right-4 md:bottom-1  bottom-20 '>
-              <DynamicComponentWithNoSSR data={quotas}/>
+              <DynamicComponentWithNoSSR getResult={setResult} item={quotas as RoulleteQuotas}/>
             </div>
           </div>
           <div className='visible md:invisible text-2xl md:text-3xl mt-auto flex justify-center items-center w-full md:h-16 h-10 bg-black border-solid border-2 border-gold100 font-bold bg-opacity-60 rounded-md'>
@@ -93,8 +73,19 @@ export default function Roleta() {
 }
 
 
-export const getServerSideProps: GetServerSideProps = async ({req}) =>{
+export const getServerSideProps: GetServerSideProps = async ({req,query}) =>{
   const session = await getSession({req})
+
+  const {id} = query
+
+ const response = await api.get(`roulletes/getRoullete`,{
+    params:{
+      id
+    }
+  })
+
+  const result = {roullete:response.data,data:response.data.quotas}
+
 
   if(!session){
     return {
@@ -106,6 +97,6 @@ export const getServerSideProps: GetServerSideProps = async ({req}) =>{
   }
 
   return {
-    props:{}
+    props:result
   }
 }

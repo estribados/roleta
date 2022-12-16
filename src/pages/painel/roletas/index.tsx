@@ -9,12 +9,15 @@ import { Container } from 'styles/global'
 import { useQuery } from 'react-query'
 import api from 'services/api'
 import { IRoullete } from 'interfaces/types'
+import Switch from "react-switch";
+import SwitchRoullete from 'components/Switch'
 
 const Roletas:React.FC = () =>{
   const {data:roulletes} = useQuery<IRoullete[]>(['roulletes'], async () =>{
     const response = await api.get('roulletes/getRoulletes')
     return response.data
   })
+
 
   return(
     <>
@@ -48,6 +51,7 @@ const Roletas:React.FC = () =>{
                     <th>Valor</th>
                     <th>Status</th>
                     <th></th>
+                    <th></th>
                   </tr>
                 </thead>
                 <tbody>
@@ -63,6 +67,10 @@ const Roletas:React.FC = () =>{
                           <button className="btn btn-primary btn-sm mb-2">Ver</button>
                         </a>
                       </Link>
+                    </td>
+
+                    <td>
+                      <SwitchRoullete roulleteId={roullete.id} active={roullete.status === 'ATIVA' ? true : false } />
                     </td>
                   </tr>
                   ))}
