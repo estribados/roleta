@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { FormHandles } from '@unform/core';
 import { Form } from '@unform/web';
 import moment from 'moment';
@@ -314,7 +315,14 @@ const Header:React.FC = () =>{
                   </li>
                   </ul>
               </div>
-
+              <div className='flex items-center'>
+              <h2 className='text-sm mr-5'>{authentication?.user.name}</h2>
+              <div className="avatar">
+                <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                    <img src={authentication?.user.image || 'https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg'} alt={authentication?.user.name || ''} />
+                </div>
+              </div>
+            </div>
             </div>
             :
             <Link legacyBehavior href="/login">
