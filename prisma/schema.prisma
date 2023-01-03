@@ -22,7 +22,7 @@ model User{
   pix String? 
   isAdmin Boolean @default(false)
   credits Decimal? @db.Decimal(9,2) @default(0) 
-
+  house_profit Decimal? @db.Decimal(9,2) @default(0) 
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
   solicitations Solicitation[]

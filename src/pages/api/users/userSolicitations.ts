@@ -14,12 +14,22 @@ export default async function userSolicitation(req:NextApiRequest,res:NextApiRes
             equals:'SOLICITADO'
           },
         },
+    
         orderBy:{
           status:'asc'
         }
-      }
+      },
+
+
     },
   })  
 
-  return res.status(201).json(users)
+  let initialValue = 0
+  const total = users.reduce(function(acumulador, user) {
+    const sum = acumulador + Number(user.house_profit)
+
+    return sum
+  }, initialValue)
+
+  return res.status(201).json({users,house_profit:total.toFixed(2)})
 }

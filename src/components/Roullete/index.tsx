@@ -10,7 +10,7 @@ import { staticData } from 'utils/staticRoullete';
 import { currencyFormat } from 'utils/currencyNumber';
 import { radomResult } from 'utils/randomResult';
 import { Arrow, Container, RoulleteContainer, Spin } from './styles';
-
+import { TbMusicOff ,TbMusic} from 'react-icons/tb';
 
 interface RoulleteProps{
 staticItens?:boolean
@@ -31,8 +31,6 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
   const [play,setPlay] = useState(false)
   const {notify} = useToast()
 
-  console.log(prizeNumber)
-
   const handleSpinClick = useCallback(async()=>{
     try{
 
@@ -42,41 +40,39 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
 
       if(!disabled && !staticItens){
         if(item){
+          const prizeNumberResult = Math.floor(Math.random() * item.data?.length)
+          // const prizeNumber = radomResult(item.data,item?.roullete  as any)
+          setPrizeNumber(prizeNumberResult)
+          setMustSpin(true)
+          setPlay(true)
+    
+          setTimeout(() =>{ 
+              const resultQuotas = item?.data[prizeNumberResult]
 
-        const prizeNumberResult = Math.floor(Math.random() * item.data?.length + 1)
-        // const prizeNumber = radomResult(item.data,item?.roullete  as any)
-        setPrizeNumber(prizeNumberResult)
-        setMustSpin(true)
-        setPlay(true)
-  
-        setTimeout(() =>{
-          if(prizeNumberResult){
-            const resultQuotas = item?.data[prizeNumberResult]
-  
-            api.patch('users/updateCredits',{
-              userId:authentication?.user.id,
-              resultQuotas:Number(resultQuotas?.valueQuota),
-              price_roullete:Number(item?.roullete?.price_roullete)
-              }).then((response) =>{
-              if(getResult){
-                getResult(Number(resultQuotas?.valueQuota))
-              }
-  
-            if(authentication){
-              setAuthentication({
-                ...authentication,
-                user:{
-                  ...authentication.user,
-                  credits:response.data.credits
+              // console.log({prizeNumberResult,testeNumber:Number(resultQuotas?.valueQuota),testeSemNumber:resultQuotas?.valueQuota})
+    
+              api.patch('users/updateCredits',{
+                userId:authentication?.user.id,
+                resultQuotas:Number(resultQuotas?.valueQuota),
+                price_roullete:Number(item?.roullete?.price_roullete)
+                }).then((response) =>{
+                if(getResult){
+                  getResult(Number(resultQuotas?.valueQuota))
                 }
-              })
-            }
-          })
+    
+              if(authentication){
+                setAuthentication({
+                  ...authentication,
+                  user:{
+                    ...authentication.user,
+                    credits:response.data.credits
+                  }
+                })
+              }
+            })
+
+          },12000)
         }
-
-        },12000)
-      }
-
       }else{
         const newPrizeNumber = Math.floor(Math.random() * staticData.length)
         setPrizeNumber(newPrizeNumber)
@@ -118,9 +114,11 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
     }
   },[activeWin, prizeNumber])
 
-  const formatCurrencyData = currencyFormat(quotasFormated || [])
+  const activeSound = () =>{
 
-  console.log(play)
+  }
+
+  const formatCurrencyData = currencyFormat(quotasFormated || [])
 
   return(
     <>
@@ -134,11 +132,19 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
           <code>audio</code> element.
       </audio>
     }
-    
+
     <Container>
-      
+      {/* <div onClick={activeSound}>
+        {
+          play ?
+          <TbMusic cursor={'pointer'} className='relative ml-auto mr-10 -mb-10' size={40}/>
+          :
+          <TbMusicOff cursor={'pointer'} className='relative ml-auto mr-10 -mb-10' size={40}/>
+        }
+
+      </div> */}
       <RoulleteContainer>
-      
+
         <Wheel
           mustStartSpinning={mustSpin}
           prizeNumber={prizeNumber || 0}
@@ -163,6 +169,7 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
       </RoulleteContainer>
       
     </Container>
+    
     </>
 
   )

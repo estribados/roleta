@@ -21,13 +21,18 @@ interface ApproveProps{
   typeSolicitation:'approve' | 'recuse'
 }
 
+interface DataUsers{
+  users:IUser[]
+  house_profit:number
+}
+
 const Usuarios:React.FC = (props) =>{
   const [userId,setUserId] = useState<string>()
   const [textDescription,setTextDescription] = useState('')
   const {authentication,setAuthentication} = useAuth()
   const {notify} = useToast()
 
-  const {data:users} = useQuery<IUser[]>(['users'], async () =>{
+  const {data} = useQuery<DataUsers>(['users'], async () =>{
     const response = await api.get('users/userSolicitations')
     return response.data
   })
@@ -100,7 +105,7 @@ const Usuarios:React.FC = (props) =>{
 
     }catch(err:any){
       notify({
-        message:err.response.data.err,
+        message:err.response?.data?.err,
         types:"error"
       })
     }
@@ -110,7 +115,7 @@ const Usuarios:React.FC = (props) =>{
     <>
         <h1 className='w-full text-4xl text-center mt-5'>USUÁRIOS</h1>
         <Container>
-          <div className='w-full  h-full rounded-md shadow-md p-5 my-5'>
+          <div className='w-full h-full rounded-md py-5'>
             <div className='mb-5'>
             </div>
             <div className="overflow-x-auto ">
@@ -120,7 +125,8 @@ const Usuarios:React.FC = (props) =>{
                     <th className='absolute -z-10'>Nome</th>
                     <th>Telefone</th>
                     <th>Email</th>
-                    <th>Valor disponivel</th>
+                    <th>Creditos disponiveis</th>
+                    <th>Lucro da casa</th>
                     <th>Banco</th>
                     <th>Pix</th>
                     <th>Solicitações</th>
@@ -128,7 +134,7 @@ const Usuarios:React.FC = (props) =>{
                   </tr>
                 </thead>
                 <tbody>
-                  {users?.map((user:IUser) =>{
+                  {data?.users?.map((user:IUser) =>{
                     return(
                     <Fragment key={user?.id} >
                       <tr >
@@ -137,6 +143,9 @@ const Usuarios:React.FC = (props) =>{
                         <td>{user?.email}</td>
                         <td className=''>
                           {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(user.credits)}
+                        </td>
+                        <td className=''>
+                          {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(user.house_profit)}
                         </td>
                         <td>{user?.bank}</td>
                         <td>{user?.pix}</td>
@@ -213,11 +222,16 @@ const Usuarios:React.FC = (props) =>{
                           ))}
                         </>}
                     </Fragment>
-                    )})}
+                  )})}
                 </tbody>
               </table>
             </div>
           </div>
+
+          <div className='w-full flex justify-end items-center'>
+            <h3 className='mr-3'>Lucro geral :</h3>
+            <span className='font-semibold text-2xl'> {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(data?.house_profit || 0)}</span>
+          </div>                         
         </Container>
     </>
   )

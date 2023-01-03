@@ -3,13 +3,15 @@ import { getSession } from 'next-auth/react';
 import dynamic from 'next/dynamic';
 
 import { ButtonMP } from 'components/Buttons';
-import Header from 'components/Header';
 import HeaderRoullete from 'components/HeaderRoullete';
 import { useAuth } from 'hooks/useAuth';
 import { Container, Content } from 'styles/roleta';
 import api from 'services/api';
 import { useEffect, useState } from 'react';
 import { IRoullete, RoulleteQuotas } from 'interfaces/types';
+import Lottie from 'react-lottie';
+import * as animationData from '../../../../../public/lotties/coinGold.json';
+
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('components/Roullete'),
@@ -37,9 +39,9 @@ export default function Roleta(quotas:RoulleteQuotas) {
         <HeaderRoullete roulletes={roulletes} />
         <Content>
           <section className='md:max-w-sm'>
-            <div className='mb-14 md:mb-0 justify-between md:h-full  flex flex-col'>
+            <div className='mb-14 md:mb-0 justify-between md:h-full px-2 flex flex-col'>
               <div>
-                <h1 className='saldo'>SALDO DISPONIVEL <br/>  
+                <h1 className='text-3xl'>SALDO DISPONIVEL <br/>  
                   <span className='font-extrabold text-5xl block'>
                     {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}
                   </span>
@@ -50,9 +52,14 @@ export default function Roleta(quotas:RoulleteQuotas) {
                 {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(result || 0)}
               </div>
 
-              <div className=' md:mt-5 mt-2'  >
-                <ButtonMP  animation >
+              <div className='md:mt-5 mt-2'  >
+                <ButtonMP animation >
+                  <div className='flex items-center justify-center'>
+               
                   COMPRAR CREDITOS
+                  
+                  </div>
+
                 </ButtonMP>
               </div>
               

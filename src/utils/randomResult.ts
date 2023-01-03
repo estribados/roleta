@@ -22,8 +22,6 @@ const radomResult = (data:IQuotas[] ,roullete:IRoullete) =>{
       passeds = [{pass: true, position: 0, value: 1, percentageQuota: 25}]
     }
 
-    console.log(passeds)
-
     //pegar a maior probabilidade 
 
     //se tiver mais que uma 

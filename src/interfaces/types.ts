@@ -19,6 +19,7 @@ export interface IUser{
   telephone:string
   image?:string
   isAdmin:boolean
+  house_profit:number
   credits:number
   solicitations?:ISolicitation[]
 }

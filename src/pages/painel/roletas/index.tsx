@@ -28,7 +28,7 @@ const Roletas:React.FC = () =>{
         </Link>
         </div>
         <Container>
-          <div className='w-full  h-full rounded-md shadow-md p-5 my-5'>
+          <div className='w-full  h-full rounded-md  py-5 '>
             <div className='mb-5'>
               {/* <h1 className='mb-5 text-3xl'>Filtros</h1>
               <div className='flex flex-wrap gap-5'>

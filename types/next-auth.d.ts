@@ -14,6 +14,7 @@ declare module "next-auth" {
       pix:string
       bank:string
       credits:number
+      house_profit:number
       solicitations:Array<{
         id:string
         value_solicitation:number
