@@ -16,7 +16,7 @@ export default async function updateCredits(req:NextApiRequest,res:NextApiRespon
 
   const descontValue = resultQuotas - price_roullete
 
-  console.log({credits:Number(user?.credits),resultQuotas,price_roullete,descontValue})
+  //console.log({credits:Number(user?.credits),resultQuotas,price_roullete,descontValue})
 
   if(user?.credits){
    const updatedUser =  await prisma.user.update({

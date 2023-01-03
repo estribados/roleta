@@ -82,7 +82,6 @@ const SignUp:React.FC = () =>{
         src={bg} 
         layout='fill'
         alt="logo do sistema"/>
-      <Header/>
       <Container>
         <Content className='mx-5'>
           <AnimationContainer className=' glass px-5 py-2 rounded-lg'>

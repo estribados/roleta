@@ -21,8 +21,6 @@ const Roletas:React.FC = () =>{
 
   return(
     <>
-      <Header/>
-
         <div className='px-5 mt-5 mx-auto  max-w-[1140px] flex justify-between items-center'>
         <h1 className='w-full text-2xl  md:text-4xl'>ROLETAS</h1>
         <Link href={'roletas/cadastro'}>

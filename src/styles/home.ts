@@ -11,8 +11,7 @@ position:absolute;
 width:100vw;
 left:0;
 align-items:center; */
-height:100vh;
-
+height:80vh;
 
 aside{
   height: 100%;

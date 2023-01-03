@@ -14,6 +14,7 @@ import GlobalStyle from 'styles/global';
 
 import 'moment/locale/pt-br';
 import '../styles/globals.css';
+import Header from 'components/Header';
 
 function MyApp({ Component,
    pageProps:{ session ,...pageProps} }: any) {
@@ -35,6 +36,7 @@ function MyApp({ Component,
               <WinProvider>
                 <ScriptProvider>
                   <GlobalStyle/>
+                  <Header/>
                   <Component {...pageProps} />
                 </ScriptProvider>
               </WinProvider>

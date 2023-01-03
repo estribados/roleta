@@ -9,7 +9,7 @@ background-position:  70%;
 position:absolute;
 width:100vw;
 left:0;
-height:100vh;
+height:87vh;
 align-items:center;
 
 aside{

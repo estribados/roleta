@@ -108,7 +108,6 @@ const Usuarios:React.FC = (props) =>{
 
   return(
     <>
-      <Header/>
         <h1 className='w-full text-4xl text-center mt-5'>USUÁRIOS</h1>
         <Container>
           <div className='w-full  h-full rounded-md shadow-md p-5 my-5'>

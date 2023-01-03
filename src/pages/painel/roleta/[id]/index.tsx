@@ -34,7 +34,6 @@ export default function Roleta(quotas:RoulleteQuotas) {
 
   return (
       <Container >
-        <Header/>
         <HeaderRoullete roulletes={roulletes} />
         <Content>
           <section className='md:max-w-sm'>

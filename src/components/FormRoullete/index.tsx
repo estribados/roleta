@@ -141,7 +141,6 @@ const FormRoullete:React.FC<FormProps> = ({id,roullete}) =>{
 
   return(
     <>
-      <Header/>
       <Container>
         <div className='w-full h-full flex justify-between md:mt-2 mt-5  '>
           <div className='w-full md:w-1/2 border-r-2 px-5'>

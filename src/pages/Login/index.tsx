@@ -81,9 +81,7 @@ const SignIn:React.FC = () =>{
         src={bg} 
         layout='fill'
         alt="logo do sistema"/>
-      <Header/>
       <Container>
-        
         <Content className='mx-5'>
           <AnimationContainer className='mx-5 glass px-5 py-2 rounded-lg'>
             <div className="socialButtons text- w-full">

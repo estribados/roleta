@@ -7,15 +7,14 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { Wheel } from 'react-custom-roulette';
 import api from 'services/api';
 import { staticData } from 'utils/staticRoullete';
-
-import { currencyFormat } from '../../utils/currencyNumber';
+import { currencyFormat } from 'utils/currencyNumber';
+import { radomResult } from 'utils/randomResult';
 import { Arrow, Container, RoulleteContainer, Spin } from './styles';
-
 
 
 interface RoulleteProps{
 staticItens?:boolean
-item?:RoulleteQuotas
+item?:RoulleteQuotas | undefined 
 disabled?:boolean
 setStopRoullet?(value:boolean):void
 getResult?(value:number):void
@@ -29,7 +28,10 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
   const [mustSpin, setMustSpin] = useState(false);
   const [prizeNumber, setPrizeNumber] = useState<number>();
   const [quotasFormated,setQuotasFormated] = useState<any[] | undefined>([])
+  const [play,setPlay] = useState(false)
   const {notify} = useToast()
+
+  console.log(prizeNumber)
 
   const handleSpinClick = useCallback(async()=>{
     try{
@@ -41,12 +43,15 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
       if(!disabled && !staticItens){
         if(item){
 
-        const newPrizeNumber = Math.floor(Math.random() * item?.data?.length)
-        setPrizeNumber(newPrizeNumber)
+        const prizeNumberResult = Math.floor(Math.random() * item.data?.length + 1)
+        // const prizeNumber = radomResult(item.data,item?.roullete  as any)
+        setPrizeNumber(prizeNumberResult)
         setMustSpin(true)
+        setPlay(true)
   
         setTimeout(() =>{
-          const resultQuotas = item?.data[newPrizeNumber]
+          if(prizeNumberResult){
+            const resultQuotas = item?.data[prizeNumberResult]
   
             api.patch('users/updateCredits',{
               userId:authentication?.user.id,
@@ -67,6 +72,8 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
               })
             }
           })
+        }
+
         },12000)
       }
 
@@ -74,6 +81,7 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
         const newPrizeNumber = Math.floor(Math.random() * staticData.length)
         setPrizeNumber(newPrizeNumber)
         setMustSpin(true)
+        setPlay(true)
       }
 
     }catch(err:any){
@@ -84,7 +92,6 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
     }
    
   },[authentication, disabled, getResult, item, notify, setAuthentication, staticItens])
-
 
   useEffect(() =>{
     const roulleteData = item?.data.map((quotas) =>{
@@ -106,15 +113,32 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
 
       const timer2 = setTimeout(() => {
         activeWin(false)
+        setPlay(false)
       }, 14000);
     }
   },[activeWin, prizeNumber])
 
   const formatCurrencyData = currencyFormat(quotasFormated || [])
 
+  console.log(play)
+
   return(
+    <>
+    {
+      play && 
+      <audio
+      style={{display:'none'}}
+      autoPlay
+      src="/sounds/roullete.mp3">
+          Your browser does not support the
+          <code>audio</code> element.
+      </audio>
+    }
+    
     <Container>
+      
       <RoulleteContainer>
+      
         <Wheel
           mustStartSpinning={mustSpin}
           prizeNumber={prizeNumber || 0}
@@ -137,7 +161,10 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
           <Image  src="/images/seta-estrib.png" width={'80px'} height="80px" alt='seta'/>
         </Arrow>
       </RoulleteContainer>
+      
     </Container>
+    </>
+
   )
 }
 export default Roullete
