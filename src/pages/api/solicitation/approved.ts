@@ -38,11 +38,16 @@ export default async function approved(req:NextApiRequest,res:NextApiResponse){
     }
   })
 
+  console.log(solicitation)
+
   await prisma.notifications.create({
     data:{
       userId,
       solicitationId,
-      description:'Solicitação aprovada, verifique sua conta, ou entre em contato com o suporte'
+      description:
+      `Solicitação de ${ 
+      new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(solicitation.value_solicitation))
+      } aprovada, verifique sua conta, ou entre em contato com o suporte`
     }
   })
 

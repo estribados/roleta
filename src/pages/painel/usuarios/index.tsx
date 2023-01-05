@@ -47,11 +47,12 @@ const Usuarios:React.FC = (props) =>{
           userId
         })
 
-        const previousUsers = queryClient.getQueryData<IUser[]>('users')
-        if(previousUsers){
-          const nextRepos = previousUsers?.map((user) =>{
+        const previousUsers = queryClient.getQueryData<DataUsers>('users')
+
+        if(!!previousUsers){
+          const nextRepos = previousUsers?.users.map((user:IUser) =>{
+
             if(user?.id === response.data.userId){
-                
               return {
                 ...user,
                 credits:response.data.credits,
@@ -72,7 +73,7 @@ const Usuarios:React.FC = (props) =>{
               }
             })
           }
-          queryClient.setQueriesData('users',nextRepos)
+          queryClient.setQueriesData('users',{...data,users:nextRepos})
         }
 
         notify({

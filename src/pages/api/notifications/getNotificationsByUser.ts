@@ -9,14 +9,20 @@ export default async function getNotificationsByUser(req:NextApiRequest,res:Next
     where:{
       userId:userId as string
     },
-    orderBy:{
-      visualized:'desc'
-    },
+    orderBy:[
+      {
+        visualized:'desc',
+      },
+      {
+        createdAt:'desc'
+      }
+    ],
     include:{
       solicitation:true,
       user:true
     }
   })
+
 
   return res.status(201).json(notifications)
 }

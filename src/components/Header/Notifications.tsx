@@ -12,7 +12,6 @@ interface NotificationsProps{
   notifications:INotifications[] | undefined
 }
 
-
 const NotificationsContent:React.FC<NotificationsProps> = ({hasNotificationsNotVisualized,updateNotifications,notifications}) =>{
   return(
     <Notifications hasNotificatons={hasNotificationsNotVisualized} className="rounded-xl dropdown dropdown-end  ">
