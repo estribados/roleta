@@ -8,6 +8,7 @@ import api from 'services/api';
 import { queryClient } from 'services/queryClient';
 
 import { ButtonConfirm, CancelButton } from './styles';
+import { InputMask } from 'components/Form';
 
 interface ConfirmProps{
   text?:string
@@ -117,21 +118,21 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
                 {hasSolicitations ?
                   <strong className='text-red-400' >Você ja tem solicitações em andamento qualquer duvida entre em contato com o suporte</strong >
                   :
-                  <>
-                    <label className='text-gray-500 font-bold   mt-5' htmlFor="valorDisponivel">Valor:</label>
-                      <input onChange={(e) =>{ 
-                          confirm({
-                            ...confirmation,
-                            valueRescue:e.target.value
-                          })
-                        }} 
-                        ref={inputRef}
-                        // onKeyUp={handleKeyUp}
-                        id="valorDisponivel"
-                        type="number"
-                        placeholder={`Valor disponivel ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}`}
-                        className="bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5" />
-                  </>
+                  <div className='flex items-center justify-center'>
+                    <label className='text-gray-500 font-bold' htmlFor="valorDisponivel">Valor:</label>
+
+                        <InputMask
+                          placeholder={`Valor disponivel ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}`}
+                          maskType="money"
+                          classStyle='bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full max-w-xs rounded-md ml-0 md:ml-5'
+                          onChangeCurrency={({ formattedValue, value }:any) => {
+                            confirm({
+                              ...confirmation,
+                              valueRescue:value
+                            })
+                          }}
+                        />
+                  </div>
                 }
                 
               </div>

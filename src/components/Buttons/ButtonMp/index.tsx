@@ -8,6 +8,7 @@ import { useToast } from 'hooks/useToast'
 import api from 'services/api'
 import Image from 'next/image'
 import copy from "copy-to-clipboard"
+import { InputMask } from 'components/Form';
 
 
 
@@ -96,7 +97,15 @@ const ButtonMP:React.FC<ButtonProps> = ({animation,textSize,children, ...rest}) 
 
               <div className='mx-auto w-full max-w-sm flex items-center justify-center flex-col'>
                 <h1 className='text-gold100 font-bold'>Digite o valor de creditos que ira comprar</h1>
-                <input onChange={(e) =>{setCredits(e.target.value)}} type="number" placeholder="Valor do credito" className="input text-black input-bordered w-full input-warning   bg-slate-100 my-3" />
+
+                <InputMask
+                  placeholder={`Valor disponivel ${new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}`}
+                  maskType="money"
+                  classStyle='bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full  rounded-md ml-0 my-3'
+                  onChangeCurrency={({ formattedValue, value }:any) => {
+                    setCredits(value)
+                  }}
+                />
                   {payment?.qrCode && 
                   <QrCodeContainer>
                     <div>
