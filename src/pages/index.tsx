@@ -31,9 +31,7 @@ export default function Home() {
         alt="logo do sistema"/>
         <Content className='relative'>
           <div className='containerRoullete'>
-            <div className='fixed'>
               <DynamicComponentWithNoSSR staticItens/>
-            </div>
           </div>
           <section className=''>
             <h1>Começe a ganhar <br/>

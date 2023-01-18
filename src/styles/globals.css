@@ -27,6 +27,10 @@ button{
   display: none !important;
 }
 
+.bhdLno{
+  position: initial !important;
+}
+
 
 @media(max-width:768px){
 

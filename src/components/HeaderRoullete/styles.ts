@@ -1,13 +1,32 @@
-import styled from 'styled-components'
+import styled,{css} from 'styled-components'
 
-export const Container = styled.div`
+interface ContainerProps{
+  toggle:boolean
+}
+
+export const Container = styled.div<ContainerProps>`
   width: 100%;
   max-width: 1024px;
   margin: 40px  auto 0 auto;
-  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 15px 2px rgba(0,0,0,0.1);
+  display:none ;
 
-  @media(min-height:740px){
-    display: none;
+  @media(max-width:740px){
+
+  ${({toggle}) =>toggle && css`
+
+    display: block;
+    padding: 10px 0;
+    z-index: 49;
+    top: 50px;
+    position: absolute;
+    background-color: rgba(0,0,0,0.5);
+
+  `}
+  }
+
+  @media(min-width:739px) or (min-height:740px){
+      display: block;
   }
 
   nav{
@@ -24,17 +43,16 @@ export const Container = styled.div`
   &::-webkit-scrollbar-track {
     background-color: #F4F4F4;
     border-radius: 30px;
-
     }
     &::-webkit-scrollbar {
-        height: 5px;
-        border-radius: 30px;
-        background: #000000;
+      display:none;
+      height: 5px;
+      border-radius: 30px;
+      background: #000000;
     }
     &::-webkit-scrollbar-thumb {
-        background: yellow;
-        border-radius: 30px;
-
+      background: yellow;
+      border-radius: 30px;
     }
 
     a{
@@ -70,4 +88,16 @@ export const Container = styled.div`
       box-shadow:0 10px 15px -3px rgba(0,0,0,0.1);
     }
   }
+`
+
+export const ToogleMenu = styled.label`
+
+  @media(min-width:740px){
+      display: none;
+  }
+
+  @media(min-height:740px){
+    display: none;
+  }
+
 `

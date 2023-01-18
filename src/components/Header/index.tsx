@@ -62,7 +62,7 @@ const Header:React.FC = () =>{
 
   return (
     <Container>
-      <div className="px-5 h-20   sticky  z-10 flex-shrink-0 flex shadow-header  bg-[rgba(0,0,0,0.5)]  ">
+      <div className="px-5 h-20   sticky  z-10 flex-shrink-0 flex  bg-[rgba(0,0,0,0.5)]  ">
         <div className=' items-center max-w-5xl  mx-auto flex w-full justify-between'>
           <Image onClick={() =>{router.push('/')}} className='cursor-pointer' src={'/images/estribados.svg'}  width={150} height={40} alt="logo do sistema"/>
           {authentication?.user.isAdmin &&
@@ -108,9 +108,7 @@ const Header:React.FC = () =>{
                 </ul>
               </div>
               
-              <div className='flex items-center'>
-                <h2 className='text-sm mr-5'>{authentication?.user.name}</h2>
-              </div>
+  
             </div>
           :
             <Link legacyBehavior href="/login">

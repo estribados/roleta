@@ -2,15 +2,12 @@ import styled from 'styled-components'
 
 export const Container = styled.div`
 
-background-image: url('/images/caverna-home.webp');
-background-repeat:no-repeat;
-background-size:cover;
-background-position:  70%;
-position:absolute;
 width:100vw;
-left:0;
-height:87vh;
 align-items:center;
+
+@media(max-width:720px){
+  height:initial;
+}
 
 aside{
   height: 100%;
@@ -30,11 +27,11 @@ aside{
 export const Content = styled.main`
   max-width: 1024px;
   margin:  20px auto;
+  height: 100%;
 
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  height: calc(100vh - 150px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   position: relative;
   overflow: hidden;
 
@@ -45,16 +42,19 @@ export const Content = styled.main`
     }
   }
 
+  @media(max-width:912px){
+    flex-direction: column;
+  }
+
   @media(max-height:740px){
-    grid-template-columns:  1fr;
-    height: calc(100vh - 233px);
     .responsive-container{
       bottom: 59px;
     }
   }
 
   @media(max-width:720px){
-    grid-template-columns:  1fr;
+    flex-direction: column;
+
     padding: 0 20px;
     margin:  20px auto;
   }
@@ -62,13 +62,8 @@ export const Content = styled.main`
   section{
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: 100%;
+  justify-content: center;
 
-  @media(min-width:720px){
-
-    margin-top: 40px;
-  }
 
   h1{
     font-weight: 600;

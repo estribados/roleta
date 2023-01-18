@@ -146,6 +146,7 @@ const Roullete:React.FC<RoulleteProps> = ({item,getResult,staticItens = false,di
       <RoulleteContainer>
 
         <Wheel
+
           mustStartSpinning={mustSpin}
           prizeNumber={prizeNumber || 0}
           spinDuration={1}

@@ -9,9 +9,7 @@ import { Container, Content } from 'styles/roleta';
 import api from 'services/api';
 import { useEffect, useState } from 'react';
 import { IRoullete, RoulleteQuotas } from 'interfaces/types';
-import Lottie from 'react-lottie';
-import * as animationData from '../../../../../public/lotties/coinGold.json';
-
+  
 
 const DynamicComponentWithNoSSR = dynamic(
   () => import('components/Roullete'),
@@ -35,46 +33,52 @@ export default function Roleta(quotas:RoulleteQuotas) {
   },[])
 
   return (
-      <Container >
-        <HeaderRoullete roulletes={roulletes} />
-        <Content>
-          <section className='md:max-w-sm'>
-            <div className='mb-14 md:mb-0 justify-between md:h-full px-2 flex flex-col'>
-              <div>
-                <h1 className='text-3xl'>SALDO DISPONIVEL <br/>  
-                  <span className='font-extrabold text-5xl block'>
-                    {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}
-                  </span>
-                </h1>
-              </div>
+    <div 
+    style={{
+      height:'100vh',
+      position:'absolute',
+      top:'0',
+      backgroundImage:'url(/images/caverna-home.webp)',
+      backgroundRepeat:'no-repeat',
+      backgroundSize:'cover',
+      backgroundPosition:'70%'
+    }}>
 
-              <div className='hidden md:flex text-2xl md:text-3xl mt-auto  justify-center items-center w-full md:h-16 h-10 bg-black border-solid border-2 border-gold100 font-bold bg-opacity-60 rounded-md'>
-                {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(result || 0)}
-              </div>
+    <Container className='mt-24' >
+      <HeaderRoullete roulletes={roulletes} />
 
-              <div className='md:mt-5 mt-2'  >
-                <ButtonMP animation >
-                  <div className='flex items-center justify-center'>
-               
+      <Content>
+        <section className='w-full md:max-w-md'>
+          <div className='mb-5 md:mb-0 md:h-full px-2 flex flex-col'>
+              <h1 className='text-5xl'>SALDO DISPONIVEL <br/>  
+                <span className='font-extrabold text-5xl block mb-5'>
+                  {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(authentication?.user.credits || 0)}
+                </span>
+              </h1>
+            <div>
+
+
+            <div className='md:flex text-2xl md:text-3xl flex justify-center items-center w-full md:h-16 h-10 bg-black border-solid border-2 border-gold100 font-bold bg-opacity-60 rounded-md'>
+              {new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(result || 0)}
+            </div>
+
+            <div className='md:mt-5 mt-2'  >
+              <ButtonMP animation >
+                <div className='md:text-1xl text-sm flex items-center justify-center'>
                   COMPRAR CREDITOS
-                  
-                  </div>
+                </div>
+              </ButtonMP>
+            </div>
+            </div>
 
-                </ButtonMP>
-              </div>
-              
-            </div>
-          </section>
-          <div className='containerRoullete'>
-            <div className='responsive-container absolute right-2 md:-right-4 md:bottom-1  bottom-20 '>
-              <DynamicComponentWithNoSSR getResult={setResult} item={quotas as RoulleteQuotas}/>
-            </div>
+            
           </div>
-          <div className='visible md:invisible text-2xl md:text-3xl mt-auto flex justify-center items-center w-full md:h-16 h-10 bg-black border-solid border-2 border-gold100 font-bold bg-opacity-60 rounded-md'>
-            R$ 100,00
-          </div>
-        </Content>
-      </Container>
+        </section>
+        <DynamicComponentWithNoSSR getResult={setResult} item={quotas as RoulleteQuotas}/>
+      </Content>
+    </Container>
+    </div>
+
   );
 }
 
@@ -91,8 +95,6 @@ export const getServerSideProps: GetServerSideProps = async ({req,query}) =>{
   })
 
   const result = {roullete:response.data,data:response.data.quotas}
-
-
   if(!session){
     return {
       redirect:{

@@ -14,6 +14,9 @@ justify-content: center;
 margin-top: 20px;
 flex-direction: column;
 
+@media(max-width:720px){
+  padding: 0 20px;
+}
 
 select{
   color: gray;

@@ -1,44 +1,46 @@
 import styled from 'styled-components'
 
 export const Container = styled.div`
-width: 100%;
 height: 100%;
+flex: 1;
+align-items: center;
+justify-content: center;
 position: relative;
 
 `
 export const RoulleteContainer = styled.div`
 
-  position: relative;
-  transform: rotate(45deg);
-  right: 20%;
+  /* position: relative; */
+  /* width: 100%;
+  height: 100%;
+  max-width: 450px; */
 
-  @media(max-width:768px){
-    transform: initial;
-  }
+  /* transform: rotate(45deg); */
+  /* right: 20%; */
+  display: flex;
+  align-items:center;
+  justify-content: center;
+  max-width: 445px; 
+  max-height: 445px;
+  margin: auto;
 
 
-&::after{
+/* &::after{ */
+  
   background-size: contain;
   background: rgb(255,221,0);
   background: radial-gradient(circle, rgba(255,221,0,1) 65%, rgba(209,184,20,0.8522759445575105) 70%);
   background-size: cover;
   content: '';
   border-radius: 50%;
-  width: 107%;
-  height: 107%;
-  top: -15px;
-  right: -15px;
-  position: absolute;
-  display: inline-block;
+  /* width: 107%;
+  height: 107%; */
+
   filter: drop-shadow(0px 0px 10px #D1B814);
 
   @media(max-width:768px){
-    top: -6px;
-    right: -42px;
-    width: 105%;
-    height: 104%;
   }
-}
+/* } */
 
 `
 
@@ -73,15 +75,11 @@ animation-name: pulse;
   width:80px;
   height:80px;
   top: 36%;
-  left: 48%;
+  left: 36%;
 }
 
 p{
-  transform: rotate(-45deg);
-
   @media(max-width:768px){
-  transform: rotate(0deg);
-
 }
 }
 
@@ -107,8 +105,6 @@ export const Arrow = styled.div`
   filter: drop-shadow(5px 5px 10px #E5BD31);
 
   @media(max-width:768px){
-    right: -20px;
-    top: 25px;
 
     width: 55px;
     height: 55px;

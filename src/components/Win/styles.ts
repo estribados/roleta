@@ -4,7 +4,7 @@ export const Container = styled.div`
 
   background-color: rgba(0,0,0,0.1);
   width: 100vw;
-  height: 100vh;
+  height: calc(100vh - 90px) ;
   position: fixed;
   z-index: 999999999;
   box-shadow: inset 0 0 38px 20px  gold;

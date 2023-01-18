@@ -12,7 +12,6 @@ width:100vw;
 left:0;
 align-items:center; */
 height:80vh;
-
 aside{
   height: 100%;
   display: flex;
@@ -22,7 +21,6 @@ aside{
 
 @media(max-width:720px){
   background-position:  30%;
-
 }
 
 
@@ -45,9 +43,7 @@ export const Content = styled.main`
     height: calc(100vh - 139px);
 
     .containerRoullete{
-      position: absolute;
-      top: 20%;
-      left: 17%;
+      order: 1;
     }
   }
 
@@ -77,8 +73,7 @@ export const Content = styled.main`
     @media(max-width:720px){
       text-align: center;
       font-size:34px;
-    line-height: 44px;
-
+      line-height: 44px;
 
       a{
         font-size: 44px;
