@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `user` ADD COLUMN `profit` DECIMAL(9, 2) NULL DEFAULT 0;

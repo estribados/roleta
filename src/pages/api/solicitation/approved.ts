@@ -1,60 +1,69 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from "next";
 
-import { prisma } from 'lib/prisma';
+import { prisma } from "lib/prisma";
 
-export default async function approved(req:NextApiRequest,res:NextApiResponse){
-  const {solicitationId,value_solicitation,creditsByUser,userId} = req.body
+export default async function approved(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { solicitationId, value_solicitation, creditsByUser, userId } =
+    req.body;
   const solicitation = await prisma.solicitation.findFirst({
-    where:{
-      id:solicitationId
-    }
-  })
-
-  if(!solicitation){
-    return res.status(404).json({err:'Solicitação não encontrada'})
-  }
-
-  if( Number(value_solicitation) > Number(creditsByUser) ){
-    return res.status(403).json({err:`O saldo do usuário é inferior ao solicitado - Saldo: ${
-      new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(value_solicitation))
-    }`})
-  }
-
- const user = await prisma.user.update({
-    where:{
-      id:userId
+    where: {
+      id: solicitationId,
     },
-    data:{
-      credits:creditsByUser - value_solicitation,
-    }
-  }) 
-  
+  });
+
+  if (!solicitation) {
+    return res.status(404).json({ err: "Solicitação não encontrada" });
+  }
+
+  if (Number(value_solicitation) > Number(creditsByUser)) {
+    return res
+      .status(403)
+      .json({
+        err: `O saldo do usuário é inferior ao solicitado - Saldo: ${new Intl.NumberFormat(
+          "pt-BR",
+          { style: "currency", currency: "BRL" }
+        ).format(Number(value_solicitation))}`,
+      });
+  }
+
+  const user = await prisma.user.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      credits: creditsByUser - value_solicitation,
+    },
+  });
+
   const approved = await prisma.solicitation.update({
-    where:{
-      id:solicitationId as string
+    where: {
+      id: solicitationId as string,
     },
-    data:{
-      status:"PAGO",
-    }
-  })
-
-  console.log(solicitation)
+    data: {
+      status: "PAGO",
+    },
+  });
 
   await prisma.notifications.create({
-    data:{
+    data: {
       userId,
       solicitationId,
-      description:
-      `Solicitação de ${ 
-      new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(Number(solicitation.value_solicitation))
-      } aprovada, verifique sua conta, ou entre em contato com o suporte`
-    }
-  })
+      description: `Solicitação de ${new Intl.NumberFormat("pt-BR", {
+        style: "currency",
+        currency: "BRL",
+      }).format(
+        Number(solicitation.value_solicitation)
+      )} aprovada, verifique sua conta, ou entre em contato com o suporte`,
+    },
+  });
 
   const userApproved = {
     ...approved,
-    credits:user.credits
-  }
+    credits: user.credits,
+  };
 
-  return res.status(200).json(userApproved)
+  return res.status(200).json(userApproved);
 }
