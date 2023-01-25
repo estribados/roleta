@@ -25,7 +25,6 @@ const DynamicComponentWithNoSSR = dynamic(() => import("components/Roullete"), {
 interface dataRoulleteProps {
   color?: string | undefined;
   valueQuota?: number | undefined;
-  percentageQuota?: number | undefined;
 }
 interface FormProps {
   id?: string;
@@ -47,24 +46,20 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
         return [
           {
             valueQuota: undefined,
-            percentageQuota: undefined,
             color: "#000000",
           },
         ];
       }
     } else {
-      return [
-        { valueQuota: undefined, percentageQuota: undefined, color: "#000000" },
-      ];
+      return [{ valueQuota: undefined, color: "#000000" }];
     }
   });
 
   const changeValues = (
-    { valueQuota, percentageQuota, color }: dataRoulleteProps,
+    { valueQuota, color }: dataRoulleteProps,
     index: number
   ) => {
-    setLineInput({ valueQuota, percentageQuota, color });
-    if (percentageQuota) nameForm[index].percentageQuota = percentageQuota;
+    setLineInput({ valueQuota });
     if (valueQuota) nameForm[index].valueQuota = valueQuota;
     if (color) nameForm[index].color = color;
   };
@@ -72,7 +67,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
   const duplicateInput = () => {
     setNameForm((oldArray) => [
       ...oldArray,
-      { valueQuota: undefined, percentageQuota: undefined, color: "#000000" },
+      { valueQuota: undefined, color: "#000000" },
     ]);
   };
 
@@ -232,27 +227,6 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                         type="number"
                         placeholder="Cota"
                         className="md:mb-0 mb-2 text-black  input-sm bg-white input input-bordered input-warning w-full max-w-xs"
-                      />
-                    </div>
-
-                    <div className="  w-full">
-                      <label className="text-sm" htmlFor="">
-                        Porcentagem{" "}
-                      </label>
-                      <input
-                        defaultValue={item.percentageQuota}
-                        onChange={(e) => {
-                          changeValues(
-                            {
-                              ...lineInput,
-                              percentageQuota: Number(e.target.value),
-                            },
-                            index
-                          );
-                        }}
-                        type="text"
-                        placeholder="% Acerto"
-                        className="md:mb-0 mb-2 text-black input-sm  bg-white input input-bordered input-warning w-full max-w-xs"
                       />
                     </div>
 

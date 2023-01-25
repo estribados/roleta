@@ -20,7 +20,6 @@ const ModalRoullete: React.FC<MaxRoullete> = ({ bonus }) => {
     {
       color: "gold",
       id: "1",
-      percentageQuota: 2,
       roulleteId: "1",
       valueQuota: desconto(0),
     },
@@ -28,7 +27,6 @@ const ModalRoullete: React.FC<MaxRoullete> = ({ bonus }) => {
     {
       color: "blue",
       id: "1",
-      percentageQuota: 2,
       roulleteId: "1",
       valueQuota: desconto(50),
     },
@@ -36,7 +34,6 @@ const ModalRoullete: React.FC<MaxRoullete> = ({ bonus }) => {
     {
       color: "red",
       id: "1",
-      percentageQuota: 2,
       roulleteId: "1",
       valueQuota: desconto(60),
     },
@@ -44,7 +41,6 @@ const ModalRoullete: React.FC<MaxRoullete> = ({ bonus }) => {
     {
       color: "green",
       id: "1",
-      percentageQuota: 2,
       roulleteId: "1",
       valueQuota: desconto(70),
     },

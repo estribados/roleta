@@ -82,7 +82,6 @@ model Quotas{
   roullete Roulletes? @relation(fields: [roulleteId], references: [id])
   valueQuota Decimal @db.Decimal(9,2)
   color String
-  percentageQuota Decimal @db.Decimal(9,2)
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
 }
