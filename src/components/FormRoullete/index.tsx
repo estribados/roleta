@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { FormHandles } from "@unform/core";
 import { Form } from "@unform/web";
@@ -38,6 +38,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
 
   const formRef = useRef<FormHandles>(null);
   const [hasOpen, setHasOpen] = useState(false);
+  const [valueCategory, setValueCategory] = useState<string | undefined>("");
   const [lineInput, setLineInput] = useState<dataRoulleteProps>();
   const [nameForm, setNameForm] = useState(() => {
     if (id) {
@@ -55,6 +56,10 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
       return [{ valueQuota: undefined, color: "#000000" }];
     }
   });
+
+  useEffect(() => {
+    setValueCategory(roullete?.price_roullete.toString());
+  }, [roullete?.price_roullete]);
 
   const changeValues = (
     { valueQuota, color }: dataRoulleteProps,
@@ -103,19 +108,22 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
     });
   };
 
-  const createRoullete = async ({
-    itens,
-    roullete,
-  }: {
-    roullete: { nameCategory: string; valueCategory: string };
-    itens: dataRoulleteProps;
-  }) => {
-    await api.post("roulletes/create", {
-      nameCategory: roullete.nameCategory,
-      price_roullete: Number(roullete.valueCategory),
-      quotas: itens,
-    });
-  };
+  const createRoullete = useCallback(
+    async ({
+      itens,
+      roullete,
+    }: {
+      roullete: { nameCategory: string; valueCategory: string };
+      itens: dataRoulleteProps;
+    }) => {
+      await api.post("roulletes/create", {
+        nameCategory: roullete.nameCategory,
+        price_roullete: Number(valueCategory),
+        quotas: itens,
+      });
+    },
+    [valueCategory]
+  );
 
   const handleSubmit = useCallback(
     async (data: { nameCategory: string; valueCategory: string }) => {
@@ -128,7 +136,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
             itens: nameForm as dataRoulleteProps,
             roullete: {
               nameCategory: data.nameCategory,
-              valueCategory: Number(data.valueCategory),
+              valueCategory: Number(valueCategory),
             },
           });
         } else {
@@ -154,7 +162,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
         }
       }
     },
-    [id, nameForm, notify, push]
+    [createRoullete, id, nameForm, notify, push, valueCategory]
   );
 
   return (
@@ -192,12 +200,15 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
 
                 <Label htmlFor="nome">
                   <p className="text-gray-300 font-bold">Valor da Categoria</p>
-                  <Input
-                    style={{ color: "black" }}
-                    id="valueCategory"
-                    name="valueCategory"
-                    type="text"
-                    placeholder="Valor por jogada"
+
+                  <InputMask
+                    placeholder={`Valor da Cota`}
+                    maskType="money"
+                    value={Number(valueCategory)}
+                    classStyle="md:mb-0 mb-2 text-black bg-white input input-bordered input-warning w-full max-w-xs"
+                    onChangeCurrency={({ formattedValue, value }: any) => {
+                      setValueCategory(value);
+                    }}
                   />
                 </Label>
               </ContainerLabel>

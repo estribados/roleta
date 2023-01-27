@@ -34,82 +34,90 @@ const Roullete: React.FC<RoulleteProps> = ({
   const [play, setPlay] = useState(false);
   const { notify } = useToast();
 
+  useEffect(() => {
+    if (mustSpin) {
+      setPlay(true);
+    }
+  }, [mustSpin]);
   const handleSpinClick = useCallback(async () => {
-    setRollingn(true);
+    if (disabled) {
+      return;
+    }
 
     try {
-      if (
-        !staticItens &&
-        Number(authentication?.user.credits) <
-          Number(item?.roullete?.price_roullete)
-      ) {
-        throw new Error("Você não possui creditos suficientes");
-      }
+      if (!mustSpin) {
+        if (
+          !staticItens &&
+          Number(authentication?.user.credits) <
+            Number(item?.roullete?.price_roullete)
+        ) {
+          throw new Error("Você não possui creditos suficientes");
+        }
 
-      if (!disabled && !staticItens) {
-        if (item) {
-          const prizeNumberResult = Math.floor(
-            Math.random() * item.data?.length
-          );
+        if (!disabled && !staticItens) {
+          if (item) {
+            const prizeNumberResult = Math.floor(
+              Math.random() * item.data?.length
+            );
 
-          // const prizeNumberResult = 2;
-          // const prizeNumber = radomResult(item.data,item?.roullete  as any)
-          setPrizeNumber(prizeNumberResult);
-          setMustSpin(true);
-          setPlay(true);
-          const resultQuotas = item?.data[prizeNumberResult];
+            setRollingn(true);
+            setPrizeNumber(prizeNumberResult);
+            setMustSpin(true);
+            setPlay(true);
+            const resultQuotas = item?.data[prizeNumberResult];
 
-          setTimeout(() => {
-            api
-              .patch("users/updateCredits", {
-                userId: authentication?.user.id,
-                resultQuotas: Number(resultQuotas?.valueQuota),
-                price_roullete: Number(item?.roullete?.price_roullete),
-              })
-              .then((response) => {
-                if (getResult) {
-                  getResult(Number(resultQuotas?.valueQuota));
-                }
+            setTimeout(() => {
+              api
+                .patch("users/updateCredits", {
+                  userId: authentication?.user.id,
+                  resultQuotas: Number(resultQuotas?.valueQuota),
+                  price_roullete: Number(item?.roullete?.price_roullete),
+                })
+                .then((response) => {
+                  if (getResult) {
+                    getResult(Number(resultQuotas?.valueQuota));
+                  }
 
-                if (authentication) {
-                  setAuthentication({
-                    ...authentication,
-                    user: {
-                      ...authentication.user,
-                      credits: response.data.credits,
-                      house_profit: response.data.house_profit,
-                      bonus: response.data.bonus,
-                      profit: response.data.profit,
-                      accumulated: response.data.accumulated,
-                    },
-                  });
-                }
+                  if (authentication) {
+                    setAuthentication({
+                      ...authentication,
+                      user: {
+                        ...authentication.user,
+                        credits: response.data.credits,
+                        house_profit: response.data.house_profit,
+                        bonus: response.data.bonus,
+                        profit: response.data.profit,
+                        accumulated: response.data.accumulated,
+                      },
+                    });
+                  }
 
-                const resultRodada =
-                  (resultQuotas.valueQuota || 0) -
-                  Number(item.roullete?.price_roullete);
+                  const resultRodada =
+                    (resultQuotas.valueQuota || 0) -
+                    Number(item.roullete?.price_roullete);
 
-                if (
-                  (resultQuotas?.valueQuota || 0) >
-                  Number(item?.roullete?.price_roullete)
-                ) {
-                  notify({
-                    message: `Parabens 🎉🎉🎉, Você ganhou  
+                  if (
+                    (resultQuotas?.valueQuota || 0) >
+                    Number(item?.roullete?.price_roullete)
+                  ) {
+                    notify({
+                      message: `Parabens 🎉🎉🎉, Você ganhou  
                   ${new Intl.NumberFormat("pt-BR", {
                     style: "currency",
                     currency: "BRL",
                   }).format(resultRodada)} nessa rodada `,
-                    types: "warning",
-                  });
-                }
-              });
-          }, 12000);
+                      types: "warning",
+                    });
+                  }
+                });
+            }, 12000);
+          }
+        } else {
+          const newPrizeNumber = Math.floor(Math.random() * staticData.length);
+          setPrizeNumber(newPrizeNumber);
+          setMustSpin(true);
+          setPlay(true);
         }
-      } else {
-        const newPrizeNumber = Math.floor(Math.random() * staticData.length);
-        setPrizeNumber(newPrizeNumber);
-        setMustSpin(true);
-        setPlay(true);
       }
     } catch (err: any) {
       notify({
@@ -122,6 +130,7 @@ const Roullete: React.FC<RoulleteProps> = ({
     disabled,
     getResult,
     item,
+    mustSpin,
     notify,
     setAuthentication,
     setRollingn,
@@ -131,8 +140,6 @@ const Roullete: React.FC<RoulleteProps> = ({
   useEffect(() => {
     setRoulleteId(item?.roullete?.id);
   }, [item?.roullete?.id, setRoulleteId]);
-
-  useEffect(() => {}, []);
 
   useEffect(() => {
     const roulleteData = item?.data.map((quotas) => {
@@ -150,40 +157,23 @@ const Roullete: React.FC<RoulleteProps> = ({
     }
   }, [item, item?.data]);
 
-  useEffect(() => {
-    if (prizeNumber) {
-      const timer = setTimeout(() => {
-        activeWin(true);
-      }, 11000);
-
-      const timer2 = setTimeout(() => {
-        activeWin(false);
-        setPlay(false);
-      }, 14000);
-    }
-  }, [activeWin, prizeNumber]);
-
   const formatCurrencyData = currencyFormat(quotasFormated || []);
+
+  const activeSoundRoullete =
+    Number(authentication?.user.credits) >
+      Number(item?.roullete?.price_roullete) && play;
 
   return (
     <>
-      {/* {!play && (
-        <audio style={{ display: "none" }} autoPlay src="/sounds/roullete.mp3">
-          Your browser does not support the
-          <code>audio</code> element.
-        </audio>
-      )} */}
+      {activeSoundRoullete && (
+        <audio
+          style={{ display: "none" }}
+          autoPlay
+          src="/sounds/roullete.mp3"
+        ></audio>
+      )}
 
       <Container>
-        {/* <div onClick={activeSound}>
-        {
-          play ?
-          <TbMusic cursor={'pointer'} className='relative ml-auto mr-10 -mb-10' size={40}/>
-          :
-          <TbMusicOff cursor={'pointer'} className='relative ml-auto mr-10 -mb-10' size={40}/>
-        }
-
-      </div> */}
         <RoulleteContainer>
           <Wheel
             mustStartSpinning={mustSpin}

@@ -1,31 +1,34 @@
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from "next";
 
-import { prisma } from 'lib/prisma';
+import { prisma } from "lib/prisma";
 
-export default async function create(req:NextApiRequest,res:NextApiResponse){
-  const {nameCategory,price_roullete,quotas} = req.body
+export default async function create(
+  req: NextApiRequest,
+  res: NextApiResponse
+) {
+  const { nameCategory, price_roullete, quotas } = req.body;
 
   const roullete = await prisma.roulletes.create({
-    data:{
+    data: {
       nameCategory,
-      price_roullete:Number(price_roullete),
-    }
+      price_roullete: Number(price_roullete),
+    },
+  });
 
-  })
-
-  const newQuotas = quotas.map((quota:any) =>{
-    const newQuota= {
+  const newQuotas = quotas.map((quota: any) => {
+    const newQuota = {
       ...quota,
-      roulleteId:roullete.id
-    }
+      roulleteId: roullete.id,
+    };
 
-    return newQuota
-  })
+    return newQuota;
+  });
 
-  await prisma.quotas.createMany({
-    data:newQuotas
-  })
-  
+  if (quotas[0].valueQuota) {
+    await prisma.quotas.createMany({
+      data: newQuotas,
+    });
+  }
 
-  return res.status(201).json({})
+  return res.status(201).json({});
 }
