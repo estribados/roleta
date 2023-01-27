@@ -19,6 +19,7 @@ export interface IUser {
   image?: string;
   isAdmin: boolean;
   house_profit: number;
+  accumulated: number;
   bonus: number;
   profit: number;
   credits: number;

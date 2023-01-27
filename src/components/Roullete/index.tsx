@@ -9,6 +9,7 @@ import api from "services/api";
 import { staticData } from "utils/staticRoullete";
 import { currencyFormat } from "utils/currencyNumber";
 import { Arrow, Container, RoulleteContainer, Spin } from "./styles";
+import { type } from "os";
 
 interface RoulleteProps {
   staticItens?: boolean;
@@ -24,7 +25,7 @@ const Roullete: React.FC<RoulleteProps> = ({
   staticItens = false,
   disabled = false,
 }) => {
-  const { activeWin } = useWin();
+  const { activeWin, setRollingn, setRoulleteId } = useWin();
   let { authentication, setAuthentication } = useAuth();
 
   const [mustSpin, setMustSpin] = useState(false);
@@ -34,6 +35,8 @@ const Roullete: React.FC<RoulleteProps> = ({
   const { notify } = useToast();
 
   const handleSpinClick = useCallback(async () => {
+    setRollingn(true);
+
     try {
       if (
         !staticItens &&
@@ -54,10 +57,9 @@ const Roullete: React.FC<RoulleteProps> = ({
           setPrizeNumber(prizeNumberResult);
           setMustSpin(true);
           setPlay(true);
+          const resultQuotas = item?.data[prizeNumberResult];
 
           setTimeout(() => {
-            const resultQuotas = item?.data[prizeNumberResult];
-
             api
               .patch("users/updateCredits", {
                 userId: authentication?.user.id,
@@ -78,7 +80,26 @@ const Roullete: React.FC<RoulleteProps> = ({
                       house_profit: response.data.house_profit,
                       bonus: response.data.bonus,
                       profit: response.data.profit,
+                      accumulated: response.data.accumulated,
                     },
+                  });
+                }
+
+                const resultRodada =
+                  (resultQuotas.valueQuota || 0) -
+                  Number(item.roullete?.price_roullete);
+
+                if (
+                  (resultQuotas?.valueQuota || 0) >
+                  Number(item?.roullete?.price_roullete)
+                ) {
+                  notify({
+                    message: `Parabens 🎉🎉🎉, Você ganhou  
+                  ${new Intl.NumberFormat("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  }).format(resultRodada)} nessa rodada `,
+                    types: "warning",
                   });
                 }
               });
@@ -103,8 +124,15 @@ const Roullete: React.FC<RoulleteProps> = ({
     item,
     notify,
     setAuthentication,
+    setRollingn,
     staticItens,
   ]);
+
+  useEffect(() => {
+    setRoulleteId(item?.roullete?.id);
+  }, [item?.roullete?.id, setRoulleteId]);
+
+  useEffect(() => {}, []);
 
   useEffect(() => {
     const roulleteData = item?.data.map((quotas) => {
@@ -116,6 +144,7 @@ const Roullete: React.FC<RoulleteProps> = ({
         return mountObj;
       }
     });
+
     if (item) {
       setQuotasFormated(roulleteData);
     }
@@ -166,6 +195,7 @@ const Roullete: React.FC<RoulleteProps> = ({
             data={staticItens ? staticData : formatCurrencyData}
             onStopSpinning={() => {
               setMustSpin(false);
+              setRollingn(false);
             }}
           />
           <Spin disabled={disabled} active={mustSpin} onClick={handleSpinClick}>

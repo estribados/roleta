@@ -21,10 +21,11 @@ model User{
   bank String?
   pix String? 
   isAdmin Boolean @default(false)
-  credits Decimal? @db.Decimal(9,2) @default(0) 
-  profit Decimal? @db.Decimal(9,2) @default(0) 
-  bonus Decimal? @db.Decimal(9,2) @default(0) 
-  house_profit Decimal? @db.Decimal(9,2) @default(0) 
+  credits Decimal? @db.Decimal(9,3) @default(0) 
+  profit Decimal? @db.Decimal(9,3) @default(0) 
+  bonus Decimal? @db.Decimal(9,3) @default(0) 
+  accumulated Decimal? @db.Decimal(9,3) @default(0) 
+  house_profit Decimal? @db.Decimal(9,3) @default(0) 
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
   solicitations Solicitation[]

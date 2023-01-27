@@ -96,7 +96,6 @@ const Header: React.FC = () => {
                     <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
                       <img
                         src={
-                          authentication?.user.image ||
                           "https://icon-library.com/images/default-user-icon/default-user-icon-8.jpg"
                         }
                         alt={authentication?.user.name || ""}

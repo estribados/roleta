@@ -25,7 +25,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   containerStyle?: CSSProperties | undefined;
   inputName?: string;
   paddingRight?: number;
-  classStyle?:string
+  classStyle?: string;
 }
 
 export function Input({
@@ -46,6 +46,7 @@ export function Input({
   inputName,
   paddingRight,
   classStyle,
+  defaultValue,
   ...rest
 }: InputProps) {
   const theme = useTheme();
@@ -85,7 +86,7 @@ export function Input({
             decimalScale={2}
             name={inputName}
             fixedDecimalScale
-            value={valueCurrency}
+            value={defaultValue as string}
             onValueChange={onChangeCurrency}
             onFocus={() => handleOnfocus()}
             onBlur={() => handleInputBlur()}
@@ -126,7 +127,7 @@ export function Input({
 
         {!!hasError && (
           <S.Error title={hasError}>
-            <FiAlertCircle color={'red'} size="20" />
+            <FiAlertCircle color={"red"} size="20" />
           </S.Error>
         )}
       </S.Container>

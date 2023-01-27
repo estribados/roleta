@@ -3,7 +3,7 @@ import React, { useCallback, useRef, useState } from "react";
 import { FormHandles } from "@unform/core";
 import { Form } from "@unform/web";
 import { BackButton, ButtonAnimated } from "components/Buttons";
-import { Input } from "components/Form";
+import { Input, InputMask } from "components/Form";
 import { DefaultModal } from "components/Modals/DefaultModal";
 import dynamic from "next/dynamic";
 import { AiFillEye, AiOutlineClose } from "react-icons/ai";
@@ -17,6 +17,7 @@ import api from "services/api";
 import { IRoulleteQuota } from "interfaces/types";
 import { useToast } from "hooks/useToast";
 import { useRouter } from "next/router";
+import { v4 as uuid } from "uuid";
 
 const DynamicComponentWithNoSSR = dynamic(() => import("components/Roullete"), {
   ssr: false,
@@ -71,13 +72,19 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
     ]);
   };
 
-  const removeLineInput = (index: number) => {
+  const removeLineInput = async (index: number, id: string | undefined) => {
     const updateList = [...nameForm];
 
     if (nameForm.length > 1) {
       updateList.splice(index, 1);
       setNameForm(updateList);
     }
+
+    await api.delete(`quotas/delete/`, {
+      params: {
+        id,
+      },
+    });
   };
 
   const updateRoullete = async ({
@@ -167,7 +174,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                 nameCategory: roullete?.nameCategory,
                 valueCategory: roullete?.price_roullete,
               }}
-              className="mt-5 w-full overflow-y-auto max-h-[500px]"
+              className="pr-5 mt-5 w-full overflow-y-auto max-h-[500px]"
               ref={formRef}
               onSubmit={handleSubmit}
             >
@@ -195,6 +202,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                 </Label>
               </ContainerLabel>
               <button
+                type="button"
                 onClick={() => {
                   setHasOpen(true);
                 }}
@@ -208,29 +216,28 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                     key={index}
                     className="bg-black50 shadow-sm my-2 p-2 rounded-md flex flex-col md:flex-row  justify-between gap-0 md:gap-5 w-full items-end"
                   >
-                    <div className="  w-full">
+                    <div className=" flex flex-col  w-full">
                       <label htmlFor="" className=" text-sm">
                         Valor
                       </label>
-                      {/* <MaskInput getValue={(e) =>{changeValues({...lineInput,valueQuota:Number(e.replace(/([^\d])+/gim, ''))},index)}} mask='currency'/> */}
-                      <input
-                        defaultValue={item?.valueQuota}
-                        onChange={(e) => {
+                      <InputMask
+                        placeholder={`Valor da Cota`}
+                        maskType="money"
+                        defaultValue={Number(item?.valueQuota)}
+                        classStyle="md:mb-0 mb-2 text-black  input-sm bg-white input input-bordered input-warning w-full max-w-xs"
+                        onChangeCurrency={({ formattedValue, value }: any) => {
                           changeValues(
                             {
                               ...lineInput,
-                              valueQuota: Number(e.target.value),
+                              valueQuota: value,
                             },
                             index
                           );
                         }}
-                        type="number"
-                        placeholder="Cota"
-                        className="md:mb-0 mb-2 text-black  input-sm bg-white input input-bordered input-warning w-full max-w-xs"
                       />
                     </div>
 
-                    <div className=" w-full">
+                    <div className=" flex flex-col w-full">
                       <label htmlFor="" className="text-sm">
                         Cor de fundo
                       </label>
@@ -252,7 +259,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                       <button
                         type="button"
                         onClick={() => {
-                          removeLineInput(index);
+                          removeLineInput(index, item.id);
                         }}
                         className={
                           "md:w-10 w-full btn btn-outline btn-error btn-sm"
@@ -278,7 +285,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
               </div>
             </Form>
           </div>
-          <div className="md:block hidden">
+          <div className=" md:m-auto md:block hidden">
             <DynamicComponentWithNoSSR disabled item={{ data: nameForm }} />
           </div>
         </div>
@@ -303,7 +310,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
               />
             </header>
 
-            <div className="ml-5 flex items-center justify-center w-full h-full">
+            <div className="flex items-center justify-center w-full h-full">
               <DynamicComponentWithNoSSR disabled item={{ data: nameForm }} />
             </div>
           </div>

@@ -10,7 +10,7 @@ import api from "services/api";
 import { useEffect, useState } from "react";
 import { IRoullete, RoulleteQuotas } from "interfaces/types";
 import CountUp from "react-countup";
-import Thermomether from "components/ProgressPrime";
+import ProgressPrime from "components/ProgressPrime";
 
 const DynamicComponentWithNoSSR = dynamic(() => import("components/Roullete"), {
   ssr: false,
@@ -63,9 +63,13 @@ export default function Roleta(quotas: RoulleteQuotas) {
     >
       <Container className="mt-[4.5rem]">
         <HeaderRoullete roulletes={roulletes} />
-        <Thermomether
+        <ProgressPrime
           maxValue={Number(maxValue)}
-          bonus={authentication.user.bonus}
+          bonus={
+            authentication?.user.bonus >= 0
+              ? +Number(authentication.user.bonus).toFixed(2)
+              : 0
+          }
         />
 
         <Content>

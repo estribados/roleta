@@ -13,6 +13,8 @@ import api from "services/api";
 import { queryClient } from "services/queryClient";
 import { Container } from "styles/global";
 
+import { InputMask } from "components/Form";
+
 interface ApproveProps {
   solicitationId: string;
   value_solicitation: number;
@@ -29,6 +31,7 @@ interface DataUsers {
 const Usuarios: React.FC = (props) => {
   const [userId, setUserId] = useState<string>();
   const [textDescription, setTextDescription] = useState("");
+  const [credits, setCredits] = useState("");
   const { authentication, setAuthentication } = useAuth();
   const { notify } = useToast();
 
@@ -116,6 +119,23 @@ const Usuarios: React.FC = (props) => {
     }
   };
 
+  const updateCredits = async (id: string) => {
+    await api.patch("users/updateManualCredits", {
+      userId: id,
+      credits,
+    });
+
+    setCredits("");
+    setUserId("");
+
+    notify({
+      message: "Credito adicionado",
+      types: "info",
+    });
+
+    await queryClient.invalidateQueries("users");
+  };
+
   return (
     <>
       <h1 className="w-full text-4xl text-center mt-5">USUÁRIOS</h1>
@@ -136,6 +156,7 @@ const Usuarios: React.FC = (props) => {
                   <th>Banco</th>
                   <th>Pix</th>
                   <th>Solicitações</th>
+                  <th></th>
                   <th></th>
                 </tr>
               </thead>
@@ -159,19 +180,23 @@ const Usuarios: React.FC = (props) => {
                           {new Intl.NumberFormat("pt-BR", {
                             style: "currency",
                             currency: "BRL",
-                          }).format(user.house_profit)}
+                          }).format(user.accumulated)}
                         </td>
                         <td>
                           {new Intl.NumberFormat("pt-BR", {
                             style: "currency",
                             currency: "BRL",
-                          }).format(user.house_profit / 2)}
+                          }).format(
+                            Number(user.house_profit) === 0
+                              ? Number(user.accumulated)
+                              : Number(user.house_profit)
+                          )}
                         </td>
                         <td>
                           {new Intl.NumberFormat("pt-BR", {
                             style: "currency",
                             currency: "BRL",
-                          }).format(user.house_profit / 2)}
+                          }).format(user.bonus)}
                         </td>
                         <td>{user?.bank}</td>
                         <td>{user?.pix}</td>
@@ -195,6 +220,40 @@ const Usuarios: React.FC = (props) => {
                         >
                           {!!user?.solicitations?.length && (
                             <MdOutlineKeyboardArrowDown cursor={"pointer"} />
+                          )}
+                        </td>
+                        <td className="flex flex-col">
+                          {userId === user.id ? (
+                            <>
+                              <InputMask
+                                placeholder={`Valor do credito`}
+                                maskType="money"
+                                classStyle="bg-gray-200 placeholder:text-gray-400 text-gray-500 text input input-bordered input-warning w-full input-sm  rounded-md mb-1 "
+                                onChangeCurrency={({
+                                  formattedValue,
+                                  value,
+                                }: any) => {
+                                  setCredits(value);
+                                }}
+                              />
+                              <button
+                                onClick={() => {
+                                  updateCredits(user.id);
+                                }}
+                                className="btn btn-warning btn-sm"
+                              >
+                                Salvar
+                              </button>
+                            </>
+                          ) : (
+                            <button
+                              onClick={() => {
+                                setUserId(user.id);
+                              }}
+                              className="btn btn-warning btn-sm"
+                            >
+                              Adicionar creditos
+                            </button>
                           )}
                         </td>
                       </tr>

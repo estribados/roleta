@@ -31,10 +31,9 @@ const Roullete: React.FC<RoulleteProps> = ({ item, setHandleModal }) => {
         setPlay(true);
 
         const valueQuota = Number(item?.data[newPrizeNumber].valueQuota);
-        console.log(valueQuota);
         setTimeout(async () => {
           const { data } = await api.put("users/updateBonus", {
-            house_profit: valueQuota,
+            result: valueQuota,
             userId: authentication?.user.id,
           });
           if (authentication) {
@@ -46,6 +45,7 @@ const Roullete: React.FC<RoulleteProps> = ({ item, setHandleModal }) => {
                 credits: data.credits,
                 bonus: data.bonus,
                 profit: data.profit,
+                accumulated: data.accumulated,
               },
             });
           }

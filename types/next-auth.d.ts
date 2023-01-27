@@ -16,6 +16,7 @@ declare module "next-auth" {
       credits: number;
       house_profit: number;
       profit: number;
+      accumulated: number;
       bonus: number;
       solicitations: Array<{
         id: string;
