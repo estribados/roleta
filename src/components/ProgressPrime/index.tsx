@@ -38,11 +38,12 @@ const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
 
         <div className=" h-16 w-full items-center flex flex-1">
           <ProgressBar
+            height="40px"
             maxCompleted={100}
             completed={Number(percentage.toFixed(2))}
-            className="flex-1"
-            bgColor="gold"
-            labelColor="black"
+            className="flex-1 mt-2"
+            bgColor="yellow"
+            labelColor="#1e82d9"
           />
 
           {percentage >= 100 ? (
@@ -58,7 +59,7 @@ const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
           ) : (
             <Image
               className="ml-5 cursor-pointer"
-              src={"/images/treasure.png"}
+              src={"/images/money-bag.png"}
               alt="Picture of the author"
               width="46px"
               height="46px"

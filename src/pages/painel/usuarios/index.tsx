@@ -4,8 +4,6 @@ import { getSession } from "next-auth/react";
 import React, { Fragment, useState } from "react";
 import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import { useQuery } from "react-query";
-
-import Header from "components/Header";
 import { useAuth } from "hooks/useAuth";
 import { useToast } from "hooks/useToast";
 import { IUser } from "interfaces/types";
@@ -30,6 +28,7 @@ interface DataUsers {
 
 const Usuarios: React.FC = (props) => {
   const [userId, setUserId] = useState<string>();
+  const [userIdUpdateCredits, setUserIdUpdateCredits] = useState<string>();
   const [textDescription, setTextDescription] = useState("");
   const [credits, setCredits] = useState("");
   const { authentication, setAuthentication } = useAuth();
@@ -200,18 +199,20 @@ const Usuarios: React.FC = (props) => {
                         </td>
                         <td>{user?.bank}</td>
                         <td>{user?.pix}</td>
-                        <td
-                          className={`${
-                            !!user?.solicitations?.length &&
-                            "flex items-center justify-center"
-                          }`}
-                        >
-                          {!!user?.solicitations?.length && (
-                            <button
-                              className="tooltip w-5 h-5 rounded-full bg-green-600"
-                              data-tip="Solicitação Pendente"
-                            />
-                          )}
+                        <td>
+                          <div
+                            className={`${
+                              !!user?.solicitations?.length &&
+                              "flex items-center justify-center"
+                            }`}
+                          >
+                            {!!user?.solicitations?.length && (
+                              <button
+                                className="tooltip w-5 h-5 rounded-full bg-green-600"
+                                data-tip="Solicitação Pendente"
+                              />
+                            )}
+                          </div>
                         </td>
                         <td
                           onClick={() => {
@@ -223,7 +224,7 @@ const Usuarios: React.FC = (props) => {
                           )}
                         </td>
                         <td className="flex flex-col">
-                          {userId === user.id ? (
+                          {userIdUpdateCredits === user.id ? (
                             <>
                               <InputMask
                                 placeholder={`Valor do credito`}
@@ -248,7 +249,7 @@ const Usuarios: React.FC = (props) => {
                           ) : (
                             <button
                               onClick={() => {
-                                setUserId(user.id);
+                                setUserIdUpdateCredits(user.id);
                               }}
                               className="btn btn-warning btn-sm"
                             >
@@ -340,6 +341,10 @@ const Usuarios: React.FC = (props) => {
                                     </>
                                   )}
                                 </td>
+                                <td className="w-full bg-slate-300 font-bold text-black"></td>
+                                <td className="w-full bg-slate-300 font-bold text-black"></td>
+                                <td className="w-full bg-slate-300 font-bold text-black"></td>
+                                <td className="w-full bg-slate-300 font-bold text-black"></td>
                                 <td className="w-full bg-slate-300 font-bold text-black"></td>
                                 <td className="w-full bg-slate-300 font-bold text-black"></td>
                                 <td className="w-full bg-slate-300 font-bold text-black"></td>

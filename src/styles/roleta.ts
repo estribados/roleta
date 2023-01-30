@@ -64,9 +64,7 @@ export const Content = styled.main`
       font-size: 46px;
       line-height: 66px;
       text-align: center;
-      background: -webkit-linear-gradient(#faff00, #e8a700);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: yellow;
 
       a {
         font-size: 66px;

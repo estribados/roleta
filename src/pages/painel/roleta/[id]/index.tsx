@@ -75,12 +75,15 @@ export default function Roleta(quotas: RoulleteQuotas) {
         <Content>
           <section className="w-full md:max-w-md">
             <div className="mb-5 md:mb-0 md:h-full px-2 flex flex-col">
-              <h1 className="text-5xl">
+              <h1 className="text-5xl text-yellow-300">
                 SALDO DISPONIVEL <br />
                 <span className="font-extrabold text-5xl block mb-5">
                   <CountUp
                     decimals={2}
                     prefix={"R$"}
+                    style={{
+                      color: "yellow",
+                    }}
                     className={"text-5xl"}
                     start={(authentication?.user.credits || 0) - (result || 0)}
                     end={authentication?.user.credits || 0}
@@ -98,7 +101,7 @@ export default function Roleta(quotas: RoulleteQuotas) {
 
                 <div className="md:mt-5 mt-2">
                   <ButtonMP animation>
-                    <div className="md:text-1xl text-sm flex items-center justify-center">
+                    <div className="md:text-2xl text-sm flex items-center justify-center">
                       COMPRAR CREDITOS
                     </div>
                   </ButtonMP>

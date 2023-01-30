@@ -165,7 +165,7 @@ const Roullete: React.FC<RoulleteProps> = ({
 
   return (
     <>
-      {activeSoundRoullete && (
+      {false && (
         <audio
           style={{ display: "none" }}
           autoPlay
