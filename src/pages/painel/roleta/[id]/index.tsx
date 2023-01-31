@@ -16,7 +16,7 @@ const DynamicComponentWithNoSSR = dynamic(() => import("components/Roullete"), {
   ssr: false,
 });
 
-export default function Roleta(quotas: RoulleteQuotas) {
+const Roleta: React.FC = (data, quotas: RoulleteQuotas) => {
   const { authentication } = useAuth();
   const [roulletes, setRoulletes] = useState<IRoullete[]>([]);
   const [result, setResult] = useState<number>();
@@ -117,7 +117,9 @@ export default function Roleta(quotas: RoulleteQuotas) {
       </Container>
     </div>
   );
-}
+};
+
+export default Roleta;
 
 export const getServerSideProps: GetServerSideProps = async ({
   req,
