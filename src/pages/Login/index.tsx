@@ -150,9 +150,7 @@ const SignIn: React.FC = () => {
                 <span className="cursor-pointer text-blue-500 mb-2 block text-sm w-full text-right font-bold">
                   Esqueceu a senha?
                 </span>
-                <ButtonAnimated>
-                  <> Fazer Login</>
-                </ButtonAnimated>
+                <ButtonAnimated>Fazer Login</ButtonAnimated>
 
                 <p className="mt-2 block text-sm w-full text-left ">
                   Voce não tem conta ?

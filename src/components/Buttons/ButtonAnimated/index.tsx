@@ -15,7 +15,10 @@ const ButtonAnimated: React.FC<ButtonProps> = ({
   ...rest
 }) => {
   return (
-    <ContainerAnimated animation={animation}>
+    <ContainerAnimated
+      className="flex items-center justify-center"
+      animation={animation}
+    >
       <Container
         className="  flex items-center justify-center w-full h-full  text-white"
         {...rest}
