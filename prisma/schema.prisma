@@ -4,11 +4,9 @@
 generator client {
   provider = "prisma-client-js"
 }
-
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
-  relationMode = "prisma"
+  url = env("DATABASE_URL")
 }
 
 
@@ -42,6 +40,8 @@ model Solicitation {
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
   notifications Notifications[]
+
+  @@index([userId])
 }
 
 enum Status {
@@ -60,6 +60,9 @@ model Notifications {
   description String?
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
+
+  @@index([userId])
+  @@index([solicitationId])
 }
 
 model Roulletes{
@@ -86,4 +89,6 @@ model Quotas{
   color String
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
+
+  @@index([roulleteId])
 }
