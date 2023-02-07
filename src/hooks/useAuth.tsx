@@ -40,7 +40,7 @@ interface Props {
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 const AuthProvider = ({ children }: Props) => {
-  const { status, data } = useSession();
+  let { status, data } = useSession();
   const { notify } = useToast();
   const router = useRouter();
 
@@ -83,7 +83,7 @@ const AuthProvider = ({ children }: Props) => {
   };
   const signOutProvider = async () => {
     await signOut({ redirect: false });
-    setAuthentication({});
+    status = "unauthenticated";
     await router.push("/");
   };
 
