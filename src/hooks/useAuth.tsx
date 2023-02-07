@@ -83,6 +83,7 @@ const AuthProvider = ({ children }: Props) => {
   };
   const signOutProvider = async () => {
     await signOut({ redirect: false });
+    setAuthentication({});
     await router.push("/");
   };
 
