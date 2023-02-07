@@ -140,11 +140,13 @@ const Header: React.FC = () => {
               </div>
             </div>
           ) : (
-            <Link legacyBehavior href="/login">
-              <a>
-                <ButtonGoldOutLined title="Entrar" />
-              </a>
-            </Link>
+            <a
+              onClick={() => {
+                router.push("/login");
+              }}
+            >
+              <ButtonGoldOutLined title="Entrar" />
+            </a>
           )}
         </div>
       </div>
