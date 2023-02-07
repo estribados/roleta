@@ -34,8 +34,6 @@ const Header: React.FC = () => {
     }
   }, [status]);
 
-  console.log(status);
-
   const { data: notifications } = useQuery<INotifications[]>(
     ["notifications", authentication?.user.id],
     async () => {
