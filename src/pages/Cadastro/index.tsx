@@ -30,7 +30,7 @@ interface DataProps {
   password: string;
 }
 
-const SignUp: React.FC = () => {
+const Cadastro: React.FC = () => {
   const router = useRouter();
   const formRef = useRef<FormHandles>(null);
   const { notify } = useToast();
@@ -60,7 +60,7 @@ const SignUp: React.FC = () => {
             password: data.password,
             telephone: data.telephone,
           })
-          .then(() => router.push("/login"));
+          .then(() => router.push("/Login"));
 
         notify({
           message: "Usuário registrado, faça o login com suas credenciais",
@@ -100,7 +100,7 @@ const SignUp: React.FC = () => {
             <Form className="w-full" ref={formRef} onSubmit={handleSubmit}>
               <div className="flex justify-between md:text-lg text-sm items-center">
                 <h3 className="text-gold100 font-bold">CADASTRO DE USUÁRIO</h3>
-                <BackButton path="login" />
+                <BackButton path="Login" />
               </div>
               <label htmlFor="name">
                 <p className="text-gray-300 font-bold">Nome</p>
@@ -176,4 +176,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-export default SignUp;
+export default Cadastro;

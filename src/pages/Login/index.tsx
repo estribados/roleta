@@ -45,7 +45,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req }) => {
   };
 };
 
-const SignIn: React.FC = () => {
+const Login: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { facebookAuth, googleAuth, emailAndPasswordAuth } = useAuth();
 
@@ -154,7 +154,7 @@ const SignIn: React.FC = () => {
 
                 <p className="mt-2 block text-sm w-full text-left ">
                   Voce não tem conta ?
-                  <Link legacyBehavior href="/cadastro">
+                  <Link legacyBehavior href="/Cadastro">
                     <a>
                       <span className="font-bold cursor-pointer text-blue-500 text-sm">
                         Cadastro
@@ -170,4 +170,4 @@ const SignIn: React.FC = () => {
     </ContainerBg>
   );
 };
-export default SignIn;
+export default Login;

@@ -142,7 +142,7 @@ const Header: React.FC = () => {
           ) : (
             <a
               onClick={() => {
-                router.push("/login");
+                router.push("/Login");
               }}
             >
               <ButtonGoldOutLined title="Entrar" />
