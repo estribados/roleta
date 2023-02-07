@@ -79,7 +79,9 @@ const Header: React.FC = () => {
             height={40}
             alt="logo do sistema"
           />
-          {authentication?.user.isAdmin && <AdminActions />}
+          {authStatus && (
+            <>{authentication?.user.isAdmin && <AdminActions />}</>
+          )}
 
           {authStatus ? (
             <div className="flex items-center rounded-xl gap-5">
