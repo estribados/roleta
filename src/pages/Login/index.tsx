@@ -154,7 +154,7 @@ const SignIn: React.FC = () => {
 
                 <p className="mt-2 block text-sm w-full text-left ">
                   Voce não tem conta ?
-                  <Link legacyBehavior href="cadastro">
+                  <Link legacyBehavior href="/cadastro">
                     <a>
                       <span className="font-bold cursor-pointer text-blue-500 text-sm">
                         Cadastro
