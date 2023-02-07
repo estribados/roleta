@@ -16,7 +16,7 @@ const DynamicComponentWithNoSSR = dynamic(() => import("components/Roullete"), {
   ssr: false,
 });
 
-const Roleta: React.FC = (data, quotas: RoulleteQuotas) => {
+const Roleta: React.FC = (quotas: any) => {
   const { authentication } = useAuth();
   const [roulletes, setRoulletes] = useState<IRoullete[]>([]);
   const [result, setResult] = useState<number>();
@@ -35,12 +35,11 @@ const Roleta: React.FC = (data, quotas: RoulleteQuotas) => {
   }, []);
 
   useEffect(() => {
-    const maxValuer = quotas.data.reduce(function (prev, current) {
+    const maxValuer = quotas.data.reduce(function (prev: any, current: any) {
       return Number(prev.valueQuota) > Number(current.valueQuota)
         ? prev
         : current;
     });
-
     setMaxValue(Number(maxValuer.valueQuota));
   }, [quotas.data]);
 
