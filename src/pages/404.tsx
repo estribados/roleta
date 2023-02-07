@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const NotFound:React.FC = () =>{
-  return(
-    <h1>Não encontrada</h1>
-  )
-}
+const NotFound: React.FC = () => {
+  return (
+    <div className="w-full h-130 flex items-center justify-center">
+      Página não encontrada
+    </div>
+  );
+};
 
-export default NotFound
+export default NotFound;
