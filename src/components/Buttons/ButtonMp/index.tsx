@@ -73,7 +73,7 @@ const ButtonMP: React.FC<ButtonProps> = ({
     <div className="">
       <ContainerAnimated
         onClick={() => {
-          !!authentication ? setOpenModal(true) : push("/Login");
+          // !!authentication ? setOpenModal(true) : push("/Login");
         }}
         animation={animation}
       >

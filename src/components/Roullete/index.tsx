@@ -34,11 +34,6 @@ const Roullete: React.FC<RoulleteProps> = ({
   const [play, setPlay] = useState(false);
   const { notify } = useToast();
 
-  useEffect(() => {
-    if (mustSpin) {
-      setPlay(true);
-    }
-  }, [mustSpin]);
   const handleSpinClick = useCallback(async () => {
     if (disabled) {
       return;
@@ -63,7 +58,6 @@ const Roullete: React.FC<RoulleteProps> = ({
             setRollingn(true);
             setPrizeNumber(prizeNumberResult);
             setMustSpin(true);
-            setPlay(true);
             const resultQuotas = item?.data[prizeNumberResult];
 
             setTimeout(() => {
@@ -116,7 +110,6 @@ const Roullete: React.FC<RoulleteProps> = ({
           const newPrizeNumber = Math.floor(Math.random() * staticData.length);
           setPrizeNumber(newPrizeNumber);
           setMustSpin(true);
-          setPlay(true);
         }
       }
     } catch (err: any) {
@@ -159,13 +152,9 @@ const Roullete: React.FC<RoulleteProps> = ({
 
   const formatCurrencyData = currencyFormat(quotasFormated || []);
 
-  const activeSoundRoullete =
-    Number(authentication?.user.credits) >
-      Number(item?.roullete?.price_roullete) && play;
-
   return (
     <>
-      {false && (
+      {play && (
         <audio
           style={{ display: "none" }}
           autoPlay
@@ -186,9 +175,18 @@ const Roullete: React.FC<RoulleteProps> = ({
             onStopSpinning={() => {
               setMustSpin(false);
               setRollingn(false);
+              setPlay(false);
+              activeWin(true);
             }}
           />
-          <Spin disabled={disabled} active={mustSpin} onClick={handleSpinClick}>
+          <Spin
+            disabled={disabled}
+            active={mustSpin}
+            onClick={() => {
+              handleSpinClick();
+              setPlay(true);
+            }}
+          >
             <p>Girar</p>
           </Spin>
 
