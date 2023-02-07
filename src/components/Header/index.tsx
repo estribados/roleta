@@ -29,8 +29,12 @@ const Header: React.FC = () => {
   useEffect(() => {
     if (status === "authenticated") {
       setAuthStatus(true);
+    } else {
+      setAuthStatus(false);
     }
   }, [status]);
+
+  console.log(status);
 
   const { data: notifications } = useQuery<INotifications[]>(
     ["notifications", authentication?.user.id],

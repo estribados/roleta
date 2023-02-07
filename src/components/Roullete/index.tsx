@@ -49,6 +49,8 @@ const Roullete: React.FC<RoulleteProps> = ({
           throw new Error("Você não possui creditos suficientes");
         }
 
+        setPlay(true);
+
         if (!disabled && !staticItens) {
           if (item) {
             const prizeNumberResult = Math.floor(
@@ -184,7 +186,6 @@ const Roullete: React.FC<RoulleteProps> = ({
             active={mustSpin}
             onClick={() => {
               handleSpinClick();
-              setPlay(true);
             }}
           >
             <p>Girar</p>
