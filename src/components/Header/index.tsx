@@ -121,7 +121,7 @@ const Header: React.FC = () => {
                     onClick={() =>
                       confirm({
                         title: "RESGATAR PRÊMIO",
-                        text: "Apos solicitar um valor ele estara disponivel na conta registrada em ate 24 horas",
+                        text: "Apos solicitar um valor ele estara disponivel na conta registrada em ate 5 dias uteis",
                       })
                     }
                   >
