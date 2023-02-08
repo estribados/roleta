@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   height: 100%;
   flex: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -20,6 +21,9 @@ export const RoulleteContainer = styled.div`
   justify-content: center;
   max-width: 445px;
   max-height: 445px;
+
+  min-width: 330px;
+  min-height: 330px;
   margin: auto;
 
   /* &::after{ */
@@ -54,13 +58,10 @@ export const Spin = styled.div<SpinProps>`
   align-items: center;
   justify-content: center;
 
-  position: absolute;
   width: 100px;
   height: 100px;
   border-radius: 50%;
-  position: absolute;
-  top: 40%;
-  left: 40%;
+
   z-index: 30;
   cursor: ${(props) =>
     props.active || props.disabled ? "not-allowed" : "pointer"};
@@ -76,8 +77,6 @@ export const Spin = styled.div<SpinProps>`
   @media (max-width: 768px) {
     width: 80px;
     height: 80px;
-    top: 36%;
-    left: 36%;
   }
 
   p {

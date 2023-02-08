@@ -5,6 +5,7 @@ interface ButtonProps {
 }
 
 export const ContainerAnimated = styled.div<ButtonProps>`
+  margin: 0 auto;
   background: linear-gradient(90deg, yellow 41.3%, yellow 61.27%);
   box-shadow: 0px 4px 4px rgba(229, 189, 49, 0.5);
   border-radius: 8px;
@@ -13,7 +14,7 @@ export const ContainerAnimated = styled.div<ButtonProps>`
   letter-spacing: 3px;
   transition: all 200ms;
   cursor: pointer !important;
-  width: 100%;
+  width: 98%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -54,7 +55,7 @@ export const Container = styled.button`
   -webkit-text-fill-color: #8adaff; */
   color: #1e82d9;
 
-  font-size: 40px;
+  font-size: 36px;
   height: 100%;
 
   svg {

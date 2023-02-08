@@ -9,7 +9,7 @@ position:absolute;
 width:100vw;
 left:0;
 align-items:center; */
-  height: 80vh;
+  height: calc(80vh - 4rem);
   aside {
     height: 100%;
     display: flex;
@@ -24,7 +24,7 @@ align-items:center; */
 
 export const Content = styled.main`
   max-width: 1024px;
-  margin: 50px auto;
+  margin: auto;
 
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -32,10 +32,11 @@ export const Content = styled.main`
   height: calc(100vh - 253px);
   position: relative;
 
+  overflow: hidden;
   @media (max-width: 720px) {
     grid-template-columns: 1fr;
     padding: 0 20px;
-    height: calc(100vh - 139px);
+    height: calc(100vh - 80px);
 
     .containerRoullete {
       order: 1;
@@ -45,7 +46,7 @@ export const Content = styled.main`
   section {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: space-around;
     height: 100%;
 
     h1 {

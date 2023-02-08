@@ -181,15 +181,18 @@ const Roullete: React.FC<RoulleteProps> = ({
               activeWin(true);
             }}
           />
-          <Spin
-            disabled={disabled}
-            active={mustSpin}
-            onClick={() => {
-              handleSpinClick();
-            }}
-          >
-            <p>Girar</p>
-          </Spin>
+
+          <div className="absolute w-full h-full flex items-center justify-center">
+            <Spin
+              disabled={disabled}
+              active={mustSpin}
+              onClick={() => {
+                handleSpinClick();
+              }}
+            >
+              <p>Girar</p>
+            </Spin>
+          </div>
 
           <Arrow>
             <Image
