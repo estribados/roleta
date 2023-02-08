@@ -27,6 +27,7 @@ export default function Home() {
         src={bg}
         layout="fill"
         alt="logo do sistema"
+        style={{ minHeight: "100vh" }}
       />
       <Content className="relative">
         <div className="containerRoullete ">
