@@ -23,7 +23,7 @@ export default async function findOrCreate(
         accumulated: 0,
         credits: Number(user.credits) + result,
         bonus: 0,
-        house_profit: Number(user.house_profit) + Number(user.profit),
+        // house_profit: Number(user.house_profit) + Number(user.profit),
         // profit: Number(user.bonus) - result,
       },
     });

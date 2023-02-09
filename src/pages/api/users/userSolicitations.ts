@@ -24,12 +24,13 @@ export default async function userSolicitation(
 
   let initialValue = 0;
   const total = users.reduce(function (acumulador, user) {
-    const sum = acumulador + Number(user.house_profit);
+    const c = Number(user.house_profit) - Number(user.user_profit);
+    const sum = acumulador + c;
 
     return sum;
   }, initialValue);
 
-  const newTotal = total / 2;
+  const newTotal = total;
 
   return res.status(201).json({ users, house_profit: newTotal.toFixed(2) });
 }

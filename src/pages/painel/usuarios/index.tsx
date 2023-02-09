@@ -149,7 +149,7 @@ const Usuarios: React.FC = (props) => {
                   <th>Telefone</th>
                   <th>Email</th>
                   <th>Creditos disponiveis</th>
-                  <th>Arrecadado</th>
+                  <th>Valor das vitorias</th>
                   <th>Lucro da casa</th>
                   <th>Valor do bonus</th>
                   <th>Banco</th>
@@ -179,16 +179,23 @@ const Usuarios: React.FC = (props) => {
                           {new Intl.NumberFormat("pt-BR", {
                             style: "currency",
                             currency: "BRL",
-                          }).format(user.accumulated)}
+                          }).format(user.user_profit)}
                         </td>
-                        <td>
+                        <td
+                          className={`
+                          ${
+                            Number(user.house_profit) -
+                              Number(user.user_profit) <
+                            0
+                              ? "text-red-400"
+                              : "text-green-400"
+                          }`}
+                        >
                           {new Intl.NumberFormat("pt-BR", {
                             style: "currency",
                             currency: "BRL",
                           }).format(
-                            Number(user.house_profit) === 0
-                              ? Number(user.accumulated)
-                              : Number(user.house_profit)
+                            Number(user.house_profit) - Number(user.user_profit)
                           )}
                         </td>
                         <td>
@@ -365,7 +372,11 @@ const Usuarios: React.FC = (props) => {
 
         <div className="w-full flex justify-end items-center">
           <h3 className="mr-3">Lucro geral :</h3>
-          <span className="font-semibold text-2xl">
+          <span
+            className={`font-semibold text-2xl ${
+              Number(data?.house_profit) < 0 ? "text-red-400" : "text-green-400"
+            }`}
+          >
             {new Intl.NumberFormat("pt-BR", {
               style: "currency",
               currency: "BRL",

@@ -21,7 +21,7 @@ export interface IUser {
   house_profit: number;
   accumulated: number;
   bonus: number;
-  profit: number;
+  user_profit: number;
   credits: number;
   solicitations?: ISolicitation[];
 }
