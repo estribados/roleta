@@ -91,7 +91,7 @@ export const Spin = styled.div<SpinProps>`
     left: 36%;
   }
 
-  p {
+  h2 {
     @media (max-width: 768px) {
     }
   }

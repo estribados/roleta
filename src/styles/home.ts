@@ -9,7 +9,7 @@ position:absolute;
 width:100vw;
 left:0;
 align-items:center; */
-  height: calc(80vh - 4rem);
+  height: calc(100vh - 4rem);
   aside {
     height: 100%;
     display: flex;

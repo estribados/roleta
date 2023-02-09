@@ -30,6 +30,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
     <SessionProvider session={session}>
       <Head>
         <title>Roleta</title>
+        <link rel="shortcut icon" href="/images/money-bag.png" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"

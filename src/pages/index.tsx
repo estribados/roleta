@@ -23,11 +23,11 @@ export default function Home() {
     <Container className="flex items-center justify-center">
       <Image
         placeholder="blur"
-        className="w-screen h-full object-cover left-0  absolute"
+        className="w-screen object-cover   h-full"
         src={bg}
         layout="fill"
         alt="logo do sistema"
-        style={{ minHeight: "100vh" }}
+        style={{ position: "fixed" }}
       />
       <Content className="relative">
         <div className="containerRoullete ">

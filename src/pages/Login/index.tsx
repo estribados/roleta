@@ -88,6 +88,7 @@ const Login: React.FC = () => {
         src={bg}
         layout="fill"
         alt="logo do sistema"
+        style={{ position: "fixed" }}
       />
       <Container>
         <Content className="mx-5">
