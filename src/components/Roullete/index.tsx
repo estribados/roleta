@@ -85,7 +85,7 @@ const Roullete: React.FC<RoulleteProps> = ({
                         credits: response.data.credits,
                         house_profit: response.data.house_profit,
                         bonus: response.data.bonus,
-                        profit: response.data.profit,
+                        user_profit: response.data.profit,
                         accumulated: response.data.accumulated,
                       },
                     });

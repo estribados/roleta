@@ -44,7 +44,7 @@ const Roullete: React.FC<RoulleteProps> = ({ item, setHandleModal }) => {
                 house_profit: data.house_profit,
                 credits: data.credits,
                 bonus: data.bonus,
-                profit: data.profit,
+                user_profit: data.profit,
                 accumulated: data.accumulated,
               },
             });
