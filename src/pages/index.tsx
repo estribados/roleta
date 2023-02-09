@@ -23,7 +23,7 @@ export default function Home() {
     <Container className="flex items-center justify-center">
       <Image
         placeholder="blur"
-        className="w-screen h-full object-cover left-0 bg-fixed"
+        className="w-screen h-full object-cover left-0  absolute"
         src={bg}
         layout="fill"
         alt="logo do sistema"

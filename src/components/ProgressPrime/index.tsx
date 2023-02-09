@@ -26,28 +26,38 @@ const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
   return (
     <>
       <Container>
-        <div className="flex items-center gap-3 -mb-4">
-          <strong className="text-bold">Rodada bonus</strong>
-          <div
-            className="tooltip tooltip-bottom z-50"
-            data-tip="Quando sua barra de progresso estiver em 100%, você tera direito a uma rodada bonus"
-          >
-            <IoIosInformationCircleOutline color="#ffff" />
+        <div className="md:w-full w-[90%] mx-auto">
+          <div className="flex items-center gap-3 -mb-4">
+            <strong className="text-bold">Rodada bonus</strong>
+            <div
+              className="tooltip tooltip-bottom z-49"
+              data-tip="Quando sua barra de progresso estiver em 100%, você tera direito a uma rodada bonus"
+            >
+              <IoIosInformationCircleOutline color="#ffff" />
+            </div>
           </div>
-        </div>
 
-        <div className=" h-16 w-full items-center flex flex-1">
-          <ProgressBar
-            height="40px"
-            maxCompleted={100}
-            completed={Number(percentage.toFixed(2))}
-            className="flex-1 mt-2"
-            bgColor="yellow"
-            labelColor="#1e82d9"
-          />
+          <div className=" h-16  w-full items-center flex flex-1">
+            <ProgressBar
+              height="40px"
+              maxCompleted={100}
+              completed={Number(percentage.toFixed(2))}
+              className="flex-1 mt-2"
+              bgColor="yellow"
+              labelColor="#1e82d9"
+            />
 
-          {percentage >= 100 ? (
-            <label htmlFor="my-modal-4" className="win">
+            {percentage >= 100 ? (
+              <label htmlFor="my-modal-4" className="win">
+                <Image
+                  className="ml-5 cursor-pointer"
+                  src={"/images/money-bag.png"}
+                  alt="Picture of the author"
+                  width="46px"
+                  height="46px"
+                />
+              </label>
+            ) : (
               <Image
                 className="ml-5 cursor-pointer"
                 src={"/images/money-bag.png"}
@@ -55,20 +65,11 @@ const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
                 width="46px"
                 height="46px"
               />
-            </label>
-          ) : (
-            <Image
-              className="ml-5 cursor-pointer"
-              src={"/images/money-bag.png"}
-              alt="Picture of the author"
-              width="46px"
-              height="46px"
-            />
-          )}
+            )}
+          </div>
         </div>
-
-        <ModalRoullete bonus={bonus} />
       </Container>
+      <ModalRoullete bonus={bonus} />
     </>
   );
 };

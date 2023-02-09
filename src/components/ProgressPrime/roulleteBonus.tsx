@@ -110,7 +110,7 @@ const Roullete: React.FC<RoulleteProps> = ({ item, setHandleModal }) => {
             }}
           />
           <Spin active={mustSpin} onClick={handleSpinClick}>
-            <p>Girar</p>
+            Girar
           </Spin>
 
           <Arrow>

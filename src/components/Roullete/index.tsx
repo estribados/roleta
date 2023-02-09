@@ -9,7 +9,9 @@ import api from "services/api";
 import { staticData } from "utils/staticRoullete";
 import { currencyFormat } from "utils/currencyNumber";
 import { Arrow, Container, RoulleteContainer, Spin } from "./styles";
-import { type } from "os";
+
+import { AiFillSound } from "react-icons/ai";
+import { GiSoundOff } from "react-icons/gi";
 
 interface RoulleteProps {
   staticItens?: boolean;
@@ -32,6 +34,7 @@ const Roullete: React.FC<RoulleteProps> = ({
   const [prizeNumber, setPrizeNumber] = useState<number>();
   const [quotasFormated, setQuotasFormated] = useState<any[] | undefined>([]);
   const [play, setPlay] = useState(false);
+  const [sound, setSound] = useState(true);
   const { notify } = useToast();
 
   const handleSpinClick = useCallback(async () => {
@@ -87,7 +90,6 @@ const Roullete: React.FC<RoulleteProps> = ({
                       },
                     });
                   }
-
                   const resultRodada =
                     (resultQuotas.valueQuota || 0) -
                     Number(item.roullete?.price_roullete);
@@ -101,7 +103,7 @@ const Roullete: React.FC<RoulleteProps> = ({
                   ${new Intl.NumberFormat("pt-BR", {
                     style: "currency",
                     currency: "BRL",
-                  }).format(resultRodada)} nessa rodada `,
+                  }).format(resultQuotas?.valueQuota || 0)} nessa rodada `,
                       types: "warning",
                     });
                   }
@@ -153,7 +155,6 @@ const Roullete: React.FC<RoulleteProps> = ({
   }, [item, item?.data]);
 
   const formatCurrencyData = currencyFormat(quotasFormated || []);
-
   return (
     <>
       {play && (
@@ -172,7 +173,7 @@ const Roullete: React.FC<RoulleteProps> = ({
             spinDuration={1}
             outerBorderColor="linear-gradient(0deg, rgba(229,189,49,1) 7%, rgba(242,222,56,1) 30%, rgba(254,255,63,1) 86%)"
             outerBorderWidth={0}
-            fontSize={14}
+            fontSize={16}
             data={staticItens ? staticData : formatCurrencyData}
             onStopSpinning={() => {
               setMustSpin(false);
@@ -190,7 +191,7 @@ const Roullete: React.FC<RoulleteProps> = ({
                 handleSpinClick();
               }}
             >
-              <p>Girar</p>
+              Girar
             </Spin>
           </div>
 

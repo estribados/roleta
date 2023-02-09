@@ -65,14 +65,14 @@ const ModalRoullete: React.FC<MaxRoullete> = ({ bonus }) => {
           <h3 className="text-lg text-center font-bold">
             Parabéns, resgate agora seu premio.
           </h3>
-          <p className="py-4">
+          <section className="py-4">
             <DynamicComponentWithNoSSR
               setHandleModal={setHandleModal}
               item={{
                 data: obj,
               }}
             />
-          </p>
+          </section>
         </label>
       </label>
     </>

@@ -1,6 +1,6 @@
 import { IRoullete } from "interfaces/types";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { Fragment, useState } from "react";
 import { NavLink } from "components/NavLink";
 import { GiHamburgerMenu } from "react-icons/gi";
 
@@ -49,7 +49,7 @@ const HeaderRoullete: React.FC<HeaderProps> = ({ roulletes }) => {
         <nav>
           {roulletes.map((roullete) => {
             return (
-              <>
+              <Fragment key={roullete.id}>
                 {!rolling ? (
                   <NavLink
                     key={roullete.id}
@@ -77,7 +77,7 @@ const HeaderRoullete: React.FC<HeaderProps> = ({ roulletes }) => {
                     </span>
                   </a>
                 )}
-              </>
+              </Fragment>
             );
           })}
         </nav>

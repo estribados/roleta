@@ -94,7 +94,10 @@ const Header: React.FC = () => {
               />
 
               <div className="dropdown dropdown-bottom dropdown-end">
-                <label tabIndex={0} className="btn btn-circle swap swap-rotate">
+                <label
+                  tabIndex={0}
+                  className="btn btn-circle swap swap-rotate z-49"
+                >
                   <input type="checkbox" />
                   <div className="avatar">
                     <div className="w-10 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">

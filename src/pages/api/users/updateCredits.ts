@@ -16,13 +16,16 @@ export default async function updateCredits(
 
   if (user) {
     const resultadoRodada = resultQuotas - price_roullete;
+    const resultadoRodada2 = price_roullete - resultQuotas;
+
+    //se o valor que eu acertar for maior que o valor da cota da roleta eu subraio
 
     const updatedUser = await prisma.user.update({
       data: {
         credits: Number(user?.credits) + resultadoRodada,
         accumulated: Number(user.accumulated) - resultadoRodada,
         bonus: (Number(user.accumulated?.toFixed(3)) - resultadoRodada) / 2,
-        profit: (Number(user.accumulated?.toFixed(3)) - resultadoRodada) / 2,
+        profit: Number(user.profit?.toFixed(3)) + resultadoRodada2,
       },
       where: {
         id: userId,

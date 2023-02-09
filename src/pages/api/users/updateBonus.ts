@@ -20,11 +20,11 @@ export default async function findOrCreate(
         id: userId,
       },
       data: {
-        accumulated: Number(user.accumulated) - result,
+        accumulated: 0,
         credits: Number(user.credits) + result,
-        bonus: Number(user.bonus) - result,
+        bonus: 0,
         house_profit: Number(user.house_profit) + Number(user.profit),
-        profit: Number(user.bonus) - result,
+        // profit: Number(user.bonus) - result,
       },
     });
 
