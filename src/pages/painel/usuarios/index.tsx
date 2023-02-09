@@ -142,7 +142,10 @@ const Usuarios: React.FC = (props) => {
         <div className="w-full h-full rounded-md py-5">
           <div className="mb-5"></div>
           <div className="overflow-x-auto ">
-            <table className=" table table-compact  w-full">
+            <table
+              data-theme="dark"
+              className=" table table-compact bg-black  w-full"
+            >
               <thead>
                 <tr className="text-left">
                   <th className="absolute -z-10">Nome</th>

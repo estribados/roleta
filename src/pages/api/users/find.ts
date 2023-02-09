@@ -19,8 +19,6 @@ export default async function find(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  console.log(user);
-
   if (user) {
     return res.status(201).json(user);
   }
