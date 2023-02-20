@@ -22,7 +22,7 @@ export const Container = styled.div`
 
 export const Content = styled.main`
   max-width: 1024px;
-  margin: 20px auto;
+  margin: 14px auto;
   height: 100%;
 
   display: flex;
@@ -51,7 +51,7 @@ export const Content = styled.main`
     flex-direction: column;
 
     padding: 0 20px;
-    margin: 20px auto;
+    margin: 14px auto;
   }
 
   section {
