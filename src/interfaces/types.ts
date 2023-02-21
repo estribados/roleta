@@ -56,6 +56,7 @@ export interface IQuotas {
   id?: string;
   roulleteId?: string;
   valueQuota?: number | undefined;
+  percentQuota?: number;
 }
 
 export interface IRoulleteQuota {

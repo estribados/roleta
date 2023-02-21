@@ -24,11 +24,9 @@ export default async function create(
     return newQuota;
   });
 
-  if (quotas[0].valueQuota) {
-    await prisma.quotas.createMany({
-      data: newQuotas,
-    });
-  }
+  await prisma.quotas.createMany({
+    data: newQuotas,
+  });
 
   return res.status(201).json({});
 }

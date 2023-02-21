@@ -11,17 +11,36 @@ import api from "services/api";
 import { IRoullete } from "interfaces/types";
 import Switch from "react-switch";
 import SwitchRoullete from "components/Switch";
+import { queryClient } from "services/queryClient";
 
 const Roletas: React.FC = () => {
-  const { data: roulletes } = useQuery<IRoullete[]>(["roulletes"], async () => {
-    const response = await api.get("roulletes/getRoulletes");
-    return response.data;
-  });
+  const { data: roulletes } = useQuery<IRoullete[]>(
+    ["roulletesteste"],
+    async () => {
+      const response = await api.get("roulletes/getRoulletes");
+      return response.data;
+    }
+  );
+
+  const handleDelete = async (id: string) => {
+    const hasConfirm = confirm("Essa ação não podera ser desfeita");
+
+    if (!hasConfirm) {
+      return;
+    }
+
+    await api.post(`roulletes/handleDelete`, {
+      id,
+    });
+
+    await queryClient.invalidateQueries("roulletesteste");
+  };
 
   return (
     <>
       <div className="px-5 mt-5 mx-auto  max-w-[1140px] flex justify-between items-center">
         <h1 className="w-full text-2xl  md:text-4xl">ROLETAS</h1>
+
         <Link href={"roletas/cadastro"}>
           <ButtonGold title={"Cadastrar"} />
         </Link>
@@ -62,21 +81,29 @@ const Roletas: React.FC = () => {
                         }).format(roullete.price_roullete)}
                       </td>
                       <td>{roullete.status}</td>
-                      <td>
-                        <Link href={`roletas/${roullete.id}`}>
+                      <td className="flex items-center justify-around gap-2 text-center">
+                        <Link className="mr-2" href={`roletas/${roullete.id}`}>
                           <a>
                             <button className="btn btn-primary btn-sm mb-2">
                               Ver
                             </button>
                           </a>
                         </Link>
-                      </td>
 
-                      <td>
                         <SwitchRoullete
                           roulleteId={roullete.id}
                           active={roullete.status === "ATIVA" ? true : false}
                         />
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => {
+                            handleDelete(roullete.id);
+                          }}
+                          className="btn btn-error btn-sm"
+                        >
+                          Excluir
+                        </button>
                       </td>
                     </tr>
                   ))}

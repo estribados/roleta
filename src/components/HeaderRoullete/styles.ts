@@ -36,7 +36,7 @@ export const Container = styled.div<ContainerProps>`
     display: flex;
     gap: 10px;
     overflow: auto;
-    justify-content: space-between;
+    justify-content: space-around;
     color: #1e82d9;
 
     &::-webkit-scrollbar-track {

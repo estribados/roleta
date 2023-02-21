@@ -26,6 +26,7 @@ const DynamicComponentWithNoSSR = dynamic(() => import("components/Roullete"), {
 interface dataRoulleteProps {
   color?: string | undefined;
   valueQuota?: number | undefined;
+  percentQuota?: number;
 }
 interface FormProps {
   id?: string;
@@ -47,13 +48,14 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
       } else {
         return [
           {
-            valueQuota: undefined,
+            valueQuota: 0,
             color: "#000000",
+            percentQuota: undefined,
           },
         ];
       }
     } else {
-      return [{ valueQuota: undefined, color: "#000000" }];
+      return [{ valueQuota: 0, color: "#000000", percentQuota: undefined }];
     }
   });
 
@@ -62,12 +64,13 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
   }, [roullete?.price_roullete]);
 
   const changeValues = (
-    { valueQuota, color }: dataRoulleteProps,
+    { valueQuota, color, percentQuota }: dataRoulleteProps,
     index: number
   ) => {
     setLineInput({ valueQuota });
     if (valueQuota) nameForm[index].valueQuota = valueQuota;
     if (color) nameForm[index].color = color;
+    if (percentQuota) nameForm[index].percentQuota = percentQuota;
   };
 
   const duplicateInput = () => {
@@ -85,11 +88,13 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
       setNameForm(updateList);
     }
 
-    await api.delete(`quotas/delete/`, {
-      params: {
-        id,
-      },
-    });
+    if (id) {
+      await api.delete(`quotas/delete/`, {
+        params: {
+          id,
+        },
+      });
+    }
   };
 
   const updateRoullete = async ({
@@ -222,10 +227,14 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                 Ver Roleta <AiFillEye className="ml-5" />
               </button>
               {nameForm?.map((item, index) => {
+                const firstLine = index === 0;
                 return (
                   <div
                     key={index}
-                    className="bg-black50 shadow-sm my-2 p-2 rounded-md flex flex-col md:flex-row  justify-between gap-0 md:gap-5 w-full items-end"
+                    className={`${
+                      firstLine &&
+                      "border-solid border border-gold100 bg-gold100"
+                    }  bg-black50 shadow-sm my-2 p-2 rounded-md flex flex-col md:flex-row  justify-between gap-0 md:gap-5 w-full items-end`}
                   >
                     <div className=" flex flex-col  w-full">
                       <label htmlFor="" className=" text-sm">
@@ -248,6 +257,29 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                       />
                     </div>
 
+                    {firstLine && (
+                      <div>
+                        <label className="text-sm flex flex-col  w-full">
+                          Porcentagem
+                        </label>
+                        <input
+                          max={100}
+                          defaultValue={item.percentQuota}
+                          onChange={(e) => {
+                            changeValues(
+                              {
+                                ...lineInput,
+                                percentQuota: Number(e.target.value),
+                              },
+                              index
+                            );
+                          }}
+                          className="md:mb-0 mb-4 input-sm bg-white text-black  input input-bordered input-warning w-full max-w-xs"
+                          type="text"
+                        />
+                      </div>
+                    )}
+
                     <div className=" flex flex-col w-full">
                       <label htmlFor="" className="text-sm">
                         Cor de fundo
@@ -266,7 +298,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                       />
                     </div>
 
-                    {nameForm.length > 1 && (
+                    {nameForm.length > 1 && !firstLine && (
                       <button
                         type="button"
                         onClick={() => {

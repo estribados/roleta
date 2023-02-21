@@ -84,8 +84,9 @@ enum StatusRoullete {
 model Quotas{
   id String @id @default(uuid())
   roulleteId String
-  roullete Roulletes? @relation(fields: [roulleteId], references: [id])
+  roullete Roulletes? @relation(fields: [roulleteId], references: [id],onDelete: Cascade)
   valueQuota Decimal @db.Decimal(9,2)
+  percentQuota Decimal? @db.Decimal(9,2)
   color String
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt

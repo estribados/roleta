@@ -26,6 +26,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   inputName?: string;
   paddingRight?: number;
   classStyle?: string;
+  disabled?: boolean;
 }
 
 export function Input({
@@ -47,6 +48,7 @@ export function Input({
   paddingRight,
   classStyle,
   defaultValue,
+  disabled,
   ...rest
 }: InputProps) {
   const theme = useTheme();
@@ -79,6 +81,7 @@ export function Input({
         {/* {Icon && <Icon size="20" />} */}
         {maskType === "money" && (
           <NumberFormat
+            disabled={disabled}
             prefix="R$ "
             placeholder="R$ 0,00"
             thousandSeparator="."

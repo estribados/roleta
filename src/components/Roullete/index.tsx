@@ -10,6 +10,8 @@ import { staticData } from "utils/staticRoullete";
 import { currencyFormat } from "utils/currencyNumber";
 import { Arrow, Container, RoulleteContainer, Spin } from "./styles";
 
+import { getResultRollete } from "utils/getResultRollete";
+
 import { AiFillSound } from "react-icons/ai";
 import { GiSoundOff } from "react-icons/gi";
 
@@ -56,16 +58,27 @@ const Roullete: React.FC<RoulleteProps> = ({
 
         if (!disabled && !staticItens) {
           if (item) {
-            const prizeNumberResult = Math.floor(
-              Math.random() * item.data?.length
-            );
+            // const prizeNumberResult = Math.floor(
+            //   Math.random() * item.data?.length
+            // );
+
+            const prizeNumberResult = getResultRollete(item.data);
 
             setRollingn(true);
             setPrizeNumber(prizeNumberResult);
             setMustSpin(true);
             const resultQuotas = item?.data[prizeNumberResult];
 
-            setTimeout(() => {
+            setTimeout(async () => {
+              if (prizeNumberResult === 0) {
+                //chamar endpoint que vai atualizar todas as cotas que tem percentageQuota para 0
+
+                await api.post("roulletes/roundBonus", {
+                  win: true,
+                });
+                if (quotasFormated) quotasFormated[0].option = "0";
+              }
+
               api
                 .patch("users/updateCredits", {
                   userId: authentication?.user.id,
@@ -90,9 +103,6 @@ const Roullete: React.FC<RoulleteProps> = ({
                       },
                     });
                   }
-                  const resultRodada =
-                    (resultQuotas.valueQuota || 0) -
-                    Number(item.roullete?.price_roullete);
 
                   if (
                     (resultQuotas?.valueQuota || 0) >
@@ -129,6 +139,7 @@ const Roullete: React.FC<RoulleteProps> = ({
     item,
     mustSpin,
     notify,
+    quotasFormated,
     setAuthentication,
     setRollingn,
     staticItens,
@@ -140,13 +151,12 @@ const Roullete: React.FC<RoulleteProps> = ({
 
   useEffect(() => {
     const roulleteData = item?.data.map((quotas) => {
-      if (quotas.valueQuota) {
-        const mountObj = {
-          option: quotas.valueQuota.toString(),
-          style: { backgroundColor: quotas.color, textColor: "#fff" },
-        };
-        return mountObj;
-      }
+      const mountObj = {
+        option: quotas.valueQuota ? quotas.valueQuota.toString() : "",
+        style: { backgroundColor: quotas.color, textColor: "#fff" },
+      };
+
+      return mountObj;
     });
 
     if (item) {
@@ -155,6 +165,7 @@ const Roullete: React.FC<RoulleteProps> = ({
   }, [item, item?.data]);
 
   const formatCurrencyData = currencyFormat(quotasFormated || []);
+
   return (
     <>
       {play && (

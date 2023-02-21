@@ -12,6 +12,7 @@ import { queryClient } from "services/queryClient";
 import { Container } from "styles/global";
 
 import { InputMask } from "components/Form";
+import { ButtonGold } from "components/Buttons";
 
 interface ApproveProps {
   solicitationId: string;
@@ -135,9 +136,24 @@ const Usuarios: React.FC = (props) => {
     await queryClient.invalidateQueries("users");
   };
 
+  const roundBonus = async () => {
+    const hasConfirm = confirm(
+      "Apos confirmar sera distribuido 40% do lucro pelas roletas"
+    );
+
+    if (!hasConfirm) {
+      return;
+    }
+
+    await api.post("roulletes/roundBonus", {
+      house_profit: data?.house_profit,
+    });
+  };
+
   return (
     <>
       <h1 className="w-full text-4xl text-center mt-5">USUÁRIOS</h1>
+
       <Container>
         <div className="w-full h-full rounded-md py-5">
           <div className="mb-5"></div>
@@ -374,6 +390,11 @@ const Usuarios: React.FC = (props) => {
         </div>
 
         <div className="w-full flex justify-end items-center">
+          <ButtonGold
+            onClick={roundBonus}
+            style={{ marginRight: "10px" }}
+            title={"Ativar rodada bonus"}
+          />
           <h3 className="mr-3">Lucro geral :</h3>
           <span
             className={`font-semibold text-2xl ${

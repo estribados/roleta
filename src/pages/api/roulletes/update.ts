@@ -26,10 +26,12 @@ export default async function update(
       update: {
         color: item.color,
         valueQuota: item.valueQuota,
+        percentQuota: item.percentQuota,
       },
       create: {
         color: item.color,
         valueQuota: item.valueQuota,
+        percentQuota: item.percenteQuota,
         roulleteId: rol.id,
       },
     });
