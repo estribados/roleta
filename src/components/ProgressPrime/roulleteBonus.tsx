@@ -39,10 +39,6 @@ const Roullete: React.FC<RoulleteProps> = ({ item, setHandleModal }) => {
             roulleteBonus: true,
           });
 
-          // const { data } = await api.put("users/updateBonus", {
-          //   result: valueQuota,
-          //   userId: authentication?.user.id,
-          // });
           if (authentication) {
             setAuthentication({
               ...authentication,

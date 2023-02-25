@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  /* height: 100%; */
   flex: 1;
   display: flex;
   align-items: center;
@@ -9,13 +8,6 @@ export const Container = styled.div`
   position: relative;
 `;
 export const RoulleteContainer = styled.div`
-  /* position: relative; */
-  /* width: 100%;
-  height: 100%;
-  max-width: 450px; */
-
-  /* transform: rotate(45deg); */
-  /* right: 20%; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -25,8 +17,6 @@ export const RoulleteContainer = styled.div`
   min-width: 330px;
   min-height: 330px;
   margin: auto;
-
-  /* &::after{ */
 
   background-size: contain;
   background: rgb(255, 221, 0);
@@ -38,8 +28,6 @@ export const RoulleteContainer = styled.div`
   background-size: cover;
   content: "";
   border-radius: 50%;
-  /* width: 107%;
-  height: 107%; */
 
   filter: drop-shadow(0px 0px 10px #d1b814);
 
