@@ -1,4 +1,4 @@
-import { Solicitation, User } from "@prisma/client";
+import { solicitation, user } from "@prisma/client";
 
 export interface ISolicitation {
   id: string;
@@ -30,8 +30,8 @@ export interface INotifications {
   createdAt: string;
   description: string;
   id: string;
-  solicitation: Solicitation;
-  user: User;
+  solicitation: solicitation;
+  user: user;
   visualized: boolean;
 }
 
