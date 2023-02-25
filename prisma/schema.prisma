@@ -10,7 +10,7 @@ datasource db {
 }
 
 
-model User{
+model user{
   id String @id @default(uuid())
   name String 
   last_name String? 
@@ -27,19 +27,19 @@ model User{
   house_profit Decimal? @db.Decimal(9,3) @default(0) 
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
-  solicitations Solicitation[]
-  notifications Notifications[]
+  solicitations solicitation[]
+  notifications notifications[]
 }
 
-model Solicitation {
+model solicitation {
   id String @id @default(uuid())
-  user   User @relation(fields: [userId], references: [id])
+  user   user @relation(fields: [userId], references: [id])
   value_solicitation Decimal @db.Decimal(9,2)
   userId String
   status  Status    @default(SOLICITADO)
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
-  notifications Notifications[]
+  notifications notifications[]
 
   @@index([userId])
 }
@@ -50,11 +50,11 @@ enum Status {
   RECUSADO
 }
 
-model Notifications {
+model notifications {
   id String @id @default(uuid())
-  user User @relation(fields: [userId], references: [id])
+  user user @relation(fields: [userId], references: [id])
   userId String
-  solicitation Solicitation? @relation(fields: [solicitationId], references: [id])
+  solicitation solicitation? @relation(fields: [solicitationId], references: [id])
   solicitationId String?
   visualized  Boolean @default(false)
   description String?
@@ -65,7 +65,7 @@ model Notifications {
   @@index([solicitationId])
 }
 
-model Roulletes{
+model roulletes{
   id String @id @default(uuid())
   nameCategory String
   percentageRoullete Int?
@@ -73,7 +73,7 @@ model Roulletes{
   status  StatusRoullete    @default(INATIVA)
   createdAt DateTime @default(now())
   updatedAt DateTime? @updatedAt
-  quotas Quotas[]
+  quotas quotas[]
 
 }
 
@@ -82,10 +82,10 @@ enum StatusRoullete {
   INATIVA
 }
 
-model Quotas{
+model quotas{
   id String @id @default(uuid())
   roulleteId String
-  roullete Roulletes? @relation(fields: [roulleteId], references: [id],onDelete: Cascade)
+  roullete roulletes? @relation(fields: [roulleteId], references: [id],onDelete: Cascade)
   valueQuota Decimal @db.Decimal(9,2)
   percentQuota Decimal? @db.Decimal(9,2)
   color String
