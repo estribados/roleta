@@ -6,12 +6,13 @@ export default async function create(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { nameCategory, price_roullete, quotas } = req.body;
+  const { nameCategory, price_roullete, quotas, percentageRoullete } = req.body;
 
   const roullete = await prisma.roulletes.create({
     data: {
       nameCategory,
       price_roullete: Number(price_roullete),
+      percentageRoullete: Number(percentageRoullete),
     },
   });
 

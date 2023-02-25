@@ -40,6 +40,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
   const formRef = useRef<FormHandles>(null);
   const [hasOpen, setHasOpen] = useState(false);
   const [valueCategory, setValueCategory] = useState<string | undefined>("");
+  const [percentageRoullete, setPercentageRoullete] = useState("");
   const [lineInput, setLineInput] = useState<dataRoulleteProps>();
   const [nameForm, setNameForm] = useState(() => {
     if (id) {
@@ -58,10 +59,6 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
       return [{ valueQuota: 0, color: "#000000", percentQuota: undefined }];
     }
   });
-
-  useEffect(() => {
-    setValueCategory(roullete?.price_roullete.toString());
-  }, [roullete?.price_roullete]);
 
   const changeValues = (
     { valueQuota, color, percentQuota }: dataRoulleteProps,
@@ -103,7 +100,11 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
     roullete,
   }: {
     id: string;
-    roullete: { nameCategory: string; valueCategory: number };
+    roullete: {
+      nameCategory: string;
+      valueCategory: number;
+      percentageRoullete: number;
+    };
     itens: dataRoulleteProps;
   }) => {
     await api.put("roulletes/update", {
@@ -113,17 +114,26 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
     });
   };
 
+  useEffect(() => {
+    setValueCategory(roullete?.price_roullete.toString());
+  }, [roullete?.price_roullete]);
+
   const createRoullete = useCallback(
     async ({
       itens,
       roullete,
     }: {
-      roullete: { nameCategory: string; valueCategory: string };
+      roullete: {
+        nameCategory: string;
+        valueCategory: string;
+        percentageRoullete: number;
+      };
       itens: dataRoulleteProps;
     }) => {
       await api.post("roulletes/create", {
         nameCategory: roullete.nameCategory,
         price_roullete: Number(valueCategory),
+        percentageRoullete: roullete.percentageRoullete,
         quotas: itens,
       });
     },
@@ -131,7 +141,11 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
   );
 
   const handleSubmit = useCallback(
-    async (data: { nameCategory: string; valueCategory: string }) => {
+    async (data: {
+      nameCategory: string;
+      valueCategory: string;
+      percentageRoullete: number;
+    }) => {
       try {
         formRef.current?.setErrors({});
 
@@ -140,6 +154,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
             id,
             itens: nameForm as dataRoulleteProps,
             roullete: {
+              percentageRoullete: Number(data.percentageRoullete),
               nameCategory: data.nameCategory,
               valueCategory: Number(valueCategory),
             },
@@ -149,7 +164,8 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
             itens: nameForm as dataRoulleteProps,
             roullete: {
               nameCategory: data.nameCategory,
-              valueCategory: data.valueCategory,
+              valueCategory: valueCategory || "",
+              percentageRoullete: data.percentageRoullete,
             },
           });
         }
@@ -169,7 +185,6 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
     },
     [createRoullete, id, nameForm, notify, push, valueCategory]
   );
-
   return (
     <>
       <Container>
@@ -186,6 +201,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
               initialData={{
                 nameCategory: roullete?.nameCategory,
                 valueCategory: roullete?.price_roullete,
+                percentageRoullete: roullete?.percentageRoullete,
               }}
               className="pr-5 mt-5 w-full overflow-y-auto max-h-[500px]"
               ref={formRef}
@@ -209,11 +225,25 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                   <InputMask
                     placeholder={`Valor da Cota`}
                     maskType="money"
-                    value={Number(valueCategory)}
+                    {...(id && { defaultValue: Number(valueCategory) })}
                     classStyle="md:mb-0 mb-2 text-black bg-white input input-bordered input-warning w-full max-w-xs"
                     onChangeCurrency={({ formattedValue, value }: any) => {
                       setValueCategory(value);
                     }}
+                  />
+                </Label>
+
+                <Label htmlFor="percentageRoullete">
+                  <p className="text-gray-300 font-bold">
+                    Porcentagem premio roleta
+                  </p>
+
+                  <Input
+                    style={{ color: "black" }}
+                    id="percentageRoullete"
+                    name="percentageRoullete"
+                    type="text"
+                    placeholder="Premio"
                   />
                 </Label>
               </ContainerLabel>

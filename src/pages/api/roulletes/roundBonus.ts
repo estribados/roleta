@@ -9,8 +9,6 @@ export default async function roundBonus(
 ) {
   const { house_profit, win } = req.body;
 
-  // pegar todas minhas roletas ativas,
-
   const roulletes = await prisma.roulletes.findMany({
     where: {
       status: "ATIVA",
@@ -37,18 +35,25 @@ export default async function roundBonus(
     },
   });
 
-  //40% do premio maximo dividio pela quantidade de roletas
-  const newValueQuota: any = (win ? 0 : house_profit * 0.4) / roulletes.length;
+  const fortyPercentage: any = win ? 0 : house_profit * 0.4;
 
-  // vou pegar de cada roleta a cota que tiver a porcentagem
+  roulletes.map(async (roullete) => {
+    const newValue =
+      fortyPercentage * (Number(roullete.percentageRoullete) / 100);
 
-  const updatedRoulletes = roulletes.map(async (roullete) => {
+    console.log({
+      fortyPercentage,
+      roul: roullete.percentageRoullete,
+      percent: Number(roullete.percentageRoullete) / 100,
+      newValue,
+    });
+
     await prisma.quotas.update({
       where: {
         id: roullete.quotas[0].id,
       },
       data: {
-        valueQuota: newValueQuota,
+        valueQuota: newValue,
       },
     });
   });

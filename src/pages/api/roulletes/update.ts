@@ -12,6 +12,7 @@ export default async function update(
     data: {
       nameCategory: roullete.nameCategory,
       price_roullete: roullete.valueCategory,
+      percentageRoullete: roullete.percentageRoullete,
     },
     where: {
       id,

@@ -68,6 +68,7 @@ model Notifications {
 model Roulletes{
   id String @id @default(uuid())
   nameCategory String
+  percentageRoullete Int?
   price_roullete Decimal @db.Decimal(9,2)
   status  StatusRoullete    @default(INATIVA)
   createdAt DateTime @default(now())

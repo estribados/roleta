@@ -46,6 +46,7 @@ export interface WheelData {
 }
 export interface IRoullete {
   nameCategory: string;
+  percentageRoullete: number;
   id: string;
   status: string;
   price_roullete: number;
@@ -64,6 +65,7 @@ export interface IRoulleteQuota {
   id: string;
   status: string;
   price_roullete: number;
+  percentageRoullete: number;
   quotas: IQuotas[];
 }
 
