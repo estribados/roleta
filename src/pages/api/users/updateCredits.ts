@@ -6,7 +6,7 @@ export default async function updateCredits(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { userId, resultQuotas, price_roullete } = req.body;
+  const { userId, resultQuotas, price_roullete, roulleteBonus } = req.body;
 
   const user = await prisma.user.findFirst({
     where: {
@@ -34,6 +34,26 @@ export default async function updateCredits(
     //     Number(user.user_profit?.toFixed(3)) + resultadoRodada
     //   ).toFixed(3),
     // });
+
+    if (roulleteBonus) {
+      const updatedUser = await prisma.user.update({
+        data: {
+          credits: Number(user?.credits) + resultadoRodada,
+          accumulated: 0,
+          bonus: 0,
+          house_profit:
+            Number(user.house_profit?.toFixed(3)) + resultadoRodada2,
+          ...(resultadoRodada2 < 0 && {
+            user_profit: Number(user.user_profit?.toFixed(3)) + resultadoRodada,
+          }),
+        },
+        where: {
+          id: userId,
+        },
+      });
+
+      return res.status(201).json(updatedUser);
+    }
 
     const updatedUser = await prisma.user.update({
       data: {

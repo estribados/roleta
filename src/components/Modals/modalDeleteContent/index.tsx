@@ -122,7 +122,7 @@ const ModalDeleteContent: React.FC<IModalDeleteContentProps> = ({
                   contato com o suporte
                 </strong>
               ) : (
-                <div className="flex items-center justify-center">
+                <div className="flex md:items-center justify-center flex-col items-start md:flex-row">
                   <label
                     className="text-gray-500 font-bold"
                     htmlFor="valorDisponivel"

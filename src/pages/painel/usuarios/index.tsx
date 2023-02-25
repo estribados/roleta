@@ -389,23 +389,27 @@ const Usuarios: React.FC = (props) => {
           </div>
         </div>
 
-        <div className="w-full flex justify-end items-center">
+        <div className="w-full flex  flex-col  md:flex-row justify-end items-center">
           <ButtonGold
             onClick={roundBonus}
             style={{ marginRight: "10px" }}
             title={"Ativar rodada bonus"}
           />
-          <h3 className="mr-3">Lucro geral :</h3>
-          <span
-            className={`font-semibold text-2xl ${
-              Number(data?.house_profit) < 0 ? "text-red-400" : "text-green-400"
-            }`}
-          >
-            {new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(data?.house_profit || 0)}
-          </span>
+          <div className="w-full flex  items-center md:justify-end justify-center  md:mt-0 mt-3 ">
+            <h3 className="mr-3 ">Lucro geral :</h3>
+            <span
+              className={`font-semibold text-2xl ${
+                Number(data?.house_profit) < 0
+                  ? "text-red-400"
+                  : "text-green-400"
+              }`}
+            >
+              {new Intl.NumberFormat("pt-BR", {
+                style: "currency",
+                currency: "BRL",
+              }).format(data?.house_profit || 0)}
+            </span>
+          </div>
         </div>
       </Container>
     </>

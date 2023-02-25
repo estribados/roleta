@@ -32,10 +32,17 @@ const Roullete: React.FC<RoulleteProps> = ({ item, setHandleModal }) => {
 
         const valueQuota = Number(item?.data[newPrizeNumber].valueQuota);
         setTimeout(async () => {
-          const { data } = await api.put("users/updateBonus", {
-            result: valueQuota,
+          const { data } = await api.patch("users/updateCredits", {
             userId: authentication?.user.id,
+            resultQuotas: Number(valueQuota),
+            price_roullete: Number(item?.roullete?.price_roullete),
+            roulleteBonus: true,
           });
+
+          // const { data } = await api.put("users/updateBonus", {
+          //   result: valueQuota,
+          //   userId: authentication?.user.id,
+          // });
           if (authentication) {
             setAuthentication({
               ...authentication,
