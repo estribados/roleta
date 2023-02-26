@@ -1,8 +1,20 @@
 import styled from "styled-components";
 
+export const WppFlutuante = styled.a`
+  position: absolute;
+  bottom: 20px;
+  right: 5%;
+`;
+
 export const Container = styled.div`
   width: 100%;
   align-items: center;
+
+  .whatsapp-link {
+    position: fixed;
+    right: 100px;
+    top: 5;
+  }
 
   @media (max-width: 720px) {
     height: initial;

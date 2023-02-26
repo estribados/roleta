@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { GetServerSideProps } from "next";
 import { getSession } from "next-auth/react";
 import dynamic from "next/dynamic";
@@ -5,7 +6,7 @@ import dynamic from "next/dynamic";
 import { ButtonMP } from "components/Buttons";
 import HeaderRoullete from "components/HeaderRoullete";
 import { useAuth } from "hooks/useAuth";
-import { Container, Content } from "styles/roleta";
+import { Container, Content, WppFlutuante } from "styles/roleta";
 import api from "services/api";
 import { useEffect, useState } from "react";
 import { IRoullete, RoulleteQuotas } from "interfaces/types";
@@ -114,6 +115,14 @@ const Roleta: React.FC = (quotas: any) => {
           />
         </Content>
       </Container>
+
+      <WppFlutuante
+        className="whatsapp-link"
+        href={`https://web.whatsapp.com/send?phone=5508597222938&text=Meu nome é ${authentication.user.name} e meu email ${authentication.user.email}, gostaria de tirar algumas duvidas sobre a roleta`}
+        target="blank"
+      >
+        <img src="/svg/wpp.svg" alt="" />
+      </WppFlutuante>
     </div>
   );
 };
