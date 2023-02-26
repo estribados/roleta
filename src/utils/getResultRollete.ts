@@ -1,8 +1,6 @@
 import { IQuotas } from "./../interfaces/types";
 export const getResultRollete = (quotas: IQuotas[]) => {
-  const probability = Math.floor(Math.random() * 101);
-
-  //se minha probabilidade for maior ou igual a probabilidade  da cota ela vai sair
+  const probability = Number((Math.random() * 99.9 + 0.1).toFixed(2));
 
   const indexQuota = quotas.findIndex((quota) => quota.percentQuota);
 
@@ -17,6 +15,4 @@ export const getResultRollete = (quotas: IQuotas[]) => {
 
     return resultIndex;
   }
-
-  // se não pego meu arrray.length e escolho um numero aleatorio nele
 };
