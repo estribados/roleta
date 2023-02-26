@@ -118,7 +118,7 @@ const Roleta: React.FC = (quotas: any) => {
 
       <WppFlutuante
         className="whatsapp-link"
-        href={`https://web.whatsapp.com/send?phone=5508597222938&text=Meu nome é ${authentication.user.name} e meu email ${authentication.user.email}, gostaria de tirar algumas duvidas sobre a roleta`}
+        href={`https://api.whatsapp.com/send?phone=5508597222938&text=Meu nome é ${authentication.user.name} e meu email ${authentication.user.email}, gostaria de tirar algumas duvidas sobre a roleta`}
         target="blank"
       >
         <img src="/svg/wpp.svg" alt="" />
