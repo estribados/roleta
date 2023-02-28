@@ -9,7 +9,6 @@ export const Container = styled.div<ContainerProps>`
   max-width: 1024px;
   margin: 40px auto 0 auto;
   box-shadow: 0 10px 15px 2px rgba(0, 0, 0, 0.1);
-  display: none;
 
   @media (max-width: 740px) {
     ${({ toggle }) =>
@@ -89,12 +88,4 @@ export const Container = styled.div<ContainerProps>`
   }
 `;
 
-export const ToogleMenu = styled.label`
-  @media (min-width: 740px) {
-    display: none;
-  }
-
-  @media (min-height: 740px) {
-    display: none;
-  }
-`;
+export const ToogleMenu = styled.label``;

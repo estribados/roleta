@@ -9,7 +9,7 @@ export const ContainerAnimated = styled.div<ButtonProps>`
   background: linear-gradient(90deg, yellow 41.3%, yellow 61.27%);
   box-shadow: 0px 4px 4px rgba(229, 189, 49, 0.5);
   border-radius: 8px;
-  min-height: 80px;
+  min-height: 70px;
   font-weight: 800;
   letter-spacing: 3px;
   transition: all 200ms;

@@ -19,7 +19,7 @@ const HeaderRoullete: React.FC<HeaderProps> = ({ roulletes }) => {
   const { push } = useRouter();
   return (
     <>
-      <ToogleMenu className="absolute right-0 top-32 z-50 btn btn-circle swap swap-rotate">
+      {/* <ToogleMenu className="absolute right-0 top-32 z-50 btn btn-circle swap swap-rotate">
         <input
           type="checkbox"
           onChange={(e) => {
@@ -44,7 +44,7 @@ const HeaderRoullete: React.FC<HeaderProps> = ({ roulletes }) => {
         >
           <polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" />
         </svg>
-      </ToogleMenu>
+      </ToogleMenu> */}
       <Container toggle={toggle}>
         <nav>
           {roulletes.map((roullete) => {

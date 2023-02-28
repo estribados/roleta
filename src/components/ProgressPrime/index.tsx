@@ -26,11 +26,11 @@ const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
   return (
     <>
       <Container>
-        <div className="md:w-full w-[90%] mx-auto">
+        <div className="md:w-full w-[100%] mx-auto">
           <div className="flex items-center gap-3 -mb-4">
             <strong className="text-bold">Rodada bonus</strong>
             <div
-              className="tooltip tooltip-bottom z-49"
+              className="tooltip tooltip-bottom z-[998] min-w-max "
               data-tip="Quando sua barra de progresso estiver em 100%, você tera direito a uma rodada bonus"
             >
               <IoIosInformationCircleOutline color="#ffff" />

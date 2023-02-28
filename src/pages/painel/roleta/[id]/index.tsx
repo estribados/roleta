@@ -63,18 +63,20 @@ const Roleta: React.FC = (quotas: any) => {
     >
       <Container className="mt-[4.5rem]">
         <HeaderRoullete roulletes={roulletes} />
-        <ProgressPrime
-          maxValue={Number(maxValue)}
-          bonus={
-            authentication?.user.bonus >= 0
-              ? +Number(authentication.user.bonus).toFixed(2)
-              : 0
-          }
-        />
+        <div className="w-full md:block hidden">
+          <ProgressPrime
+            maxValue={Number(maxValue)}
+            bonus={
+              authentication?.user.bonus >= 0
+                ? +Number(authentication.user.bonus).toFixed(2)
+                : 0
+            }
+          />
+        </div>
 
         <Content>
-          <section className="w-full md:max-w-md">
-            <div className="mb-5 md:mb-0 md:h-full px-2 flex flex-col">
+          <section className="w-full md:max-w-xl">
+            <div className="mb-2 md:mb-0 md:h-full px-2 flex flex-col">
               <h1 className="text-5xl text-yellow-300">
                 SALDO DISPONIVEL <br />
                 <span className="font-extrabold text-5xl block mb-5">
@@ -105,6 +107,16 @@ const Roleta: React.FC = (quotas: any) => {
                       COMPRAR CREDITOS
                     </div>
                   </ButtonMP>
+                </div>
+                <div className="w-full md:hidden">
+                  <ProgressPrime
+                    maxValue={Number(maxValue)}
+                    bonus={
+                      authentication?.user.bonus >= 0
+                        ? +Number(authentication.user.bonus).toFixed(2)
+                        : 0
+                    }
+                  />
                 </div>
               </div>
             </div>
