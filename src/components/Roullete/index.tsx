@@ -150,12 +150,12 @@ const Roullete: React.FC<RoulleteProps> = ({
   }, [item?.roullete?.id, setRoulleteId]);
 
   useEffect(() => {
-    const roulleteData = item?.data.map((quotas) => {
+    const roulleteData = item?.data.map((quotas, index) => {
       const mountObj = {
         option: quotas.valueQuota ? quotas.valueQuota.toString() : "",
         style: {
           backgroundColor: quotas.color,
-          textColor: "#fff",
+          textColor: index === 0 ? "yellow" : "#fff",
         },
       };
 
