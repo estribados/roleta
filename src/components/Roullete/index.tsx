@@ -155,7 +155,10 @@ const Roullete: React.FC<RoulleteProps> = ({
         option: quotas.valueQuota ? quotas.valueQuota.toString() : "",
         style: {
           backgroundColor: quotas.color,
-          textColor: index === 0 ? "yellow" : "#fff",
+          textColor:
+            index === 0 && quotas.percentQuota && Number(quotas.valueQuota) > 0
+              ? "yellow"
+              : "#fff",
         },
       };
 
