@@ -2,15 +2,23 @@ import React, { useState } from "react";
 
 import dynamic from "next/dynamic";
 
+import { BaseModal } from "components/Modals/BaseModal";
+
 const DynamicComponentWithNoSSR = dynamic(() => import("./roulleteBonus"), {
   ssr: false,
 });
 
 interface MaxRoullete {
   bonus: number;
+  openModal: boolean;
+  setOpenModal: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ModalRoullete: React.FC<MaxRoullete> = ({ bonus }) => {
+const ModalRoullete: React.FC<MaxRoullete> = ({
+  bonus,
+  openModal,
+  setOpenModal,
+}) => {
   const [handleModal, setHandleModal] = useState(false);
   function desconto(porcent: number) {
     const desconto = bonus - bonus * (porcent / 100);
@@ -46,36 +54,21 @@ const ModalRoullete: React.FC<MaxRoullete> = ({ bonus }) => {
     },
   ];
 
-  //preciso de um endpoint que pegue o usuario logado,
-  //subtraia de house-profitz o valor que ele ganhou nessa roleta
-
   return (
-    <>
-      <input
-        checked={handleModal}
-        onChange={(e) => {
-          setHandleModal(e.target.checked);
-        }}
-        type="checkbox"
-        id="my-modal-4"
-        className="modal-toggle"
-      />
-      <label htmlFor="my-modal-4" className="modal cursor-pointer ">
-        <label className="modal-box relative overflow-hidden" htmlFor="">
-          <h3 className="text-lg text-center font-bold">
-            Parabéns, resgate agora seu premio.
-          </h3>
-          <section className="py-4">
-            <DynamicComponentWithNoSSR
-              setHandleModal={setHandleModal}
-              item={{
-                data: obj,
-              }}
-            />
-          </section>
-        </label>
-      </label>
-    </>
+    <BaseModal
+      isVisible={openModal}
+      title={"Parabéns, resgate agora seu premio."}
+      onCloseModal={setOpenModal}
+    >
+      <section className="py-4">
+        <DynamicComponentWithNoSSR
+          setHandleModal={setHandleModal}
+          item={{
+            data: obj,
+          }}
+        />
+      </section>
+    </BaseModal>
   );
 };
 export default ModalRoullete;

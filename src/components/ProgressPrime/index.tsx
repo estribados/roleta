@@ -13,6 +13,8 @@ interface ThermometherProps {
 const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
   const [percentage, setPercentage] = useState(0);
 
+  const [openModal, setOpenModal] = useState(false);
+
   useEffect(() => {
     const percentageCacl = (Number(bonus) * 100) / Number(maxValue);
 
@@ -48,7 +50,13 @@ const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
             />
 
             {percentage >= 100 ? (
-              <label htmlFor="my-modal-4" className="win">
+              <label
+                onClick={() => {
+                  setOpenModal(true);
+                }}
+                htmlFor="my-modal-7"
+                className="win"
+              >
                 <Image
                   className="ml-5 cursor-pointer"
                   src={"/images/money-bag.png"}
@@ -58,18 +66,30 @@ const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
                 />
               </label>
             ) : (
-              <Image
-                className="ml-5 cursor-pointer"
-                src={"/images/money-bag.png"}
-                alt="Picture of the author"
-                width="46px"
-                height="46px"
-              />
+              <label
+                onClick={() => {
+                  setOpenModal(true);
+                }}
+                htmlFor="my-modal-7"
+                className="win"
+              >
+                <Image
+                  className="ml-5 cursor-pointer"
+                  src={"/images/money-bag.png"}
+                  alt="Picture of the author"
+                  width="46px"
+                  height="46px"
+                />
+              </label>
             )}
           </div>
         </div>
+        <ModalRoullete
+          openModal={openModal}
+          setOpenModal={setOpenModal}
+          bonus={bonus}
+        />
       </Container>
-      <ModalRoullete bonus={bonus} />
     </>
   );
 };

@@ -106,7 +106,7 @@ const Roullete: React.FC<RoulleteProps> = ({ item, setHandleModal }) => {
             spinDuration={1}
             outerBorderColor="linear-gradient(0deg, rgba(229,189,49,1) 7%, rgba(242,222,56,1) 30%, rgba(254,255,63,1) 86%)"
             outerBorderWidth={0}
-            fontSize={14}
+            fontSize={18}
             data={formatCurrencyData}
             onStopSpinning={() => {
               setMustSpin(false);
