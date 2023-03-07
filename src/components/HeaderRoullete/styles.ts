@@ -66,7 +66,7 @@ export const Container = styled.div<ContainerProps>`
       transition: all 200ms;
 
       @media (max-width: 720px) {
-        font-size: 18px;
+        font-size: 14px;
       }
 
       span {

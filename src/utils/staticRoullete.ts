@@ -1,39 +1,157 @@
 export const staticData = [
-  { option: 'R$ 0,00', style: { backgroundColor: 'green', textColor: '#fff' } },
-  { option: 'R$ 1,00', style: { backgroundColor: '#6A5ACD', textColor: '#fff' } },
-  { option: 'R$ 2,00', style: { backgroundColor: '#00FA9A', textColor: '#fff' }  },
-  { option: 'R$ 3,00', style: { backgroundColor: '#BDB76B', textColor: '#fff' }  },
-  { option: 'R$ 4,00', style: { backgroundColor: '#DC143C', textColor: '#fff' }  },
-  { option: 'R$ 5,00', style: { backgroundColor: '#4f820d', textColor: '#fff' }  },
-  { option: 'R$ 6,00', style: { backgroundColor: '	#DAA520', textColor: '#fff' }  },
-  { option: 'R$ 7,00', style: { backgroundColor: '#820d5f', textColor: '#fff' }  },
-  { option: 'R$ 8,00', style: { backgroundColor: '#2b2478', textColor: '#fff' }  },
-  { option: 'R$ 0,00' , style: { backgroundColor: '#9370DB', textColor: '#fff' } },
-  { option: 'R$ 10,00', style: { backgroundColor: '#ada41f', textColor: '#fff' }  },
-  { option: 'R$ 11,00', style: { backgroundColor: 'green', textColor: '#fff' } },
-  { option: 'R$ 12,00', style: { backgroundColor: '#6A5ACD', textColor: '#fff' } },
-  { option: 'R$ 13,00', style: { backgroundColor: '#00FA9A', textColor: '#fff' }  },
-  { option: 'R$ 14,00', style: { backgroundColor: '#BDB76B', textColor: '#fff' }  },
-  { option: 'R$ 15,00', style: { backgroundColor: '#DC143C', textColor: '#fff' }  },
-  { option: 'R$ 16,00', style: { backgroundColor: '#4f820d', textColor: '#fff' }  },
-  { option: 'R$ 17,00', style: { backgroundColor: '	#DAA520', textColor: '#fff' }  },
-  { option: 'R$ 18,00', style: { backgroundColor: '#820d5f', textColor: '#fff' }  },
-  { option: 'R$ 19,00', style: { backgroundColor: '#2b2478', textColor: '#fff' }  },
-  { option: 'R$ 20,00' , style: { backgroundColor: '#9370DB', textColor: '#fff' } },
-  { option: 'R$ 21,00', style: { backgroundColor: '#ada41f', textColor: '#fff' }  },
-  { option: 'R$ 22,00', style: { backgroundColor: '#820d5f', textColor: '#fff' }  },
-  { option: 'R$ 23,00', style: { backgroundColor: '#2b2478', textColor: '#fff' }  },
-  { option: 'R$ 24,00' , style: { backgroundColor: '#9370DB', textColor: '#fff' } },
-  { option: 'R$ 25,00', style: { backgroundColor: '#ada41f', textColor: '#fff' }  },
-  { option: 'R$ 26,00', style: { backgroundColor: '#DC143C', textColor: '#fff' }  },
-  { option: 'R$ 27,00', style: { backgroundColor: '#4f820d', textColor: '#fff' }  },
-  { option: 'R$ 28,00', style: { backgroundColor: '	#DAA520', textColor: '#fff' }  },
-  { option: 'R$ 29,00', style: { backgroundColor: '#820d5f', textColor: '#fff' }  },
-  { option: 'R$ 30,00', style: { backgroundColor: '#2b2478', textColor: '#fff' }  },
-  { option: 'R$ 31,00' , style: { backgroundColor: '#9370DB', textColor: '#fff' } },
-  { option: 'R$ 32,00', style: { backgroundColor: '#ada41f', textColor: '#fff' }  },
-  { option: 'R$ 33,00', style: { backgroundColor: '#820d5f', textColor: '#fff' }  },
-  { option: 'R$ 34,00', style: { backgroundColor: '#2b2478', textColor: '#fff' }  },
-  { option: 'R$ 35,00' , style: { backgroundColor: '#9370DB', textColor: '#fff' } },
-  { option: 'R$ 36,00' , style: { backgroundColor: '#9370DB', textColor: '#fff' } },
-]
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "green", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#6A5ACD", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#00FA9A", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#BDB76B", textColor: "#fff" },
+  },
+  {
+    option: "R$ 20,00",
+    style: { backgroundColor: "#DC143C", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#4f820d", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "	#DAA520", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#820d5f", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#2b2478", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#9370DB", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#ada41f", textColor: "#fff" },
+  },
+
+  { option: "R$ 0,00", style: { backgroundColor: "green", textColor: "#fff" } },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#6A5ACD", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#00FA9A", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#BDB76B", textColor: "#fff" },
+  },
+  {
+    option: "R$ 15,00",
+    style: { backgroundColor: "#DC143C", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#4f820d", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "	#DAA520", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#820d5f", textColor: "#fff" },
+  },
+  {
+    option: "R$ 10,00",
+    style: { backgroundColor: "#DC143C", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#9370DB", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#ada41f", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#820d5f", textColor: "#fff" },
+  },
+  {
+    option: "R$ 10,00",
+    style: { backgroundColor: "#DC143C", textColor: "#fff" },
+  },
+
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#2b2478", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#9370DB", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#ada41f", textColor: "#fff" },
+  },
+  {
+    option: "R$ 15,00",
+    style: { backgroundColor: "#DC143C", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#4f820d", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "	#DAA520", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#820d5f", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#2b2478", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#9370DB", textColor: "#fff" },
+  },
+  {
+    option: "R$ 15,00",
+    style: { backgroundColor: "#DC143C", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#ada41f", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#820d5f", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#2b2478", textColor: "#fff" },
+  },
+  {
+    option: "R$ 0,00",
+    style: { backgroundColor: "#9370DB", textColor: "#fff" },
+  },
+  {
+    option: "R$ 500,00",
+    style: { backgroundColor: "#000", textColor: "yellow" },
+  },
+];
