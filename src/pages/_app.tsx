@@ -1,6 +1,6 @@
 import { SessionProvider } from "next-auth/react";
 import NextNProgress from "nextjs-progressbar";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { QueryClientProvider } from "react-query";
 
 import { AuthProvider } from "hooks/useAuth";
@@ -12,12 +12,23 @@ import apiMp from "services/apiMp";
 import { queryClient } from "services/queryClient";
 import GlobalStyle from "styles/global";
 import Head from "next/head";
+import { useRouter } from "next/router";
 
 import "moment/locale/pt-br";
 import "../styles/globals.css";
 import Header from "components/Header";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: any) {
+  const router = useRouter();
+
+  useEffect(() => {
+    // Redireciona para a versão sem www se estiver acessando com www
+    if (router.asPath.startsWith("www.")) {
+      const url = `https://${router.asPath.slice(4)}`;
+      window.location.href = url;
+    }
+  }, [router.asPath]);
+
   useEffect(() => {
     apiMp
       .get(
