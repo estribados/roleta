@@ -41,7 +41,7 @@ export default async function roundBonus(
     const newValue =
       fortyPercentage * (Number(roullete.percentageRoullete) / 100);
 
-    await prisma.quotas.update({
+    const updatedRoullete = await prisma.quotas.update({
       where: {
         id: roullete.quotas[0].id,
       },
@@ -49,6 +49,8 @@ export default async function roundBonus(
         valueQuota: newValue,
       },
     });
+
+    return updatedRoullete;
   });
 
   return res.status(201).json(roulletes);

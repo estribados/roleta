@@ -21,6 +21,7 @@ interface RoulleteProps {
   disabled?: boolean;
   setStopRoullet?(value: boolean): void;
   getResult?(value: number): void;
+  refetchQuotas?(): void;
 }
 
 const Roullete: React.FC<RoulleteProps> = ({
@@ -28,6 +29,7 @@ const Roullete: React.FC<RoulleteProps> = ({
   getResult,
   staticItens = false,
   disabled = false,
+  refetchQuotas,
 }) => {
   const { activeWin, setRollingn, setRoulleteId } = useWin();
   let { authentication, setAuthentication } = useAuth();
@@ -58,10 +60,6 @@ const Roullete: React.FC<RoulleteProps> = ({
 
         if (!disabled && !staticItens) {
           if (item) {
-            // const prizeNumberResult = Math.floor(
-            //   Math.random() * item.data?.length
-            // );
-
             const prizeNumberResult = getResultRollete(item.data);
 
             setRollingn(true);
@@ -71,15 +69,15 @@ const Roullete: React.FC<RoulleteProps> = ({
 
             setTimeout(async () => {
               if (prizeNumberResult === 0) {
-                //chamar endpoint que vai atualizar todas as cotas que tem percentageQuota para 0
-
                 await api.post("roulletes/roundBonus", {
                   win: true,
                 });
                 if (quotasFormated) quotasFormated[0].option = "0";
+                setQuotasFormated(quotasFormated);
+                if (refetchQuotas) refetchQuotas();
               }
 
-              api
+              await api
                 .patch("users/updateCredits", {
                   userId: authentication?.user.id,
                   resultQuotas: Number(resultQuotas?.valueQuota),
@@ -140,6 +138,7 @@ const Roullete: React.FC<RoulleteProps> = ({
     mustSpin,
     notify,
     quotasFormated,
+    refetchQuotas,
     setAuthentication,
     setRollingn,
     staticItens,

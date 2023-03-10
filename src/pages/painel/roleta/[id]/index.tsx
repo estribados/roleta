@@ -12,16 +12,19 @@ import { useEffect, useState } from "react";
 import { IRoullete, RoulleteQuotas } from "interfaces/types";
 import CountUp from "react-countup";
 import ProgressPrime from "components/ProgressPrime";
-
+import { useRouter } from "next/router";
 const DynamicComponentWithNoSSR = dynamic(() => import("components/Roullete"), {
   ssr: false,
 });
 
 const Roleta: React.FC = (quotas: any) => {
   const { authentication } = useAuth();
+  const [quotasInitial, setQuotas] = useState(quotas);
   const [roulletes, setRoulletes] = useState<IRoullete[]>([]);
   const [result, setResult] = useState<number>();
   const [maxValue, setMaxValue] = useState(0);
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
     api
@@ -34,6 +37,17 @@ const Roleta: React.FC = (quotas: any) => {
         setRoulletes(result.data);
       });
   }, []);
+
+  const fetchData = async () => {
+    const response = await api.get(`roulletes/getRoullete`, {
+      params: {
+        id: id,
+      },
+    });
+    const result = { roullete: response.data, data: response.data.quotas };
+
+    setQuotas(result);
+  };
 
   useEffect(() => {
     const maxValuer = quotas.data.reduce(function (prev: any, current: any) {
@@ -123,7 +137,8 @@ const Roleta: React.FC = (quotas: any) => {
           </section>
           <DynamicComponentWithNoSSR
             getResult={setResult}
-            item={quotas as RoulleteQuotas}
+            item={quotasInitial as RoulleteQuotas}
+            refetchQuotas={fetchData}
           />
         </Content>
       </Container>
