@@ -13,9 +13,14 @@ export default async function getRoulletes(
     },
     include: {
       quotas: {
-        orderBy: {
-          percentQuota: "desc",
-        },
+        orderBy: [
+          {
+            percentQuota: "desc",
+          },
+          {
+            createdAt: "desc",
+          },
+        ],
       },
     },
   });
