@@ -7,7 +7,7 @@ export default async function roundBonus(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const { house_profit, win } = req.body;
+  const { house_profit, win, valueQuota } = req.body;
 
   const roulletes = await prisma.roulletes.findMany({
     where: {
@@ -41,9 +41,13 @@ export default async function roundBonus(
     const newValue =
       fortyPercentage * (Number(roullete.percentageRoullete) / 100);
 
+    const roulleteQuota = roullete.quotas.find((quota) => {
+      return Number(valueQuota) === Number(quota.valueQuota);
+    });
+
     const updatedRoullete = await prisma.quotas.update({
       where: {
-        id: roullete.quotas[0].id,
+        id: roulleteQuota?.id,
       },
       data: {
         valueQuota: newValue,

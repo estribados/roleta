@@ -69,10 +69,12 @@ const Roullete: React.FC<RoulleteProps> = ({
 
             setTimeout(async () => {
               if (prizeNumberResult === 0) {
+                Number(resultQuotas?.valueQuota);
                 await api.post("roulletes/roundBonus", {
                   win: true,
+                  valueQuota: Number(resultQuotas?.valueQuota),
                 });
-                if (quotasFormated) quotasFormated[0].option = "0";
+
                 setQuotasFormated(quotasFormated);
                 if (refetchQuotas) refetchQuotas();
               }

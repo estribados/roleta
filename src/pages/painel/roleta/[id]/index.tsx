@@ -38,6 +38,10 @@ const Roleta: React.FC = (quotas: any) => {
       });
   }, []);
 
+  useEffect(() => {
+    setQuotas(quotas);
+  }, [quotas]);
+
   const fetchData = async () => {
     const response = await api.get(`roulletes/getRoullete`, {
       params: {

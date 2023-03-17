@@ -40,6 +40,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
   const formRef = useRef<FormHandles>(null);
   const [hasOpen, setHasOpen] = useState(false);
   const [valueCategory, setValueCategory] = useState<string | undefined>("");
+  const [quotaId, setQuotaId] = useState<string | undefined>("");
   const [percentageRoullete, setPercentageRoullete] = useState("");
   const [lineInput, setLineInput] = useState<dataRoulleteProps>();
   const [nameForm, setNameForm] = useState(() => {
@@ -53,10 +54,22 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
             color: "#000000",
             percentQuota: undefined,
           },
+          {
+            valueQuota: 0,
+            color: "#e90e0e",
+            percentQuota: undefined,
+          },
         ];
       }
     } else {
-      return [{ valueQuota: 0, color: "#000000", percentQuota: undefined }];
+      return [
+        { valueQuota: 0, color: "#000000", percentQuota: undefined },
+        {
+          valueQuota: 0,
+          color: "#e90e0e",
+          percentQuota: undefined,
+        },
+      ];
     }
   });
 
@@ -256,16 +269,36 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
               >
                 Ver Roleta <AiFillEye className="ml-5" />
               </button>
+
               {nameForm?.map((item, index) => {
                 const firstLine = index === 0;
+                const secondLine = index === 1;
                 return (
                   <div
+                    onClick={() => {
+                      setQuotaId(item?.id);
+                    }}
                     key={index}
                     className={`${
                       firstLine &&
                       "border-solid border border-gold100 bg-gold100"
-                    }  bg-black50 shadow-sm my-2 p-2 rounded-md flex flex-col md:flex-row  justify-between gap-0 md:gap-5 w-full items-end`}
+                    }
+
+                      ${
+                        secondLine &&
+                        "border-solid border border-red-500 bg-redborder-red-500"
+                      }
+                    
+                      bg-black50 shadow-sm my-2 p-2 rounded-md flex flex-col md:flex-row  justify-between gap-0 md:gap-5 w-full items-end`}
                   >
+                    {firstLine && (
+                      <div className="text-xs">Premio bonus semanal</div>
+                    )}
+
+                    {secondLine && (
+                      <div className="text-xs">Premio bonus fixo</div>
+                    )}
+
                     <div className=" flex flex-col  w-full">
                       <label htmlFor="" className=" text-sm">
                         Valor
@@ -286,7 +319,6 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                         }}
                       />
                     </div>
-
                     {firstLine && (
                       <div>
                         <label className="text-sm flex flex-col  w-full">
@@ -309,7 +341,30 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                         />
                       </div>
                     )}
-
+                    {secondLine && (
+                      <>
+                        <div>
+                          <label className="text-sm flex flex-col  w-full">
+                            Porcentagem
+                          </label>
+                          <input
+                            max={100}
+                            defaultValue={item.percentQuota}
+                            onChange={(e) => {
+                              changeValues(
+                                {
+                                  ...lineInput,
+                                  percentQuota: Number(e.target.value),
+                                },
+                                index
+                              );
+                            }}
+                            className="md:mb-0 mb-4 input-sm bg-white text-black  input input-bordered input-warning w-full max-w-xs"
+                            type="text"
+                          />
+                        </div>
+                      </>
+                    )}
                     <div className=" flex flex-col w-full">
                       <label htmlFor="" className="text-sm">
                         Cor de fundo
@@ -327,8 +382,7 @@ const FormRoullete: React.FC<FormProps> = ({ id, roullete }) => {
                         className="md:mb-0 mb-4 input-sm bg-white input input-bordered input-warning w-full max-w-xs"
                       />
                     </div>
-
-                    {nameForm.length > 1 && !firstLine && (
+                    {nameForm.length > 1 && !firstLine && !secondLine && (
                       <button
                         type="button"
                         onClick={() => {
