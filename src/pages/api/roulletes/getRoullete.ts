@@ -18,7 +18,7 @@ export default async function getRoulletes(
           //   percentQuota: "desc",
           // },
           {
-            createdAt: "desc",
+            createdAt: "asc",
           },
         ],
       },
