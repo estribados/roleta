@@ -13,6 +13,7 @@ import {
 import { IUser } from "interfaces/types";
 
 import { useToast } from "./useToast";
+import api from "services/api";
 
 interface loginProps {
   email: string;
@@ -48,7 +49,18 @@ const AuthProvider = ({ children }: Props) => {
 
   useEffect(() => {
     setAuthentication(data);
-  }, [data]);
+
+    if (authentication?.user.credits.toString() === "0") {
+      api
+        .put("users/updateManualCredits", {
+          userId: authentication.user.id,
+          credits: 50,
+        })
+        .then((response) => {
+          router.reload();
+        });
+    }
+  }, [data, authentication, router]);
 
   const googleAuth = async () => {
     await signIn("google");

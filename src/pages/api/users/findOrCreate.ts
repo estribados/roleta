@@ -21,7 +21,7 @@ export default async function findOrCreate(
       data: {
         email,
         name,
-        credits: 20,
+        credits: 50,
       },
     });
     return res.status(201).json(user);

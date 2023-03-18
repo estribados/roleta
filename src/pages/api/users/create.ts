@@ -30,7 +30,7 @@ export default async function createUser(
       password: hashedPassword,
       pix,
       telephone,
-      credits: 100,
+      credits: 50,
     },
   });
 
