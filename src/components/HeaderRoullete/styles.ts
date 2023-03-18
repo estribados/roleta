@@ -38,6 +38,10 @@ export const Container = styled.div<ContainerProps>`
     justify-content: space-around;
     color: #1e82d9;
 
+    @media (max-width: 350px) {
+      justify-content: initial;
+    }
+
     &::-webkit-scrollbar-track {
       background-color: #f4f4f4;
       border-radius: 30px;
