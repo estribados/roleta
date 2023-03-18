@@ -10,7 +10,7 @@ interface ThermometherProps {
   maxValue: number;
 }
 
-const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
+const ProgressPrime: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
   const [percentage, setPercentage] = useState(0);
 
   const [openModal, setOpenModal] = useState(false);
@@ -66,13 +66,7 @@ const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
                 />
               </label>
             ) : (
-              <label
-                onClick={() => {
-                  setOpenModal(true);
-                }}
-                htmlFor="my-modal-7"
-                className="win"
-              >
+              <label htmlFor="my-modal-7">
                 <Image
                   className="ml-5 cursor-pointer"
                   src={"/images/money-bag.png"}
@@ -93,4 +87,4 @@ const Thermometer: React.FC<ThermometherProps> = ({ bonus, maxValue }) => {
     </>
   );
 };
-export default Thermometer;
+export default ProgressPrime;
