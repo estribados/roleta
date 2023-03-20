@@ -27,9 +27,8 @@ export const Content = styled.main`
   margin: auto;
 
   display: grid;
-  grid-template-columns: 1fr 1fr;
-
   align-items: center;
+  grid-template-columns: 1fr 1fr;
 
   height: calc(100vh - 253px);
   position: relative;
