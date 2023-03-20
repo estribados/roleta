@@ -47,20 +47,20 @@ const AuthProvider = ({ children }: Props) => {
 
   const [authentication, setAuthentication] = useState(data);
 
-  useEffect(() => {
-    setAuthentication(data);
+  // useEffect(() => {
+  //   setAuthentication(data);
 
-    if (authentication?.user.credits.toString() === "0") {
-      api
-        .put("users/updateManualCredits", {
-          userId: authentication.user.id,
-          credits: 50,
-        })
-        .then((response) => {
-          router.reload();
-        });
-    }
-  }, [data, authentication, router]);
+  //   if (authentication?.user.credits.toString() === "0") {
+  //     api
+  //       .put("users/updateManualCredits", {
+  //         userId: authentication.user.id,
+  //         credits: 50,
+  //       })
+  //       .then((response) => {
+  //         router.reload();
+  //       });
+  //   }
+  // }, [data, authentication, router]);
 
   const googleAuth = async () => {
     await signIn("google");
